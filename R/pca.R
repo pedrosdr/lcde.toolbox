@@ -4,6 +4,28 @@ library(dplyr)
 # class pca
 
 # constructors
+
+#' Create a PCA object from a data frame
+#'
+#' This function computes the principal components of a given data frame,
+#' returning an object of class 'pca'.
+#'
+#' @param data A data frame containing the data to be analyzed.
+#' @param center A logical value indicating whether to center the variables.
+#' @param scale A logical value indicating whether to scale the variables.
+#'
+#' @return An object of class 'pca' containing:
+#' \item{standard_deviation}{Standard deviations of the principal components.}
+#' \item{explained_variance}{Proportion of variance explained by each principal component.}
+#' \item{loads}{Loadings of the variables on the principal components.}
+#' \item{principal_components}{The principal component scores.}
+#' \item{component_equations}{Equations representing each principal component.}
+#'
+#' @examples
+#' df <- data.frame(x = rnorm(100), y = rnorm(100), z = rnorm(100))
+#' pca_result <- pca.from_data_frame(df)
+#'
+#' @export
 pca.from_data_frame = function(
     data, #: data.frame
     center = TRUE, #: logical
@@ -39,6 +61,16 @@ pca.from_data_frame = function(
 }
 
 # methods
+
+#' Check if an object is of class 'pca'
+#'
+#' This function checks if the provided object is of class 'pca'.
+#'
+#' @param obj An object to be checked.
+#'
+#' @return NULL if the object is of class 'pca'; otherwise, an error is raised.
+#'
+#' @keywords internal
 .pca.check_class = function(
   obj #; pca
 ) {
@@ -47,6 +79,16 @@ pca.from_data_frame = function(
   }
 }
 
+#' Translate component names in PCA results
+#'
+#' This function modifies the column names of principal components and loadings,
+#' replacing 'PC' with 'CP'.
+#'
+#' @param obj An object of class 'pca'.
+#'
+#' @return The modified PCA object with updated component names.
+#'
+#' @export
 .pca.translate_component_names = function(
   obj #: pca
 ) {
@@ -63,6 +105,15 @@ pca.from_data_frame = function(
   return(obj)
 }
 
+#' Invert loadings in PCA results
+#'
+#' This function ensures that the first principal component has positive loadings.
+#'
+#' @param obj An object of class 'pca'.
+#'
+#' @return The modified PCA object with inverted loadings if necessary.
+#'
+#' @export
 .pca.invert_loads = function(
   obj #: pca
 ) {
@@ -76,6 +127,16 @@ pca.from_data_frame = function(
   return(obj)
 }
 
+#' Get equations for each principal component
+#'
+#' This function generates equations representing each principal component based on
+#' their loadings.
+#'
+#' @param obj An object of class 'pca'.
+#'
+#' @return A character vector containing equations for each principal component.
+#'
+#' @export
 .pca.get_component_equations = function(
   obj #: pca
 ) {
