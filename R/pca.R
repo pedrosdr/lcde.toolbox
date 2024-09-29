@@ -42,22 +42,45 @@ pca.from_data_frame = function(
   }
 
   data = na.omit(data)
-  obj = list()
-  class(obj) = 'pca'
+  this = list()
+  class(this) = 'pca'
 
   temp = prcomp(data, center = center, scale. = scale)
 
-  obj$standard_deviation = temp$sdev
-  obj$explained_variance = temp$sdev^2 / sum(temp$sde^2)
-  obj$loads = as.data.frame(temp$rotation)
-  obj$principal_components = as.data.frame(temp$x)
+  this$data = data
+  this$standard_deviation = temp$sdev
+  this$explained_variance = temp$sdev^2 / sum(temp$sde^2)
+  this$loads = as.data.frame(temp$rotation)
+  this$principal_components = as.data.frame(temp$x)
 
-  obj = obj %>% .pca.invert_loads()
-  obj = obj %>% .pca.translate_component_names()
+  this = this %>% .pca.invert_loads()
+  this = this %>% .pca.translate_component_names()
 
-  obj$component_equations = obj %>% .pca.get_component_equations()
+  this$component_equations = this %>% .pca.get_component_equations()
 
-  return(obj)
+  return(this)
+}
+
+# properties
+
+#' Get the ID 'Indicador de Desigualdade' of a PCA object
+#'
+#' This function calculates an ID metric for the PCA object based on the centroid distance.
+#'
+#' @param this An object of class 'pca'.
+#'
+#' @return A numeric value representing the ID metric.
+#'
+#' @export
+pca.get_ID = function(
+  this #: pca
+) {
+  .pca.check_class(this)
+
+  centroid = as.numeric(lapply(this$data, mean))
+  id = mean(apply(this$data, 1, function(x) sqrt(sum((x-centroid)^2))))
+
+  return(id)
 }
 
 # methods
@@ -66,16 +89,16 @@ pca.from_data_frame = function(
 #'
 #' This function checks if the provided object is of class 'pca'.
 #'
-#' @param obj An object to be checked.
+#' @param this An object to be checked.
 #'
 #' @return NULL if the object is of class 'pca'; otherwise, an error is raised.
 #'
 #' @keywords internal
 .pca.check_class = function(
-  obj #; pca
+  this #; pca
 ) {
-  if(class(obj) != 'pca') {
-    stop("'obj' must be of type 'pca'")
+  if(class(this) != 'pca') {
+    stop("'this' must be of type 'pca'")
   }
 }
 
@@ -84,47 +107,47 @@ pca.from_data_frame = function(
 #' This function modifies the column names of principal components and loadings,
 #' replacing 'PC' with 'CP'.
 #'
-#' @param obj An object of class 'pca'.
+#' @param this An object of class 'pca'.
 #'
 #' @return The modified PCA object with updated component names.
 #'
 #' @export
 .pca.translate_component_names = function(
-  obj #: pca
+  this #: pca
 ) {
-  .pca.check_class(obj)
+  .pca.check_class(this)
 
-  colnames(obj$principal_components) = gsub(
-    'PC', 'CP', colnames(obj$principal_components)
+  colnames(this$principal_components) = gsub(
+    'PC', 'CP', colnames(this$principal_components)
   )
 
-  colnames(obj$loads) = gsub(
-    'PC', 'CP', colnames(obj$loads)
+  colnames(this$loads) = gsub(
+    'PC', 'CP', colnames(this$loads)
   )
 
-  return(obj)
+  return(this)
 }
 
 #' Invert loadings in PCA results
 #'
 #' This function ensures that the first principal component has positive loadings.
 #'
-#' @param obj An object of class 'pca'.
+#' @param this An object of class 'pca'.
 #'
 #' @return The modified PCA object with inverted loadings if necessary.
 #'
 #' @export
 .pca.invert_loads = function(
-  obj #: pca
+  this #: pca
 ) {
-  .pca.check_class(obj)
+  .pca.check_class(this)
 
-  if(obj$loads$PC1[1] < 0) {
-    obj$loads$PC1 = obj$loads$PC1*-1
-    obj$principal_components$PC1 = obj$principal_components$PC1*-1
+  if(this$loads$PC1[1] < 0) {
+    this$loads$PC1 = this$loads$PC1*-1
+    this$principal_components$PC1 = this$principal_components$PC1*-1
   }
 
-  return(obj)
+  return(this)
 }
 
 #' Get equations for each principal component
@@ -132,27 +155,27 @@ pca.from_data_frame = function(
 #' This function generates equations representing each principal component based on
 #' their loadings.
 #'
-#' @param obj An object of class 'pca'.
+#' @param this An object of class 'pca'.
 #'
 #' @return A character vector containing equations for each principal component.
 #'
 #' @export
 .pca.get_component_equations = function(
-  obj #: pca
+  this #: pca
 ) {
-  .pca.check_class(obj)
+  .pca.check_class(this)
 
   equations = c()
-  for(j in 1:ncol(obj$loads)) {
-    col = colnames(obj$loads)[j]
+  for(j in 1:ncol(this$loads)) {
+    col = colnames(this$loads)[j]
     equation = paste(col, '=')
-    for(i in 1:nrow(obj$loads)) {
-      row = rownames(obj$loads)[i]
-      signal = if(obj$loads[i,j] < 0) '-' else '+'
+    for(i in 1:nrow(this$loads)) {
+      row = rownames(this$loads)[i]
+      signal = if(this$loads[i,j] < 0) '-' else '+'
       signal = if(i == 1) '' else signal
       equation = paste(
         equation, signal, sprintf(
-          "%.2f", abs(obj$loads[i,j])
+          "%.2f", abs(this$loads[i,j])
         ), row
       )
       equation = gsub('  ', ' ', equation)

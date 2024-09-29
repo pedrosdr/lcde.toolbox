@@ -4,10 +4,10 @@
 \alias{.vizsize.set_size_normal}
 \title{Set Normal Size Properties}
 \usage{
-.vizsize.set_size_normal(obj)
+.vizsize.set_size_normal(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with normal dimensions.

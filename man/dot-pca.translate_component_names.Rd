@@ -4,10 +4,10 @@
 \alias{.pca.translate_component_names}
 \title{Translate component names in PCA results}
 \usage{
-.pca.translate_component_names(obj)
+.pca.translate_component_names(this)
 }
 \arguments{
-\item{obj}{An object of class 'pca'.}
+\item{this}{An object of class 'pca'.}
 }
 \value{
 The modified PCA object with updated component names.

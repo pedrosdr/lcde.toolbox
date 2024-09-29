@@ -4,10 +4,10 @@
 \alias{.vizsize.set_line_large}
 \title{Set Large Line Properties}
 \usage{
-.vizsize.set_line_large(obj)
+.vizsize.set_line_large(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with large line properties.

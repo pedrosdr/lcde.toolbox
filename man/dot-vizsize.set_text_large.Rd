@@ -4,10 +4,10 @@
 \alias{.vizsize.set_text_large}
 \title{Set Large Text Properties}
 \usage{
-.vizsize.set_text_large(obj)
+.vizsize.set_text_large(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \description{
 This function sets large text properties for the visualization size object.

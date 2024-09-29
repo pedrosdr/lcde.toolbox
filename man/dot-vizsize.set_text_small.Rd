@@ -4,10 +4,10 @@
 \alias{.vizsize.set_text_small}
 \title{Set Small Text Properties}
 \usage{
-.vizsize.set_text_small(obj)
+.vizsize.set_text_small(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with small text properties.

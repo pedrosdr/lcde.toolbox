@@ -4,10 +4,10 @@
 \alias{.vizsize.set_line_normal}
 \title{Set Normal Line Properties}
 \usage{
-.vizsize.set_line_normal(obj)
+.vizsize.set_line_normal(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with normal line properties.

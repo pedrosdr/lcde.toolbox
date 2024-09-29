@@ -4,10 +4,10 @@
 \alias{.vizsize.set_text_normal}
 \title{Set Normal Text Properties}
 \usage{
-.vizsize.set_text_normal(obj)
+.vizsize.set_text_normal(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with normal text properties.

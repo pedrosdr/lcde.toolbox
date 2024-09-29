@@ -4,10 +4,10 @@
 \alias{pcaviz.add_labels}
 \title{Add Labels to Points in PCA Scatter Plot}
 \usage{
-pcaviz.add_labels(obj, labels)
+pcaviz.add_labels(this, labels)
 }
 \arguments{
-\item{obj}{A PCA visualization object of class 'pcaviz'.}
+\item{this}{A PCA visualization object of class 'pcaviz'.}
 
 \item{labels}{A vector of labels corresponding to each point in the plot.}
 }

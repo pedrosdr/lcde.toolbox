@@ -23,40 +23,40 @@ vizsize = function(
   line = 'normal', #: character
   text = 'normal' #: character
 ) {
-  obj = list()
-  class(obj) = 'vizsize'
+  this = list()
+  class(this) = 'vizsize'
 
   if(size == 'small') {
-    obj = obj %>% .vizsize.set_size_small()
+    this = this %>% .vizsize.set_size_small()
   } else if(size == 'normal') {
-    obj = obj %>% .vizsize.set_size_normal()
+    this = this %>% .vizsize.set_size_normal()
   } else if(size == 'large') {
-    obj = obj %>% .vizsize.set_size_large()
+    this = this %>% .vizsize.set_size_large()
   } else {
     stop("'size' must be one of ('small', 'normal', 'large')")
   }
 
   if(line == 'small') {
-    obj = obj %>% .vizsize.set_line_small()
+    this = this %>% .vizsize.set_line_small()
   } else if(size == 'normal') {
-    obj = obj %>% .vizsize.set_line_normal()
+    this = this %>% .vizsize.set_line_normal()
   } else if(size == 'large') {
-    obj = obj %>% .vizsize.set_line_large()
+    this = this %>% .vizsize.set_line_large()
   } else {
     stop("'line' must be one of ('small', 'normal', 'large')")
   }
 
   if(text == 'small') {
-    obj = obj %>% .vizsize.set_text_small()
+    this = this %>% .vizsize.set_text_small()
   } else if(size == 'normal') {
-    obj = obj %>% .vizsize.set_text_normal()
+    this = this %>% .vizsize.set_text_normal()
   } else if(size == 'large') {
-    obj = obj %>% .vizsize.set_text_large()
+    this = this %>% .vizsize.set_text_large()
   } else {
     stop("'text' must be one of ('small', 'normal', 'large')")
   }
 
-  return(obj)
+  return(this)
 }
 
 #' Parse Visualization Size Input
@@ -74,22 +74,22 @@ vizsize = function(
 vizsize.parse = function(
     size #: vizsize | character | numeric
 ) {
-  obj = NULL
+  this = NULL
 
   if(class(size) == 'vizsize') {
-    obj = size
+    this = size
   } else if(size == 'small' || size == 1) {
-    obj = vizsize('small', 'small', 'small')
+    this = vizsize('small', 'small', 'small')
   } else if(size == 'normal' || size == 2) {
-    obj = vizsize('normal', 'normal', 'normal')
+    this = vizsize('normal', 'normal', 'normal')
   } else if(size == 'large' || size == 3) {
-    obj = vizsize('large', 'large', 'large')
+    this = vizsize('large', 'large', 'large')
   } else {
     stop("'size' must be of type 'vizsize' or one of
          (1, 2, 3, 'small', 'normal', 'large')")
   }
 
-  return(obj)
+  return(this)
 }
 
 # methods
@@ -98,16 +98,16 @@ vizsize.parse = function(
 #'
 #' This function checks if the provided object is of class 'vizsize'.
 #'
-#' @param obj An object to be checked.
+#' @param this An object to be checked.
 #'
 #' @return NULL if the object is of class 'vizsize'; otherwise, an error is raised.
 #'
 #' @keywords internal
 .vizsize.check_class = function(
-    obj #; vizsize
+    this #; vizsize
 ) {
-  if(!('vizsize' %in% class(obj))) {
-    stop("'obj' must be of type 'vizsize'")
+  if(!('vizsize' %in% class(this))) {
+    stop("'this' must be of type 'vizsize'")
   }
 }
 
@@ -115,184 +115,184 @@ vizsize.parse = function(
 #'
 #' This function sets small dimensions for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with small dimensions.
 #'
 #' @export
 .vizsize.set_size_small = function(
-  obj #: vizsize
+  this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$width = 1000
-  obj$height = 621
+  this$width = 1000
+  this$height = 621
 
-  return(obj)
+  return(this)
 }
 
 #' Set Normal Size Properties
 #'
 #' This function sets normal dimensions for the visualization size object.
 #
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #
 #' @return The modified visualization size object with normal dimensions.
 #
 #' @export
 .vizsize.set_size_normal = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$width = 1610
-  obj$height = 1000
+  this$width = 1610
+  this$height = 1000
 
-  return(obj)
+  return(this)
 }
 
 #' Set Large Size Properties
 #'
 #' This function sets large dimensions for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with large dimensions.
 #'
 #' @export
 .vizsize.set_size_large = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$width = 2592
-  obj$height = 1610
+  this$width = 2592
+  this$height = 1610
 
-  return(obj)
+  return(this)
 }
 
 #' Set Small Line Properties
 #'
 #' This function sets small line properties for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with small line properties.
 #'
 #' @export
 .vizsize.set_line_small = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$linewidth = 0.5
-  obj$point_size = 0.5
+  this$linewidth = 0.5
+  this$point_size = 1
 
-  return(obj)
+  return(this)
 }
 
 #' Set Normal Line Properties
 #'
 #' This function sets normal line properties for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with normal line properties.
 #'
 #' @export
 .vizsize.set_line_normal = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$linewidth = 1
-  obj$point_size = 1
+  this$linewidth = 1
+  this$point_size = 3
 
-  return(obj)
+  return(this)
 }
 
 #' Set Large Line Properties
 #'
 #' This function sets large line properties for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with large line properties.
 #'
 #' @export
 .vizsize.set_line_large = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$linewidth = 2
-  obj$point_size = 2
+  this$linewidth = 2
+  this$point_size = 5
 
-  return(obj)
+  return(this)
 }
 
 #' Set Small Text Properties
 #'
 #' This function sets small text properties for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with small text properties.
 #'
 #' @export
 .vizsize.set_text_small = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$text = 5
-  obj$title = 10
-  obj$subtitle = 8
-  obj$axis_title = 8
+  this$text = 5
+  this$title = 10
+  this$subtitle = 8
+  this$axis_title = 8
 
-  return(obj)
+  return(this)
 }
 
 #' Set Normal Text Properties
 #'
 #' This function sets normal text properties for the visualization size object.
 #'
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #'
 #' @return The modified visualization size object with normal text properties.
 #'
 #' @export
 .vizsize.set_text_normal = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$text = 10
-  obj$title = 18
-  obj$subtitle = 15
-  obj$axis_title = 15
+  this$text = 15
+  this$title = 20
+  this$subtitle = 17
+  this$axis_title = 17
 
-  return(obj)
+  return(this)
 }
 
 #' Set Large Text Properties
 #'
 #' This function sets large text properties for the visualization size object.
 #
-#' @param obj A visualization size object of class 'vizsize'.
+#' @param this A visualization size object of class 'vizsize'.
 #
 ## @return The modified visualization size object with large text properties.
 #
 ## @export
 .vizsize.set_text_large = function(
-    obj #: vizsize
+    this #: vizsize
 ) {
-  .vizsize.check_class(obj)
+  .vizsize.check_class(this)
 
-  obj$text = 20
-  obj$title = 30
-  obj$subtitle = 25
-  obj$axis_title = 25
+  this$text = 20
+  this$title = 30
+  this$subtitle = 25
+  this$axis_title = 25
 
-  return(obj)
+  return(this)
 }

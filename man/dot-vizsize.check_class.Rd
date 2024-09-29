@@ -4,10 +4,10 @@
 \alias{.vizsize.check_class}
 \title{Check Class of Visualization Size Object}
 \usage{
-.vizsize.check_class(obj)
+.vizsize.check_class(this)
 }
 \arguments{
-\item{obj}{An object to be checked.}
+\item{this}{An object to be checked.}
 }
 \value{
 NULL if the object is of class 'vizsize'; otherwise, an error is raised.

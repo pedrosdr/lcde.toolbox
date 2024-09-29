@@ -4,10 +4,10 @@
 \alias{pcaviz.add_multi_group_points}
 \title{Add Multi-Group Points to PCA Scatter Plot}
 \usage{
-pcaviz.add_multi_group_points(obj, groups)
+pcaviz.add_multi_group_points(this, groups)
 }
 \arguments{
-\item{obj}{A PCA visualization object of class 'pcaviz'.}
+\item{this}{A PCA visualization object of class 'pcaviz'.}
 
 \item{groups}{A factor indicating group membership for each point.}
 }

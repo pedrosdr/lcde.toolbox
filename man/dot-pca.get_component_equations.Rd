@@ -4,10 +4,10 @@
 \alias{.pca.get_component_equations}
 \title{Get equations for each principal component}
 \usage{
-.pca.get_component_equations(obj)
+.pca.get_component_equations(this)
 }
 \arguments{
-\item{obj}{An object of class 'pca'.}
+\item{this}{An object of class 'pca'.}
 }
 \value{
 A character vector containing equations for each principal component.

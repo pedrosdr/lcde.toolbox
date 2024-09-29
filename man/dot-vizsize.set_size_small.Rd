@@ -4,10 +4,10 @@
 \alias{.vizsize.set_size_small}
 \title{Set Small Size Properties}
 \usage{
-.vizsize.set_size_small(obj)
+.vizsize.set_size_small(this)
 }
 \arguments{
-\item{obj}{A visualization size object of class 'vizsize'.}
+\item{this}{A visualization size object of class 'vizsize'.}
 }
 \value{
 The modified visualization size object with small dimensions.

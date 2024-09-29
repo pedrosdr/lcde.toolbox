@@ -4,7 +4,13 @@
 \alias{pcaviz.scatter}
 \title{Create a Scatter Plot for PCA Results}
 \usage{
-pcaviz.scatter(pca_obj, labels = NULL, groups = NULL, size = vizsize())
+pcaviz.scatter(
+  pca_obj,
+  labels = NULL,
+  groups = NULL,
+  include_ID = FALSE,
+  size = vizsize()
+)
 }
 \arguments{
 \item{pca_obj}{A PCA object containing principal components.}

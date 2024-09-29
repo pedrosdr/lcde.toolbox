@@ -4,10 +4,10 @@
 \alias{.pca.invert_loads}
 \title{Invert loadings in PCA results}
 \usage{
-.pca.invert_loads(obj)
+.pca.invert_loads(this)
 }
 \arguments{
-\item{obj}{An object of class 'pca'.}
+\item{this}{An object of class 'pca'.}
 }
 \value{
 The modified PCA object with inverted loadings if necessary.

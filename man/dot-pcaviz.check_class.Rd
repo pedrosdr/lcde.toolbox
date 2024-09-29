@@ -4,10 +4,10 @@
 \alias{.pcaviz.check_class}
 \title{Check if an Object is of Class 'pcaviz'}
 \usage{
-.pcaviz.check_class(obj)
+.pcaviz.check_class(this)
 }
 \arguments{
-\item{obj}{An object to be checked.}
+\item{this}{An object to be checked.}
 }
 \value{
 NULL if the object is of class 'pcaviz'; otherwise, an error is raised.

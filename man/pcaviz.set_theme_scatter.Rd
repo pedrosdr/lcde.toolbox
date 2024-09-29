@@ -4,10 +4,10 @@
 \alias{pcaviz.set_theme_scatter}
 \title{Set Theme for PCA Scatter Plot}
 \usage{
-pcaviz.set_theme_scatter(obj)
+pcaviz.set_theme_scatter(this)
 }
 \arguments{
-\item{obj}{A PCA visualization object of class 'pcaviz'.}
+\item{this}{A PCA visualization object of class 'pcaviz'.}
 }
 \value{
 The modified PCA visualization object with updated theme.

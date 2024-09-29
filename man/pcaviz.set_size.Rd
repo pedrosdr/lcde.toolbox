@@ -4,10 +4,10 @@
 \alias{pcaviz.set_size}
 \title{Set Size Properties for PCA Visualization}
 \usage{
-pcaviz.set_size(obj, size_obj = vizsize())
+pcaviz.set_size(this, size_obj = vizsize())
 }
 \arguments{
-\item{obj}{A PCA visualization object of class 'pcaviz'.}
+\item{this}{A PCA visualization object of class 'pcaviz'.}
 
 \item{size_obj}{An object containing size properties (default is `vizsize()`).}
 }
