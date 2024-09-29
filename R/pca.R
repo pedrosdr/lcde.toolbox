@@ -184,3 +184,84 @@ pca.get_ID = function(
   }
   return(equations)
 }
+
+pca.get_largest_increases = function(
+    this, #: pca
+    number, #: integer
+    keys, #: vector
+    years, #: vector
+    labels = NULL, #: vector
+    errors='warn' #: character
+) {
+  .pca.check_class(this)
+  if(number != round(number)) {
+    stop("'number' must be an integer")
+  }
+  if(length(years) != nrow(this$principal_components)) {
+    stop("'keys' must be a vector of the same length as the data")
+  }
+  if(class(years) != 'numeric') {
+    stop("'years' must be of type 'numeric'")
+  }
+  if(length(years) != nrow(this$principal_components)) {
+    stop("'years' must be a vector of the same length as the data")
+  }
+  if(!(errors %in% c('raise', 'warn', 'ignore'))) {
+    stop("'errors' must be one of ('raise', 'warn', 'ignore')")
+  }
+  if(is.null(labels)) {
+    labels = rep('', length(keys))
+  }
+  if(length(labels) != nrow(this$principal_components)) {
+    stop("'labels' must be a vector of the same length as the data")
+  }
+
+  unique_years = unique(years)
+
+  if(length(unique_years) <= 1) {
+    stop("the number of years must be superior to 1")
+  }
+
+  df = data.frame(
+    keys = keys,
+    years = years,
+    labels = labels
+  )
+
+  df = cbind(df, this$data, this$principal_components)
+
+  df_min_year = df %>% filter(years == min(unique_years))
+  df_max_year = df %>% filter(years == max(unique_years))
+
+  df_intersection = merge(
+    df_min_year, df_max_year,
+    by=c('keys'),
+    all.x=FALSE,
+    all.y=FALSE
+  )
+  df_intersection$var = df_intersection$CP1.y - df_intersection$CP1.x
+
+  df_largest_increases = df_intersection[
+    ,c('keys', 'labels.x', 'var', 'CP1.x', 'CP1.y', 'CP2.x', 'CP2.y')
+  ]
+  df_largest_increases = df_largest_increases %>% rename(labels = labels.x)
+  df_largest_increases = df_largest_increases[
+    order(-df_largest_increases$var),
+  ]
+
+  df_largest_increases = df_largest_increases[1:number,]
+
+  if(nrow(df_largest_increases) < number) {
+    if(errors == 'raise') {
+      stop("The length of the output vector is shorter than the specified number.
+           Please check your input data. To ignore this error set 'errors' to
+           'warn' or 'ignore'")
+    } else if(errors == 'warn') {
+      warning("The length of the output vector is shorter than the specified number.
+           Please check your input data. To ignore this warning set 'errors' to
+           'ignore'")
+    }
+  }
+
+  return(df_largest_increases)
+}

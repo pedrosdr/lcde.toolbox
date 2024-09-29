@@ -393,3 +393,75 @@ pcaviz.set_scale_scatter = function(
 
   return(this)
 }
+
+pcaviz.add_largest_increases = function(
+  this, #: pcaviz
+  number, #: integer
+  keys, #: vector
+  years, #: vector
+  labels = NULL #: vector
+) {
+  .pcaviz.check_class(this)
+
+  df = this$pca_obj %>% pca.get_largest_increases(
+    number = number,
+    keys = keys,
+    years = years,
+    labels = labels
+  )
+
+  unique_years = unique(years)
+
+  print(df)
+
+  this = this %>% pcaviz.add_segments(
+    df$CP1.x, df$CP1.y, df$CP2.x, df$CP2.y
+  )
+
+  return(this)
+}
+
+
+pcaviz.add_segments = function(
+  this, #: pcaviz
+  from.x, #: numeric vector
+  to.x, #: numeric vector]
+  from.y, #: numeric vector
+  to.y #: numeric vector
+) {
+  .pcaviz.check_class(this)
+  if(class(from.x) != 'numeric') {
+    stop("'from' must be of type 'numeric'")
+  }
+  if(class(to.x) != 'numeric') {
+    stop("'to' must be of type 'numeric'")
+  }
+  if(length(from.x) != length(to.x) ||
+     length(from.y) != length(to.y) ||
+     length(from.x) != length(from.y) ||
+     length(to.x) != length(to.y)) {
+    stop("all vectors must have the same length")
+  }
+
+  segments_list <- lapply(1:length(from.x), function(i) {
+    geom_segment(
+      mapping = aes(
+        x = from.x[i],
+        xend = to.x[i],
+        y = from.y[i],
+        yend = to.y[i]
+      ),
+      arrow = arrow(
+        type = "closed",
+        length = unit(this$size$linewidth/10, "inches")
+      ),
+      linewidth=this$size$linewidth
+    )
+  })
+
+  for (segment in segments_list) {
+    this <- this + segment
+  }
+
+  return(this)
+}
