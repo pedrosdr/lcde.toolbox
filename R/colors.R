@@ -17,9 +17,9 @@ colors.mixed = function() {
   palette = c(
     '#9656a2',
     '#369acc',
-    '#95cf92',
     '#f8e16f',
     '#f4895f',
+    '#95cf92',
     '#de324c',
     '#6c584c'
   )

@@ -124,7 +124,9 @@ pcaviz.scatter = function(
   }
 
   this = pcaviz.from_ggplot(ggplot(), pca_obj)
-  this %>% .pcaviz.check_groups(groups)
+  if(!is.null(groups)) {
+    this %>% .pcaviz.check_groups(groups)
+  }
 
   size = vizsize.parse(size)
   this = this %>% pcaviz.set_size(size)
@@ -132,7 +134,7 @@ pcaviz.scatter = function(
   this = this + theme_minimal()
 
   if(is.null(groups)) {
-    this = this %>% pcaviz.add_sigle_group_points()
+    this = this %>% pcaviz.add_single_group_points()
   } else {
     this = this %>% pcaviz.add_multi_group_points(groups)
   }
@@ -423,62 +425,73 @@ pcaviz.set_scale_scatter = function(
   return(this)
 }
 
-#' Add Largest Increases to PCA Scatter Plot
+#' Add Largest Variations to PCA Scatter Plot
 #'
-#' This function identifies and visualizes the largest increases in a PCA scatter plot
+#' This function identifies and visualizes the largest variations in a PCA scatter plot
 #' by adding segments and labels for specified keys over a range of years.
 #' It helps in understanding how certain variables have changed significantly
-#' across the specified time frame.
+#' across the specified time frame, either positively or negatively.
 #'
 #' @param this A PCA visualization object of class 'pcaviz'.
-#' @param number An integer specifying the number of largest increases to visualize.
-#' @param keys A vector of keys (variables) for which the largest increases are to be identified.
+#' @param number An integer specifying the number of largest variations to visualize.
+#' @param keys A vector of keys (variables) for which the largest variations are to be identified.
 #' @param years A vector of years corresponding to the data points being analyzed.
 #' @param labels (Optional) A vector of labels for each key, used for annotation in the plot.
-#'        If NULL, defaults to ''.
+#'        If NULL, defaults to an empty string.
+#' @param variation A character string indicating whether to visualize 'positive' or 'negative' variations.
 #'
-#' @return A modified PCA visualization object with segments and labels added for the largest increases.
+#' @return A modified PCA visualization object with segments and labels added for the largest variations.
 #'
 #' @details
 #' The function first checks that the input object is valid. It then retrieves
-#' the largest increases using the `pca.get_largest_increases` helper function.
+#' the largest variations using the `pca.get_largest_variations` helper function.
 #' The results are printed and subsequently visualized by adding segments and labels
-#' to the PCA plot. The segments are colored using a red-to-green gradient to indicate
-#' changes.
+#' to the PCA plot. The segments are colored based on whether they represent positive
+#' or negative variations.
 #'
 #' @examples
 #' # Assuming pca_viz is a valid PCA visualization object
-#' pca_viz <- pcaviz.add_largest_increases(
+#' pca_viz <- pcaviz.add_largest_variations(
 #'   pca_viz,
 #'   number = 5,
 #'   keys = c("Variable1", "Variable2"),
-#'   years = c(2020, 2021, 2022)
+#'   years = c(2020, 2021, 2022),
+#'   variation = 'positive'
 #' )
 #'
 #' @export
-pcaviz.add_largest_increases = function(
+pcaviz.add_largest_variations = function(
   this, #: pcaviz
   number, #: integer
   keys, #: vector
   years, #: vector
-  labels = NULL #: vector
+  labels = NULL, #: vector
+  variation = 'positive'
 ) {
   .pcaviz.check_class(this)
+  if(!(variation %in% c('positive', 'negative'))) {
+    stop("'variation' must be one of ('positive', 'negative')")
+  }
 
-  df = this$pca_obj %>% pca.get_largest_increases(
+  color = if(variation == 'positive'){
+    colors.red_to_green()[4]
+  } else {
+    colors.red_to_green()[1]
+  }
+
+  df = this$pca_obj %>% pca.get_largest_variations(
     number = number,
     keys = keys,
     years = years,
-    labels = labels
+    labels = labels,
+    variation
   )
 
   unique_years = unique(years)
 
-  print(df)
-
   this = this %>% pcaviz.add_segments(
     df$CP1.x, df$CP1.y, df$CP2.x, df$CP2.y,
-    color=colors.red_to_green()[4]
+    color=color
   )
 
   this = this %>% pcaviz.add_labels(

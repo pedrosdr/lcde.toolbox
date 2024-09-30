@@ -185,50 +185,57 @@ pca.get_ID = function(
   return(equations)
 }
 
-#' Get Largest Increases in PCA Data
+#' Get Largest Variations in PCA Data
 #'
-#' This function calculates the largest increases in principal component scores
+#' This function calculates the largest variations in principal component scores
 #' between two specified years for given keys (variables). It helps in identifying
-#' which variables have changed the most over time in PCA analysis.
+#' which variables have changed the most over time in PCA analysis, either positively
+#' or negatively.
 #'
 #' @param this A PCA object of class 'pca'.
-#' @param number An integer specifying the number of largest increases to return.
-#' @param keys A vector of keys (variables) for which the largest increases are to be calculated.
+#' @param number An integer specifying the number of largest variations to return.
+#' @param keys A vector of keys (variables) for which the largest variations are to be calculated.
 #' @param years A numeric vector indicating the years corresponding to the data points.
 #' @param labels (Optional) A vector of labels for each key, used for annotation. Defaults to empty strings.
+#' @param variation A character string indicating whether to calculate 'positive' or 'negative' variations.
 #' @param errors A character string indicating how to handle errors:
 #'        'raise' to stop execution, 'warn' to issue a warning, or 'ignore' to suppress errors.
 #'
-#' @return A data frame containing the largest increases, including keys, labels,
-#'         and the first two principal component coordinates for the specified number of largest increases.
+#' @return A data frame containing the largest variations, including keys, labels,
+#'         and the first two principal component coordinates for the specified number of largest variations.
 #'
 #' @details
 #' The function performs several checks on the input parameters to ensure they meet
 #' the expected criteria. It calculates the difference in principal component scores
 #' between the minimum and maximum years provided and returns a data frame with the
-#' specified number of largest increases. If there are fewer increases than requested,
+#' specified number of largest variations. If there are fewer variations than requested,
 #' it will handle errors based on the specified `errors` parameter.
 #'
 #' @examples
 #' # Assuming pca_obj is a valid PCA object
-#' largest_increases <- pca.get_largest_increases(
+#' largest_variations <- pca.get_largest_variations(
 #'   this = pca_obj,
 #'   number = 5,
 #'   keys = c("Variable1", "Variable2", "Variable3"),
 #'   years = c(2020, 2021, 2022),
-#'   labels = c("Label1", "Label2", "Label3")
+#'   labels = c("Label1", "Label2", "Label3"),
+#'   variation = 'positive'
 #' )
 #'
 #' @export
-pca.get_largest_increases = function(
+pca.get_largest_variations = function(
     this, #: pca
     number, #: integer
     keys, #: vector
     years, #: vector
     labels = NULL, #: vector
+    variation = 'positive', #: character
     errors='warn' #: character
 ) {
   .pca.check_class(this)
+  if(!(variation %in% c('positive', 'negative'))) {
+    stop("'variation' must be one of ('positive', 'negative')")
+  }
   if(number != round(number)) {
     stop("'number' must be an integer")
   }
@@ -276,13 +283,17 @@ pca.get_largest_increases = function(
   )
   df_intersection$var = df_intersection$CP1.y - df_intersection$CP1.x
 
-  df_largest_increases = df_intersection[
-    ,c('keys', 'labels.x', 'var', 'CP1.x', 'CP1.y', 'CP2.x', 'CP2.y')
-  ]
-  df_largest_increases = df_largest_increases %>% rename(labels = labels.x)
-  df_largest_increases = df_largest_increases[
-    order(-df_largest_increases$var),
-  ]
+  df_largest_increases = df_intersection %>% rename(labels = labels.x)
+
+  if(variation == 'positive') {
+    df_largest_increases = df_largest_increases[
+      order(-df_largest_increases$var),
+    ]
+  } else {
+    df_largest_increases = df_largest_increases[
+      order(df_largest_increases$var),
+    ]
+  }
 
   df_largest_increases = df_largest_increases[1:number,]
 
