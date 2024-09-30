@@ -57,6 +57,9 @@ pca.from_data_frame = function(
   this = this %>% .pca.translate_component_names()
 
   this$component_equations = this %>% .pca.get_component_equations()
+  this$length = nrow(data)
+  this$component_names = as.character(colnames(this$principal_components))
+  this$data_names = as.character(colnames(this$data))
 
   return(this)
 }

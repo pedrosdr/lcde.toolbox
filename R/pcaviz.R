@@ -29,14 +29,15 @@ pcaviz.from_ggplot = function(
   ggplot_obj, #: ggplot
   pca_obj #: pca
 ) {
-  .pca.check_class(pca_obj)
   if(!('ggplot' %in% class(ggplot_obj))) {
     stop("'ggplot_obj' must be of type 'ggplot'")
   }
 
   this = ggplot_obj
-  this$pca_obj = pca_obj
   class(this) = c(class(this), 'pcaviz')
+
+  this = this %>% pcaviz.set_pca_obj(pca_obj)
+
   return(this)
 }
 
@@ -54,14 +55,27 @@ pcaviz.from_ggplot = function(
 #' @export
 pcaviz.set_size = function(
   this, #: pcaviz
-  size_obj = vizsize() #: vizsize
+  size_obj = vizsize() #: vizsize | character | numeric
 ) {
   .pcaviz.check_class(this)
+  size_obj = vizsize.parse(size_obj)
 
   this$size = size_obj
   return(this)
 }
 
+
+pcaviz.set_pca_obj = function(
+  this, #: pcaviz
+  pca_obj #: pca_obj
+) {
+  .pcaviz.check_class(this)
+  .pca.check_class(pca_obj)
+
+  this$pca_obj = pca_obj
+
+  return(this)
+}
 # methods
 
 #' Check if an Object is of Class 'pcaviz'
@@ -128,7 +142,6 @@ pcaviz.scatter = function(
     this %>% .pcaviz.check_groups(groups)
   }
 
-  size = vizsize.parse(size)
   this = this %>% pcaviz.set_size(size)
 
   this = this + theme_minimal()
@@ -181,6 +194,114 @@ pcaviz.scatter = function(
   return(this)
 }
 
+pcaviz.explained_variance = function(
+  pca_obj, #: pca
+  size = vizsize() #: vizsize
+) {
+  .pca.check_class(pca_obj)
+  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+
+  this = this %>% pcaviz.set_size(size)
+
+  this = this +
+    theme_light() +
+
+    geom_col(
+      aes(
+        x=this$pca_obj$component_names,
+        y=this$pca_obj$explained_variance
+      ),
+      fill=colors.mixed()[2]
+    ) +
+
+    labs(
+      x='Componente Principal',
+      y='% de Variância Explicada',
+      title="Percentual de Variância Explicada"
+    ) +
+
+    geom_label(
+      aes(
+        x=this$pca_obj$component_names,
+        y=this$pca_obj$explained_variance,
+        label=sprintf(
+          "%.2f%%", 100*this$pca_obj$explained_variance
+        )
+      ),
+      size = this$size$text/3
+    ) +
+
+    scale_y_continuous(labels = function(x) {sprintf("%.2f%%", 100*x)})
+
+  this = this %>% pcaviz.set_theme_column()
+
+  return(this)
+}
+
+pcaviz.component_loads = function(
+    pca_obj, #: pca
+    component, #: numeric integer
+    size = vizsize() #: vizsize
+) {
+  .pca.check_class(pca_obj)
+
+  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = this %>% pcaviz.set_size(size)
+
+  type.check_integer(component)
+
+  if(component > pca_obj$length || component < 1) {
+    stop("'component' must correspond to a valid component")
+  }
+
+  loads = this$pca_obj$loads[,component]
+  data_names = rownames(this$pca_obj$loads)
+  colors = ifelse(
+    loads < 0, 'neg', 'pos'
+  )
+  colors = as.factor(colors)
+
+  this = this +
+    theme_light() +
+
+    geom_col(
+      aes(
+        x=data_names,
+        y=loads,
+        fill = colors
+      )
+    ) +
+
+    labs(
+      y='Carga',
+      title=paste0("Cargas dos Indicadores na Componente ", component)
+    ) +
+
+    geom_label(
+      aes(
+        x=data_names,
+        y=loads,
+        label=sprintf(
+          "%.2f", loads
+        )
+      ),
+      size = this$size$text/3
+    ) +
+
+    scale_fill_manual(
+      values=c(
+        'neg' = colors.red_to_green()[1],
+        'pos' = colors.red_to_green()[4]
+      )
+    ) +
+
+    scale_y_continuous(labels = function(x) {sprintf("%.2f", x)})
+
+  this = this %>% pcaviz.set_theme_column()
+
+  return(this)
+}
+
 #' Add ID Annotation to PCA Visualization
 #'
 #' This function adds an annotation displaying the ID metric of a PCA object
@@ -220,7 +341,7 @@ pcaviz.add_ID = function(
       'text',
       x=x,
       y=y,
-      label=sprintf("ID: %.2f%%", 100*id),
+      label=sprintf("ID: %.2f", id),
       size=this$size$text/3
     )
 
@@ -388,6 +509,33 @@ pcaviz.set_theme_scatter = function(
       legend.title = element_blank(),
       legend.text = element_text(size=this$size$text)
     )
+  return(this)
+}
+
+pcaviz.set_theme_column = function(
+  this #: pcaviz
+) {
+  .pcaviz.check_class(this)
+
+  this = this + theme(
+    panel.border = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.title = element_text(size=this$size$axis_title),
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(margin = ggplot2::margin(0, 10, 0, 0)),
+    axis.text = element_text(size=this$size$text),
+    axis.ticks = element_blank(),
+    plot.title = element_text(size=this$size$title, hjust=0.5),
+    plot.subtitle = element_text(size=this$size$subtitle, hjust=0.5),
+    plot.caption = element_text(
+      size=this$size$text,
+      hjust=0.5
+    ),
+    legend.position = 'none',
+    legend.text = element_text(size=this$size$text)
+  )
+
   return(this)
 }
 
