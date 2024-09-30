@@ -115,7 +115,7 @@ pcaviz.scatter = function(
   pca_obj, #: pca
   labels = NULL, #: vector
   groups = NULL, #: factor
-  include_ID = FALSE, #: logical
+  include_ID = TRUE, #: logical
   size = vizsize() #: vizsize | text | numeric
 ) {
   .pca.check_class(pca_obj)
@@ -290,33 +290,62 @@ pcaviz.add_multi_group_points = function(
 
 #' Add Labels to Points in PCA Scatter Plot
 #'
-#' This function adds text labels to points in the PCA scatter plot.
-#
+#' This function enhances a PCA scatter plot by adding text labels to the points,
+#' allowing for easier identification and interpretation of the plotted data.
+#'
 #' @param this A PCA visualization object of class 'pcaviz'.
-#' @param labels A vector of labels corresponding to each point in the plot.
-#
-#' @return The modified PCA visualization object with added labels.
-#
+#' @param labels A character vector of labels corresponding to each point in the plot.
+#' @param x (Optional) A numeric vector specifying the x-coordinates of the points.
+#'           If NULL, defaults to the first principal component (CP1).
+#' @param y (Optional) A numeric vector specifying the y-coordinates of the points.
+#'           If NULL, defaults to the second principal component (CP2).
+#'
+#' @return A modified PCA visualization object with added labels.
+#'
+#' @details
+#' The function checks that the length of `labels` matches the number of points
+#' in the PCA plot. If `x` and `y` are not provided, it will automatically use
+#' the first two principal components from the PCA object.
+#'
 #' @examples
-#' pca_viz <- pcaviz.scatter(pca_obj, labels = c("Label1", "Label2", ...))
-#
+#' # Assuming pca_obj is a valid PCA object
+#' pca_viz <- pcaviz.scatter(pca_obj)
+#' pca_viz <- pcaviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
+#'
 #' @export
 pcaviz.add_labels = function(
   this, #: pcaviz
-  labels #: vector
+  labels, #: vector
+  x = NULL, #: vector
+  y = NULL #: vector
 ) {
   .pcaviz.check_class(this)
 
-  if(length(labels) != nrow(this$pca_obj$principal_components)) {
+  if((is.null(x) || is.null(y)) &&
+     length(labels) != nrow(this$pca_obj$principal_components)
+  ) {
     stop("'labels' must be a vector of the same length as the data")
+  }
+
+  if(is.null(x)) {
+    x = this$pca_obj$principal_components$CP1
+  }
+
+  if(is.null(y)) {
+    y = this$pca_obj$principal_components$CP2
+  }
+
+  if(length(labels) != length(x) ||
+     length(labels) != length(y) ||
+     length(x) != length(y)) {
+    stop("all vectors must have the same length")
   }
 
   this = this +
     geom_text_repel(
-      data = this$pca_obj$principal_components,
       mapping = aes(
-        x = CP1,
-        y = CP2,
+        x = x,
+        y = y,
         label = labels
       ),
       size=this$size$text/3
@@ -394,6 +423,39 @@ pcaviz.set_scale_scatter = function(
   return(this)
 }
 
+#' Add Largest Increases to PCA Scatter Plot
+#'
+#' This function identifies and visualizes the largest increases in a PCA scatter plot
+#' by adding segments and labels for specified keys over a range of years.
+#' It helps in understanding how certain variables have changed significantly
+#' across the specified time frame.
+#'
+#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param number An integer specifying the number of largest increases to visualize.
+#' @param keys A vector of keys (variables) for which the largest increases are to be identified.
+#' @param years A vector of years corresponding to the data points being analyzed.
+#' @param labels (Optional) A vector of labels for each key, used for annotation in the plot.
+#'        If NULL, defaults to ''.
+#'
+#' @return A modified PCA visualization object with segments and labels added for the largest increases.
+#'
+#' @details
+#' The function first checks that the input object is valid. It then retrieves
+#' the largest increases using the `pca.get_largest_increases` helper function.
+#' The results are printed and subsequently visualized by adding segments and labels
+#' to the PCA plot. The segments are colored using a red-to-green gradient to indicate
+#' changes.
+#'
+#' @examples
+#' # Assuming pca_viz is a valid PCA visualization object
+#' pca_viz <- pcaviz.add_largest_increases(
+#'   pca_viz,
+#'   number = 5,
+#'   keys = c("Variable1", "Variable2"),
+#'   years = c(2020, 2021, 2022)
+#' )
+#'
+#' @export
 pcaviz.add_largest_increases = function(
   this, #: pcaviz
   number, #: integer
@@ -415,19 +477,62 @@ pcaviz.add_largest_increases = function(
   print(df)
 
   this = this %>% pcaviz.add_segments(
-    df$CP1.x, df$CP1.y, df$CP2.x, df$CP2.y
+    df$CP1.x, df$CP1.y, df$CP2.x, df$CP2.y,
+    color=colors.red_to_green()[4]
+  )
+
+  this = this %>% pcaviz.add_labels(
+    labels = rep(df$labels, 2),
+    x = c(df$CP1.x, df$CP1.y),
+    y = c(df$CP2.x, df$CP2.y)
   )
 
   return(this)
 }
 
-
+#' Add Segments to PCA Scatter Plot
+#'
+#' This function adds line segments to a PCA scatter plot, connecting specified
+#' points with arrows. This can be useful for visualizing relationships or
+#' transitions between points in the PCA space.
+#'
+#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param from.x A numeric vector specifying the x-coordinates of the starting
+#'        points of the segments.
+#' @param to.x A numeric vector specifying the x-coordinates of the ending
+#'        points of the segments.
+#' @param from.y A numeric vector specifying the y-coordinates of the starting
+#'        points of the segments.
+#' @param to.y A numeric vector specifying the y-coordinates of the ending
+#'        points of the segments.
+#' @param color (Optional) A character string specifying the color of the segments.
+#'        Defaults to the first color from a mixed color palette.
+#'
+#' @return A modified PCA visualization object with added segments.
+#'
+#' @details
+#' The function checks that all input vectors are numeric and have the same length.
+#' It creates segments using `geom_segment` from ggplot2, with arrows indicating
+#' direction. The linewidth and arrow size are adjustable via the `this` object.
+#'
+#' @examples
+#' # Assuming pca_viz is a valid PCA visualization object
+#' pca_viz <- pcaviz.add_segments(
+#'   pca_viz,
+#'   from.x = c(1, 2),
+#'   to.x = c(3, 4),
+#'   from.y = c(1, 2),
+#'   to.y = c(3, 4)
+#' )
+#'
+#' @export
 pcaviz.add_segments = function(
   this, #: pcaviz
   from.x, #: numeric vector
-  to.x, #: numeric vector]
+  to.x, #: numeric vector
   from.y, #: numeric vector
-  to.y #: numeric vector
+  to.y, #: numeric vector
+  color = colors.mixed()[1]
 ) {
   .pcaviz.check_class(this)
   if(class(from.x) != 'numeric') {
@@ -455,7 +560,8 @@ pcaviz.add_segments = function(
         type = "closed",
         length = unit(this$size$linewidth/10, "inches")
       ),
-      linewidth=this$size$linewidth
+      linewidth=this$size$linewidth,
+      color=color
     )
   })
 

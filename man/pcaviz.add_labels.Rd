@@ -4,19 +4,34 @@
 \alias{pcaviz.add_labels}
 \title{Add Labels to Points in PCA Scatter Plot}
 \usage{
-pcaviz.add_labels(this, labels)
+pcaviz.add_labels(this, labels, x = NULL, y = NULL)
 }
 \arguments{
 \item{this}{A PCA visualization object of class 'pcaviz'.}
 
-\item{labels}{A vector of labels corresponding to each point in the plot.}
+\item{labels}{A character vector of labels corresponding to each point in the plot.}
+
+\item{x}{(Optional) A numeric vector specifying the x-coordinates of the points.
+If NULL, defaults to the first principal component (CP1).}
+
+\item{y}{(Optional) A numeric vector specifying the y-coordinates of the points.
+If NULL, defaults to the second principal component (CP2).}
 }
 \value{
-The modified PCA visualization object with added labels.
+A modified PCA visualization object with added labels.
 }
 \description{
-This function adds text labels to points in the PCA scatter plot.
+This function enhances a PCA scatter plot by adding text labels to the points,
+allowing for easier identification and interpretation of the plotted data.
+}
+\details{
+The function checks that the length of `labels` matches the number of points
+in the PCA plot. If `x` and `y` are not provided, it will automatically use
+the first two principal components from the PCA object.
 }
 \examples{
-pca_viz <- pcaviz.scatter(pca_obj, labels = c("Label1", "Label2", ...))
+# Assuming pca_obj is a valid PCA object
+pca_viz <- pcaviz.scatter(pca_obj)
+pca_viz <- pcaviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
+
 }

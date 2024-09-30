@@ -8,7 +8,7 @@ pcaviz.scatter(
   pca_obj,
   labels = NULL,
   groups = NULL,
-  include_ID = FALSE,
+  include_ID = TRUE,
   size = vizsize()
 )
 }

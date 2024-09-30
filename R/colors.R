@@ -97,3 +97,25 @@ colors.grayscale = function() {
   )
   return(palette)
 }
+
+#' Red to Green Color Palette
+#'
+#' This function returns a red-to-green color palette suitable for visualizing changes
+#' or gradients between two extremes.
+#'
+#' @return A character vector of hexadecimal color codes representing the red-to-green color palette.
+#'
+#' @examples
+#' red_to_green_colors <- colors.red_to_green()
+#' plot(1:4, col = red_to_green_colors, pch = 19, cex = 3)
+#'
+#' @export
+colors.red_to_green = function() {
+  palette = c(
+    '#f96161',
+    '#ffb763',
+    '#ffec00',
+    '#56d433'
+  )
+  return(palette)
+}
