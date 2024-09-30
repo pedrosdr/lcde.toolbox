@@ -242,7 +242,7 @@ pca.get_largest_variations = function(
   if(length(years) != nrow(this$principal_components)) {
     stop("'keys' must be a vector of the same length as the data")
   }
-  if(class(years) != 'numeric') {
+  if(!(class(years) %in% c('numeric', 'integer'))) {
     stop("'years' must be of type 'numeric'")
   }
   if(length(years) != nrow(this$principal_components)) {
