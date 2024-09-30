@@ -194,6 +194,41 @@ pcaviz.scatter = function(
   return(this)
 }
 
+#' pcaviz.explained_variance
+#'
+#' Generates a bar plot showing the percentage of explained variance for each PCA component.
+#'
+#' This function visualizes the proportion of variance explained by each principal component
+#' in a PCA analysis. It creates a bar plot where the height of each bar represents
+#' the percentage of variance explained by the corresponding component.
+#'
+#' @param pca_obj An object of class `pca`, which contains PCA results including
+#'                explained variance and component names. The object must have a valid
+#'                structure as expected by the pcaviz package.
+#' @param size (Optional) A vizsize, character or numeric value that determines the size of the plot elements.
+#'              Defaults to the value returned by `vizsize()`.
+#'
+#' @return A ggplot2 object representing the bar plot of explained variance for each PCA component.
+#'         The plot includes:
+#'         - Bars indicating the percentage of variance explained.
+#'         - Labels displaying the explained variance formatted to two decimal places.
+#'
+#' @details
+#' The function checks if the provided `pca_obj` is valid. It then creates a bar plot using
+#' `geom_col()` to represent the explained variance for each principal component.
+#' The y-axis is formatted to show percentages.
+#'
+#' The function uses:
+#' - `theme_light()` for a clean background theme.
+#' - `scale_y_continuous()` to format y-axis labels as percentages.
+#'
+#' @examples
+#' # Assuming pca_obj is a valid PCA object created using prcomp or similar
+#' library(ggplot2)
+#' my_plot <- pcaviz.explained_variance(pca_obj)
+#' print(my_plot)
+#'
+#' @export
 pcaviz.explained_variance = function(
   pca_obj, #: pca
   size = vizsize() #: vizsize
@@ -238,6 +273,43 @@ pcaviz.explained_variance = function(
   return(this)
 }
 
+#' pcaviz.component_loads
+#'
+#' Generates a bar plot of PCA component loads using ggplot2.
+#'
+#' This function visualizes the loadings of indicators on a specified PCA component.
+#' It creates a bar plot where the height of the bars represents the loadings,
+#' with colors indicating whether the load is positive or negative.
+#'
+#' @param pca_obj An object of class `pca`, which contains the PCA results and loadings.
+#'                The object must have a valid structure as expected by the pcaviz package.
+#' @param component A numeric integer specifying which PCA component to visualize.
+#'                  It must be within the range of available components in `pca_obj`.
+#' @param size (Optional) A vizsize, character or numeric value that determines the size of the plot elements.
+#'              Defaults to the value returned by `vizsize()`.
+#'
+#' @return A ggplot2 object representing the bar plot of PCA component loads.
+#'         The plot includes:
+#'         - Bars colored based on whether the load is positive or negative.
+#'         - Labels displaying the loading values formatted to two decimal places.
+#'
+#' @details
+#' The function checks if the provided `component` is valid for the given `pca_obj`.
+#' If it is not valid, an error is raised. The colors for the bars are determined
+#' by whether the load is positive (green) or negative (red).
+#'
+#' The function uses:
+#' - `geom_col()` to create bar plots.
+#' - `theme_light()` for a clean background theme.
+#' - `scale_fill_manual()` to customize bar colors based on loading signs.
+#'
+#' @examples
+#' # Assuming pca_obj is a valid PCA object created using prcomp or similar
+#' library(ggplot2)
+#' my_plot <- pcaviz.component_loads(pca_obj, component = 1)
+#' print(my_plot)
+#'
+#' @export
 pcaviz.component_loads = function(
     pca_obj, #: pca
     component, #: numeric integer
