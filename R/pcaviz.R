@@ -88,13 +88,30 @@ pcaviz.set_pca_obj = function(
 #'
 #' @keywords internal
 .pcaviz.check_class = function(
-    this #: pcaviz
+    obj
 ) {
-  if(!('pcaviz' %in% class(this))) {
-    stop("'this' must be of type 'pcaviz'")
+  if(!('pcaviz' %in% class(obj))) {
+    stop("'obj' must be of type 'pcaviz'")
   }
 }
 
+#' .pcaviz.check_groups
+#'
+#' Validates the grouping variable for PCA visualization.
+#'
+#' This function checks that the `groups` parameter is a factor, has the same length as
+#' the principal components data, and contains no more than 7 unique levels.
+#'
+#' @param this A \code{pcaviz} object containing PCA results.
+#' @param groups A factor representing the grouping variable.
+#'
+#' @return NULL if all checks pass; otherwise, an error is raised with a descriptive message.
+#'
+#' @details
+#' This internal function ensures that the grouping variable is appropriate for PCA analysis,
+#' helping to prevent errors from incompatible group definitions.
+#'
+#' @export
 .pcaviz.check_groups = function(
     this, #: pcaviz
     groups #: factor
@@ -251,8 +268,7 @@ pcaviz.explained_variance = function(
 
     labs(
       x='Componente Principal',
-      y='% de Variância Explicada',
-      title="Percentual de Variância Explicada"
+      y='% de Variância Explicada'
     ) +
 
     geom_label(
@@ -345,8 +361,7 @@ pcaviz.component_loads = function(
     ) +
 
     labs(
-      y='Carga',
-      title=paste0("Cargas dos Indicadores na Componente ", component)
+      y='Carga'
     ) +
 
     geom_label(
@@ -371,6 +386,20 @@ pcaviz.component_loads = function(
 
   this = this %>% pcaviz.set_theme_column()
 
+  return(this)
+}
+
+pcaviz.add_title = function(
+  this, #: pcaviz
+  title #: character
+) {
+  .pcaviz.check_class(this)
+  type.check_character(title)
+
+  this = this +
+    labs(
+      title = title
+    )
   return(this)
 }
 

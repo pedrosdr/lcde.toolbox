@@ -4,7 +4,7 @@
 \alias{.pcaviz.check_class}
 \title{Check if an Object is of Class 'pcaviz'}
 \usage{
-.pcaviz.check_class(this)
+.pcaviz.check_class(obj)
 }
 \arguments{
 \item{this}{An object to be checked.}

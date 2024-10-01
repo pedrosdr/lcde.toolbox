@@ -4,7 +4,7 @@
 \alias{.pca.check_class}
 \title{Check if an object is of class 'pca'}
 \usage{
-.pca.check_class(this)
+.pca.check_class(obj)
 }
 \arguments{
 \item{this}{An object to be checked.}

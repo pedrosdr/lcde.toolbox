@@ -13,5 +13,18 @@ Depends:
   ggplot2,
   dplyr,
   stats,
-  ggrepel
+  ggrepel,
+  terra,
+  sf,
+  gstat,
+  tidyterra,
+  leaflet
 RoxygenNote: 7.3.2
+Collate:
+    'type.R'
+    'colors.R'
+    'vizsize.R'
+    'pca.R'
+    'pcaviz.R'
+    'georef.R'
+    'geoleaf.R'

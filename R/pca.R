@@ -98,10 +98,10 @@ pca.get_ID = function(
 #'
 #' @keywords internal
 .pca.check_class = function(
-  this #; pca
+  obj
 ) {
-  if(class(this) != 'pca') {
-    stop("'this' must be of type 'pca'")
+  if(class(obj) != 'pca') {
+    stop("'obj' must be of type 'pca'")
   }
 }
 
@@ -314,3 +314,111 @@ pca.get_largest_variations = function(
 
   return(df_largest_increases)
 }
+
+#' pca.get_categories
+#'
+#' Categorizes principal components into quartiles.
+#'
+#' This function assigns categories (A, B, C, D) to the first principal component (CP1)
+#' based on its quartile. Values are categorized as follows:
+#' - D: below the 25th percentile
+#' - C: between the 25th and 50th percentiles
+#' - B: between the 50th and 75th percentiles
+#' - A: above the 75th percentile
+#'
+#' @param this A \code{pca} object containing principal components.
+#'
+#' @return A factor indicating the category for each observation based on CP1.
+#'
+#' @export
+pca.get_categories = function(
+  this #: pca
+) {
+  .pca.check_class(this)
+  cp1 = this$principal_components$CP1
+
+  categories = ifelse(
+    cp1 < quantile(cp1, 0.25), 'D', ifelse(
+      cp1 < quantile(cp1, 0.5), 'C', ifelse(
+        cp1 < quantile(cp1, 0.75), 'B', 'A'
+      )
+    )
+  )
+
+  categories = as.factor(categories)
+
+  return(categories)
+}
+
+#' pca.get_category_colors
+#'
+#' Retrieves colors for PCA categories based on a specified color palette.
+#'
+#' This function assigns colors to PCA categories (A, B, C, D) using the provided
+#' color palette. The palette must contain at least four colors.
+#'
+#' @param this A \code{pca} object containing PCA results.
+#' @param pallete A character vector representing a color palette.
+#'                Must have at least four colors.
+#'
+#' @return A character vector of colors corresponding to the PCA categories.
+#'
+#' throws Error if the palette has less than four colors or is not of type character.
+#'
+#' @export
+pca.get_category_colors = function(
+  this, #: pca
+  pallete = colors.red_to_green() #: character vector
+) {
+  .pca.check_class(this)
+  type.check_character(pallete, 'pallete')
+  if(length(pallete) < 4) {
+    stop("'pallete' must have at least 4 colors")
+  }
+
+  categories = this %>% pca.get_categories()
+  colors = ifelse(
+    categories == 'D', pallete[1], ifelse(
+      categories == 'C', pallete[2], ifelse(
+        categories == 'B', pallete[3], pallete[4]
+      )
+    )
+  )
+
+  return(colors)
+}
+
+#' pca.filter
+#'
+#' Filters PCA data based on a logical mask.
+#'
+#' This function filters the principal components and associated data in a
+#' PCA object based on a logical vector (mask). Only rows corresponding to
+#' TRUE values in the mask are retained.
+#'
+#' @param this A \code{pca} object containing PCA results.
+#' @param mask A logical vector indicating which rows to keep.
+#'
+#' return A filtered \code{pca} object with only the selected rows.
+#'
+#' throws Error if the mask is not of type logical or does not match the number of rows in the data.
+#'
+#' @export
+pca.filter = function(
+  this, #: pca
+  mask #: logical vector
+) {
+  .pca.check_class(this)
+  type.check_logical(mask, 'mask')
+  if(length(mask) != nrow(this$principal_components)) {
+    stop("'mask' must be a vector of the same length as the data")
+  }
+
+  obj = this
+  obj$principal_components = obj$principal_components[mask,]
+  obj$data = obj$data[mask,]
+
+  return(obj)
+}
+
+
