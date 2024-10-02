@@ -16,7 +16,12 @@ library(leaflet)
 #'
 #' @export
 geoleaf = function() {
-  this = leaflet()
+  this = leaflet(
+    options = leafletOptions(
+      zoomSnap=0.3,
+      zoomDelta=0.1
+    )
+  )
   class(this) = c(class(this), 'geoleaf')
   return(this)
 }
@@ -83,18 +88,58 @@ geoleaf.add_pca_points = function(
 ) {
   .geoleaf.check_class(this)
   .pca.check_class(pca_obj)
+
+  this = this %>%
+    geoleaf.add_points(
+      data = pca_obj$principal_components$CP1,
+      latitude = latitude,
+      longitude = longitude,
+      colors = pca_obj %>% pca.get_category_colors()
+    )
+
+  return(this)
+}
+
+geoleaf.add_points = function(
+  this, #: geoleaf
+  data, #: numeric vector
+  latitude, #: numeric vector
+  longitude, #: numeric vector
+  colors=NULL #: character vector
+) {
+  .geoleaf.check_class(this)
+  type.check_numeric(data, 'data')
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(longitude, 'longitude')
 
-  pca_categories = pca_obj %>% pca.get_categories()
-  colors = pca_obj %>% pca.get_category_colors()
+  if(length(data) != length(latitude)) {
+    stop("'data' and 'latitude' must be vectors of the same length")
+  }
+  if(length(data) != length(longitude)) {
+    stop("'data' and 'longitude' must be vectors of the same length")
+  }
+
+  if(is.null(colors)) {
+    colors = rep(colors.mixed()[1], length(data))
+  }
+  type.check_character(colors, 'colors')
+  if(length(data) != length(colors)) {
+    stop("'data' and 'colors' must be vectors of the same length")
+  }
 
   mask = !(is.na(df$longitude) | is.na(df$latitude))
-  latitude = latitude[mask]
-  longitude = longitude[mask]
-  pca_obj = pca_obj %>% pca.filter(mask)
-  pca_categories = pca_categories[mask]
-  colors = colors[mask]
+  df_filter = data.frame(
+    data = data,
+    latitude = latitude,
+    longitude = longitude,
+    colors = colors
+  )
+
+  df_filter = df_filter[mask,]
+  data = df_filter$data
+  latitude = df_filter$latitude
+  longitude = df_filter$longitude
+  colors = df_filter$colors
 
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
@@ -109,7 +154,79 @@ geoleaf.add_pca_points = function(
     leaflet::addCircleMarkers(
       lng = longitude,
       lat = latitude,
-      color = colors
+      color = colors.grayscale()[5],
+      fillColor = colors,
+      weight = 0.7,
+      opacity = 1,
+      fillOpacity = 1,
+      radius = 7
     )
+
   return(this)
+}
+
+geoleaf.add_boundary = function(
+  this, #: geoleaf
+  georef_obj #: georef
+) {
+  .geoleaf.check_class(this)
+  .georef.check_class(georef_obj)
+
+  this = this %>%
+    addPolygons(
+      data=georef_obj$sf,
+      color = colors.grayscale()[4],
+      fillColor = colors.grayscale()[1],
+      weight = 2,
+      opacity = 1,
+      fillOpacity = 0
+    )
+
+  return(this)
+}
+
+geoleaf.add_surface = function(
+  this, #: geoleaf
+  georef_obj, #: georef
+  data, #: numeric vector
+  latitude, #: numeric vector
+  longitude, #: numeric vector
+  palette=colors.nighty(), #: character vector
+  width=100, #: numeric
+  height=100 #: numeric
+) {
+  .geoleaf.check_class(this)
+  .georef.check_class(georef_obj)
+  type.check_numeric(data, 'data')
+  type.check_numeric(latitude, 'latitude')
+  type.check_numeric(longitude, 'longitude')
+  type.check_character(palette, 'palette')
+
+  if(length(data) != length(latitude)) {
+    stop("'data' and 'latitude' must be vectors of the same length")
+  }
+  if(length(data) != length(longitude)) {
+    stop("'data' and 'longitude' must be vectors of the same length")
+  }
+  if(length(palette) < 2) {
+    stop("'palette' must have at least 2 colors")
+  }
+
+  surface = georef_obj %>% georef.get_raster(
+    data = data,
+    latitude = latitude,
+    longitude = longitude,
+    width = width,
+    height = height
+  )
+
+  breaks <- seq(min(df_nse$NSE)-0.01, max(df_nse$NSE), length.out = 5)
+  breaks = as.numeric(sprintf('%.2f', breaks))
+  this = this %>%
+    addRasterImage(
+      surface,
+      pal=colorNumeric(palette='Purples', domain=data)
+    )
+
+  print(surface)
 }

@@ -120,3 +120,18 @@ type.check_logical = function(
     stop(paste0("'",property,"' must be of type 'logical'"))
   }
 }
+
+type.check_factor = function(
+    obj,
+    property=NULL #: character
+) {
+  if(is.null(property)) {
+    property = 'property'
+  }
+
+  if(!is.factor(obj)) {
+    stop(paste0("'",property,"' must be of type 'factor'"))
+  }
+}
+
+

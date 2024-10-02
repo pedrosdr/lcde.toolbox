@@ -103,6 +103,27 @@ georef.get_raster = function(
     stop("'data' and 'longitude' must be vectors of the same length")
   }
 
+  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  df_filter = data.frame(
+    data = data,
+    latitude = latitude,
+    longitude = longitude
+  )
+
+  df_filter = df_filter[mask,]
+  data = df_filter$data
+  latitude = df_filter$latitude
+  longitude = df_filter$longitude
+
+  ommited_length = length(mask[mask == FALSE])
+  if(ommited_length != 0) {
+    warning(
+      paste0(
+        ommited_length, ' points were omitted due to missing location data'
+      )
+    )
+  }
+
   boundary = st_union(this$sf) %>% st_as_sf()
 
   data_sf = data.frame(

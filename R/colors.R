@@ -15,8 +15,8 @@
 #' @export
 colors.mixed = function() {
   palette = c(
-    '#9656a2',
     '#369acc',
+    '#9656a2',
     '#f8e16f',
     '#f4895f',
     '#95cf92',
