@@ -191,9 +191,12 @@ geoleaf.add_surface = function(
   data, #: numeric vector
   latitude, #: numeric vector
   longitude, #: numeric vector
-  palette=colors.nighty(), #: character vector
+  palette=colors.purples(), #: character vector
   width=100, #: numeric
-  height=100 #: numeric
+  height=100, #: numeric
+  add_legend=FALSE, #: logic
+  legend_title='Legend Title', #: character
+  legend_position='bottomright'
 ) {
   .geoleaf.check_class(this)
   .georef.check_class(georef_obj)
@@ -201,6 +204,8 @@ geoleaf.add_surface = function(
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(longitude, 'longitude')
   type.check_character(palette, 'palette')
+  type.check_logical(add_legend, 'add_legend')
+  type.check_character(legend_title, 'legend_title')
 
   if(length(data) != length(latitude)) {
     stop("'data' and 'latitude' must be vectors of the same length")
@@ -220,13 +225,55 @@ geoleaf.add_surface = function(
     height = height
   )
 
-  breaks <- seq(min(df_nse$NSE)-0.01, max(df_nse$NSE), length.out = 5)
+  breaks <- seq(min(data)-0.01, max(data), length.out = 5)
   breaks = as.numeric(sprintf('%.2f', breaks))
   this = this %>%
     addRasterImage(
       surface,
-      pal=colorNumeric(palette='Purples', domain=data)
+      colors=colorNumeric(
+        palette=palette,
+        domain=values(surface),
+        na.color='transparent'
+        ),
+      project = FALSE
     )
 
-  print(surface)
+  if(add_legend) {
+    this = this %>%
+      geoleaf.add_legend_continuous(
+        data = data,
+        title = legend_title,
+        position=legend_position,
+        palette = palette
+      )
+  }
+
+  return(this)
+}
+
+geoleaf.add_legend_continuous = function(
+  this, #: geoleaf
+  data, #: numeric vector
+  title, #: character
+  position, #: character
+  palette=colors.nighty() #: character
+) {
+  .geoleaf.check_class(this)
+  type.check_character(palette, 'palette')
+  type.check_numeric(data, 'data')
+  type.check_character(title, 'title')
+  type.check_character(position, 'position')
+
+  this = this %>%
+    addLegend(
+      pal = colorNumeric(
+        palette=palette,
+        domain=data,
+        na.color='transparent'
+      ),
+      title = title,
+      values = data
+    )
+
+  return(this)
 }

@@ -103,7 +103,7 @@ georef.get_raster = function(
     stop("'data' and 'longitude' must be vectors of the same length")
   }
 
-  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  mask = !(is.na(longitude) | is.na(latitude))
   df_filter = data.frame(
     data = data,
     latitude = latitude,

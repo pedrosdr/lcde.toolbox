@@ -119,3 +119,16 @@ colors.red_to_green = function() {
   )
   return(palette)
 }
+
+colors.purples = function() {
+  palette = c(
+    '#f1eff6',
+    '#d5d5e8',
+    '#9995c6',
+    '#796fb2',
+    '#694ea2',
+    '#52258e',
+    '#3f007d'
+  )
+  return(palette)
+}
