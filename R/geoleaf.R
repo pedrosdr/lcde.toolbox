@@ -235,6 +235,7 @@ geoleaf.add_surface = function(
         domain=values(surface),
         na.color='transparent'
         ),
+      opacity = 0.7,
       project = FALSE
     )
 
