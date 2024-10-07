@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 library(ggrepel)
 
-# class pcaviz
+# class ggviz
 
 # constructors
 
@@ -14,7 +14,7 @@ library(ggrepel)
 #' @param ggplot_obj A ggplot object that represents the PCA scatter plot.
 #' @param pca_obj An object of class 'pca' containing the results of the PCA analysis.
 #'
-#' @return A 'pcaviz' object that combines the ggplot object with the PCA analysis.
+#' @return A 'ggviz' object that combines the ggplot object with the PCA analysis.
 #'
 #' @details This function checks if the provided `pca_obj` is of class 'pca'
 #' and ensures that `ggplot_obj` is indeed a ggplot object. The resulting
@@ -22,21 +22,23 @@ library(ggrepel)
 #'
 #' @examples
 #' # Assuming 'ggplot_plot' is an existing ggplot object and 'pca_result' is a pca object
-#' pca_viz <- pcaviz.from_ggplot(ggplot_plot, pca_result)
+#' pca_viz <- ggviz.from_ggplot(ggplot_plot, pca_result)
 #'
 #' @export
-pcaviz.from_ggplot = function(
+ggviz.from_ggplot = function(
   ggplot_obj, #: ggplot
-  pca_obj #: pca
+  pca_obj = NULL #: pca
 ) {
   if(!('ggplot' %in% class(ggplot_obj))) {
     stop("'ggplot_obj' must be of type 'ggplot'")
   }
 
   this = ggplot_obj
-  class(this) = c(class(this), 'pcaviz')
+  class(this) = c(class(this), 'ggviz')
 
-  this = this %>% pcaviz.set_pca_obj(pca_obj)
+  if(!is.null(pca_obj)) {
+    this = this %>% ggviz.set_pca_obj(pca_obj)
+  }
 
   return(this)
 }
@@ -47,17 +49,17 @@ pcaviz.from_ggplot = function(
 #'
 #' This function sets the size properties for a PCA visualization object.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #' @param size_obj An object containing size properties (default is `vizsize()`).
 #'
 #' @return The modified PCA visualization object with updated size properties.
 #'
 #' @export
-pcaviz.set_size = function(
-  this, #: pcaviz
+ggviz.set_size = function(
+  this, #: ggviz
   size_obj = vizsize() #: vizsize | character | numeric
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   size_obj = vizsize.parse(size_obj)
 
   this$size = size_obj
@@ -65,11 +67,11 @@ pcaviz.set_size = function(
 }
 
 
-pcaviz.set_pca_obj = function(
-  this, #: pcaviz
+ggviz.set_pca_obj = function(
+  this, #: ggviz
   pca_obj #: pca_obj
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   .pca.check_class(pca_obj)
 
   this$pca_obj = pca_obj
@@ -78,31 +80,31 @@ pcaviz.set_pca_obj = function(
 }
 # methods
 
-#' Check if an Object is of Class 'pcaviz'
+#' Check if an Object is of Class 'ggviz'
 #'
-#' This function checks if the provided object is of class 'pcaviz'.
+#' This function checks if the provided object is of class 'ggviz'.
 #'
 #' @param this An object to be checked.
 #'
-#' @return NULL if the object is of class 'pcaviz'; otherwise, an error is raised.
+#' @return NULL if the object is of class 'ggviz'; otherwise, an error is raised.
 #'
 #' @keywords internal
-.pcaviz.check_class = function(
+.ggviz.check_class = function(
     obj
 ) {
-  if(!('pcaviz' %in% class(obj))) {
-    stop("'obj' must be of type 'pcaviz'")
+  if(!('ggviz' %in% class(obj))) {
+    stop("'obj' must be of type 'ggviz'")
   }
 }
 
-#' .pcaviz.check_groups
+#' .ggviz.check_groups
 #'
 #' Validates the grouping variable for PCA visualization.
 #'
 #' This function checks that the `groups` parameter is a factor, has the same length as
 #' the principal components data, and contains no more than 7 unique levels.
 #'
-#' @param this A \code{pcaviz} object containing PCA results.
+#' @param this A \code{ggviz} object containing PCA results.
 #' @param groups A factor representing the grouping variable.
 #'
 #' @return NULL if all checks pass; otherwise, an error is raised with a descriptive message.
@@ -112,11 +114,11 @@ pcaviz.set_pca_obj = function(
 #' helping to prevent errors from incompatible group definitions.
 #'
 #' @export
-.pcaviz.check_groups = function(
-    this, #: pcaviz
+.ggviz.check_groups = function(
+    this, #: ggviz
     groups #: factor
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   if(class(groups) != 'factor') {
     stop("'groups' must be of type 'factor'")
   }
@@ -142,7 +144,7 @@ pcaviz.set_pca_obj = function(
 #' @return A ggplot object representing the PCA scatter plot.
 #'
 #' @export
-pcaviz.scatter = function(
+ggviz.scatter = function(
   pca_obj, #: pca
   labels = NULL, #: vector
   groups = NULL, #: factor
@@ -154,19 +156,19 @@ pcaviz.scatter = function(
     stop("'include_ID' must be of type 'logical'")
   }
 
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = ggviz.from_ggplot(ggplot(), pca_obj)
   if(!is.null(groups)) {
-    this %>% .pcaviz.check_groups(groups)
+    this %>% .ggviz.check_groups(groups)
   }
 
-  this = this %>% pcaviz.set_size(size)
+  this = this %>% ggviz.set_size(size)
 
   this = this + theme_minimal()
 
   if(is.null(groups)) {
-    this = this %>% pcaviz.add_single_group_points()
+    this = this %>% ggviz.add_single_group_points()
   } else {
-    this = this %>% pcaviz.add_multi_group_points(groups)
+    this = this %>% ggviz.add_multi_group_points(groups)
   }
 
   this = this + labs(
@@ -195,23 +197,73 @@ pcaviz.scatter = function(
                color=colors.grayscale()[5])
 
   if(include_ID) {
-    this = this %>% pcaviz.add_ID()
+    this = this %>% ggviz.add_ID()
   }
 
   if(!is.null(labels)) {
-    this = this %>% pcaviz.add_labels(labels)
+    this = this %>% ggviz.add_labels(labels)
   }
 
   if(!is.null(groups)) {
-    this = this %>% pcaviz.set_scale_scatter(groups)
+    this = this %>% ggviz.set_scale_scatter(groups)
   }
 
-  this = this %>% pcaviz.set_theme_scatter()
+  this = this %>% ggviz.set_theme_scatter()
 
   return(this)
 }
 
-#' pcaviz.explained_variance
+ggviz.radar = function(
+    data, #:data.frame
+    colors = colors.mixed(), #: character
+    labels = NULL, #: vector
+    title = NULL, #: character
+    size = vizsize() #: vizsize | text | numeric
+) {
+  type.check_dataframe(data, 'data')
+  type.check_character(colors, 'colors')
+  .vizsize.check_class(size)
+
+  if(is.null(labels)) {
+    labels = paste0('Group ', 1:nrow(data))
+  }
+
+  if(length(labels) != nrow(data)) {
+    stop("'labels' must be a vector of the same length as data")
+  }
+
+  data$labels = labels
+  data = data[,c(ncol(data), 1:(ncol(data)-1))]
+
+  obj = ggradar(
+    data,
+    label.gridlines.show = c(FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
+    grid.max = 100,
+    grid.n5 = 80,
+    grid.n4 = 60,
+    grid.n3 = 40,
+    grid.n2 = 20,
+    grid.min = 0,
+    group.colours = colors,
+    fill = TRUE,
+    grid.label.size = size$text/3,
+    axis.label.size = size$text/3,
+    group.line.width = size$linewidth,
+    group.point.size = size$point_size
+  )
+
+  if(!is.null(title)) {
+    obj = obj +
+      ggtitle(title) +
+      theme(plot.title = element_text(hjust = 0.5, size = size$title))
+  }
+
+  obj = ggviz.from_ggplot(obj)
+
+  return(obj)
+}
+
+#' ggviz.explained_variance
 #'
 #' Generates a bar plot showing the percentage of explained variance for each PCA component.
 #'
@@ -221,7 +273,7 @@ pcaviz.scatter = function(
 #'
 #' @param pca_obj An object of class `pca`, which contains PCA results including
 #'                explained variance and component names. The object must have a valid
-#'                structure as expected by the pcaviz package.
+#'                structure as expected by the ggviz package.
 #' @param size (Optional) A vizsize, character or numeric value that determines the size of the plot elements.
 #'              Defaults to the value returned by `vizsize()`.
 #'
@@ -242,18 +294,18 @@ pcaviz.scatter = function(
 #' @examples
 #' # Assuming pca_obj is a valid PCA object created using prcomp or similar
 #' library(ggplot2)
-#' my_plot <- pcaviz.explained_variance(pca_obj)
+#' my_plot <- ggviz.explained_variance(pca_obj)
 #' print(my_plot)
 #'
 #' @export
-pcaviz.explained_variance = function(
+ggviz.explained_variance = function(
   pca_obj, #: pca
   size = vizsize() #: vizsize
 ) {
   .pca.check_class(pca_obj)
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = ggviz.from_ggplot(ggplot(), pca_obj)
 
-  this = this %>% pcaviz.set_size(size)
+  this = this %>% ggviz.set_size(size)
 
   this = this +
     theme_light() +
@@ -284,12 +336,12 @@ pcaviz.explained_variance = function(
 
     scale_y_continuous(labels = function(x) {sprintf("%.2f%%", 100*x)})
 
-  this = this %>% pcaviz.set_theme_column()
+  this = this %>% ggviz.set_theme_column()
 
   return(this)
 }
 
-#' pcaviz.component_loads
+#' ggviz.component_loads
 #'
 #' Generates a bar plot of PCA component loads using ggplot2.
 #'
@@ -298,7 +350,7 @@ pcaviz.explained_variance = function(
 #' with colors indicating whether the load is positive or negative.
 #'
 #' @param pca_obj An object of class `pca`, which contains the PCA results and loadings.
-#'                The object must have a valid structure as expected by the pcaviz package.
+#'                The object must have a valid structure as expected by the ggviz package.
 #' @param component A numeric integer specifying which PCA component to visualize.
 #'                  It must be within the range of available components in `pca_obj`.
 #' @param size (Optional) A vizsize, character or numeric value that determines the size of the plot elements.
@@ -322,19 +374,19 @@ pcaviz.explained_variance = function(
 #' @examples
 #' # Assuming pca_obj is a valid PCA object created using prcomp or similar
 #' library(ggplot2)
-#' my_plot <- pcaviz.component_loads(pca_obj, component = 1)
+#' my_plot <- ggviz.component_loads(pca_obj, component = 1)
 #' print(my_plot)
 #'
 #' @export
-pcaviz.component_loads = function(
+ggviz.component_loads = function(
     pca_obj, #: pca
     component, #: numeric integer
     size = vizsize() #: vizsize
 ) {
   .pca.check_class(pca_obj)
 
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
-  this = this %>% pcaviz.set_size(size)
+  this = ggviz.from_ggplot(ggplot(), pca_obj)
+  this = this %>% ggviz.set_size(size)
 
   type.check_integer(component)
 
@@ -384,16 +436,16 @@ pcaviz.component_loads = function(
 
     scale_y_continuous(labels = function(x) {sprintf("%.2f", x)})
 
-  this = this %>% pcaviz.set_theme_column()
+  this = this %>% ggviz.set_theme_column()
 
   return(this)
 }
 
-pcaviz.add_title = function(
-  this, #: pcaviz
+ggviz.add_title = function(
+  this, #: ggviz
   title #: character
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   type.check_character(title)
 
   this = this +
@@ -408,23 +460,23 @@ pcaviz.add_title = function(
 #' This function adds an annotation displaying the ID metric of a PCA object
 #' to a PCA visualization object.
 #'
-#' @param this An object of class 'pcaviz' that contains a PCA object.
+#' @param this An object of class 'ggviz' that contains a PCA object.
 #'
-#' @return The modified 'pcaviz' object with the ID metric annotated on the plot.
+#' @return The modified 'ggviz' object with the ID metric annotated on the plot.
 #'
 #' @details The ID metric is calculated using the `pca.get_ID()` function.
 #' The annotation is placed near the top right corner of the plot based on
 #' the ranges of the first two principal components (CP1 and CP2).
 #'
 #' @examples
-#' # Assuming 'pca_viz' is an existing pcaviz object with a PCA analysis
-#' pca_viz <- pcaviz.add_ID(pca_viz)
+#' # Assuming 'pca_viz' is an existing ggviz object with a PCA analysis
+#' pca_viz <- ggviz.add_ID(pca_viz)
 #'
 #' @export
-pcaviz.add_ID = function(
-  this #: pcaviz
+ggviz.add_ID = function(
+  this #: ggviz
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
 
   id = this$pca_obj %>% pca.get_ID()
 
@@ -453,15 +505,15 @@ pcaviz.add_ID = function(
 #'
 #' This function adds points representing a single group to the PCA scatter plot.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #'
 #' @return The modified PCA visualization object with added points.
 #'
 #' @export
-pcaviz.add_single_group_points = function(
-  this #: pcaviz
+ggviz.add_single_group_points = function(
+  this #: ggviz
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
 
   this = this +
     geom_point(
@@ -481,18 +533,18 @@ pcaviz.add_single_group_points = function(
 #'
 #' This function adds points representing multiple groups to the PCA scatter plot.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #' @param groups A factor indicating group membership for each point.
 #'
 #' @return The modified PCA visualization object with added group points.
 #'
 #' @export
-pcaviz.add_multi_group_points = function(
-  this, #: pcaviz
+ggviz.add_multi_group_points = function(
+  this, #: ggviz
   groups #: factor
 ) {
-  .pcaviz.check_class(this)
-  this %>% .pcaviz.check_groups(groups)
+  .ggviz.check_class(this)
+  this %>% .ggviz.check_groups(groups)
 
   data = this$pca_obj$principal_components
   data$groups = groups
@@ -517,7 +569,7 @@ pcaviz.add_multi_group_points = function(
 #' This function enhances a PCA scatter plot by adding text labels to the points,
 #' allowing for easier identification and interpretation of the plotted data.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #' @param labels A character vector of labels corresponding to each point in the plot.
 #' @param x (Optional) A numeric vector specifying the x-coordinates of the points.
 #'           If NULL, defaults to the first principal component (CP1).
@@ -533,17 +585,17 @@ pcaviz.add_multi_group_points = function(
 #'
 #' @examples
 #' # Assuming pca_obj is a valid PCA object
-#' pca_viz <- pcaviz.scatter(pca_obj)
-#' pca_viz <- pcaviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
+#' pca_viz <- ggviz.scatter(pca_obj)
+#' pca_viz <- ggviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
 #'
 #' @export
-pcaviz.add_labels = function(
-  this, #: pcaviz
+ggviz.add_labels = function(
+  this, #: ggviz
   labels, #: vector
   x = NULL, #: vector
   y = NULL #: vector
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
 
   if((is.null(x) || is.null(y)) &&
      length(labels) != nrow(this$pca_obj$principal_components)
@@ -582,15 +634,15 @@ pcaviz.add_labels = function(
 #'
 #' This function sets a minimal theme for the PCA scatter plot.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #'
 #' @return The modified PCA visualization object with updated theme.
 #'
 #' @export
-pcaviz.set_theme_scatter = function(
-  this #: pcaviz
+ggviz.set_theme_scatter = function(
+  this #: ggviz
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
 
   this = this +
     theme(
@@ -613,10 +665,10 @@ pcaviz.set_theme_scatter = function(
   return(this)
 }
 
-pcaviz.set_theme_column = function(
-  this #: pcaviz
+ggviz.set_theme_column = function(
+  this #: ggviz
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
 
   this = this + theme(
     panel.border = element_blank(),
@@ -645,26 +697,26 @@ pcaviz.set_theme_column = function(
 #' This function sets a manual color scale for the scatter plot in a PCA visualization,
 #' allowing different groups to be visually distinguished.
 #'
-#' @param this An object of class 'pcaviz' that contains a PCA visualization.
+#' @param this An object of class 'ggviz' that contains a PCA visualization.
 #' @param groups A factor indicating the grouping of data points in the PCA scatter plot.
 #'
-#' @return The modified 'pcaviz' object with the specified color scale applied to the scatter plot.
+#' @return The modified 'ggviz' object with the specified color scale applied to the scatter plot.
 #'
 #' @details The function utilizes `scale_color_manual()` to assign colors to different
 #' levels of the provided factor. The number of colors used corresponds to the number of
 #' unique groups in the `groups` parameter.
 #'
 #' @examples
-#' # Assuming 'pca_viz' is an existing pcaviz object and 'group_factor' is a factor
-#' pca_viz <- pcaviz.set_scale_scatter(pca_viz, group_factor)
+#' # Assuming 'pca_viz' is an existing ggviz object and 'group_factor' is a factor
+#' pca_viz <- ggviz.set_scale_scatter(pca_viz, group_factor)
 #'
 #' @export
-pcaviz.set_scale_scatter = function(
-  this, #: pcaviz
+ggviz.set_scale_scatter = function(
+  this, #: ggviz
   groups #: factor
 ) {
-  .pcaviz.check_class(this)
-  this %>% .pcaviz.check_groups(groups)
+  .ggviz.check_class(this)
+  this %>% .ggviz.check_groups(groups)
 
   this = this +
     scale_color_manual(
@@ -681,7 +733,7 @@ pcaviz.set_scale_scatter = function(
 #' It helps in understanding how certain variables have changed significantly
 #' across the specified time frame, either positively or negatively.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #' @param number An integer specifying the number of largest variations to visualize.
 #' @param keys A vector of keys (variables) for which the largest variations are to be identified.
 #' @param years A vector of years corresponding to the data points being analyzed.
@@ -700,7 +752,7 @@ pcaviz.set_scale_scatter = function(
 #'
 #' @examples
 #' # Assuming pca_viz is a valid PCA visualization object
-#' pca_viz <- pcaviz.add_largest_variations(
+#' pca_viz <- ggviz.add_largest_variations(
 #'   pca_viz,
 #'   number = 5,
 #'   keys = c("Variable1", "Variable2"),
@@ -709,15 +761,15 @@ pcaviz.set_scale_scatter = function(
 #' )
 #'
 #' @export
-pcaviz.add_largest_variations = function(
-  this, #: pcaviz
+ggviz.add_largest_variations = function(
+  this, #: ggviz
   number, #: integer
   keys, #: vector
   years, #: vector
   labels = NULL, #: vector
   variation = 'positive'
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   if(!(variation %in% c('positive', 'negative'))) {
     stop("'variation' must be one of ('positive', 'negative')")
   }
@@ -738,12 +790,12 @@ pcaviz.add_largest_variations = function(
 
   unique_years = unique(years)
 
-  this = this %>% pcaviz.add_segments(
+  this = this %>% ggviz.add_segments(
     df$CP1.x, df$CP1.y, df$CP2.x, df$CP2.y,
     color=color
   )
 
-  this = this %>% pcaviz.add_labels(
+  this = this %>% ggviz.add_labels(
     labels = rep(df$labels, 2),
     x = c(df$CP1.x, df$CP1.y),
     y = c(df$CP2.x, df$CP2.y)
@@ -758,7 +810,7 @@ pcaviz.add_largest_variations = function(
 #' points with arrows. This can be useful for visualizing relationships or
 #' transitions between points in the PCA space.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A PCA visualization object of class 'ggviz'.
 #' @param from.x A numeric vector specifying the x-coordinates of the starting
 #'        points of the segments.
 #' @param to.x A numeric vector specifying the x-coordinates of the ending
@@ -779,7 +831,7 @@ pcaviz.add_largest_variations = function(
 #'
 #' @examples
 #' # Assuming pca_viz is a valid PCA visualization object
-#' pca_viz <- pcaviz.add_segments(
+#' pca_viz <- ggviz.add_segments(
 #'   pca_viz,
 #'   from.x = c(1, 2),
 #'   to.x = c(3, 4),
@@ -788,15 +840,15 @@ pcaviz.add_largest_variations = function(
 #' )
 #'
 #' @export
-pcaviz.add_segments = function(
-  this, #: pcaviz
+ggviz.add_segments = function(
+  this, #: ggviz
   from.x, #: numeric vector
   to.x, #: numeric vector
   from.y, #: numeric vector
   to.y, #: numeric vector
   color = colors.mixed()[1]
 ) {
-  .pcaviz.check_class(this)
+  .ggviz.check_class(this)
   if(class(from.x) != 'numeric') {
     stop("'from' must be of type 'numeric'")
   }

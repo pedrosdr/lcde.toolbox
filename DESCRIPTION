@@ -20,14 +20,17 @@ Depends:
   tidyterra,
   leaflet,
   tools,
-  stringr
+  stringr,
+  tibble,
+  scales
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
     'colors.R'
     'inep.R'
     'vizsize.R'
+    'ggradar.R'
     'pca.R'
-    'pcaviz.R'
+    'ggviz.R'
     'georef.R'
     'geoleaf.R'

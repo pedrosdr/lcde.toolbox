@@ -134,4 +134,17 @@ type.check_factor = function(
   }
 }
 
+type.check_dataframe = function(
+    obj,
+    property=NULL #: character
+) {
+  if(is.null(property)) {
+    property = 'property'
+  }
+
+  if(!is.data.frame(obj)) {
+    stop(paste0("'",property,"' must be of type 'data.frame'"))
+  }
+}
+
 
