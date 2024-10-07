@@ -4,7 +4,7 @@
 \alias{geoleaf.add_pca_points}
 \title{geoleaf.add_pca_points}
 \usage{
-geoleaf.add_pca_points(this, pca_obj, latitude, longitude)
+geoleaf.add_pca_points(this, pca_obj, latitude, longitude, labels = NULL)
 }
 \arguments{
 \item{this}{A \code{geoleaf} object.}

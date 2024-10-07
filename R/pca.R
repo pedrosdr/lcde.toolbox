@@ -358,7 +358,7 @@ pca.get_categories = function(
 #' color palette. The palette must contain at least four colors.
 #'
 #' @param this A \code{pca} object containing PCA results.
-#' @param pallete A character vector representing a color palette.
+#' @param palette A character vector representing a color palette.
 #'                Must have at least four colors.
 #'
 #' @return A character vector of colors corresponding to the PCA categories.
@@ -368,19 +368,19 @@ pca.get_categories = function(
 #' @export
 pca.get_category_colors = function(
   this, #: pca
-  pallete = colors.red_to_green() #: character vector
+  palette = colors.red_to_green() #: character vector
 ) {
   .pca.check_class(this)
-  type.check_character(pallete, 'pallete')
-  if(length(pallete) < 4) {
-    stop("'pallete' must have at least 4 colors")
+  type.check_character(palette, 'palette')
+  if(length(palette) < 4) {
+    stop("'palette' must have at least 4 colors")
   }
 
   categories = this %>% pca.get_categories()
   colors = ifelse(
-    categories == 'D', pallete[1], ifelse(
-      categories == 'C', pallete[2], ifelse(
-        categories == 'B', pallete[3], pallete[4]
+    categories == 'D', palette[1], ifelse(
+      categories == 'C', palette[2], ifelse(
+        categories == 'B', palette[3], palette[4]
       )
     )
   )

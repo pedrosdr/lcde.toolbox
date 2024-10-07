@@ -18,11 +18,14 @@ Depends:
   sf,
   gstat,
   tidyterra,
-  leaflet
+  leaflet,
+  tools,
+  stringr
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
     'colors.R'
+    'inep.R'
     'vizsize.R'
     'pca.R'
     'pcaviz.R'

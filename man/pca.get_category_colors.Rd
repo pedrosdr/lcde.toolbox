@@ -4,12 +4,12 @@
 \alias{pca.get_category_colors}
 \title{pca.get_category_colors}
 \usage{
-pca.get_category_colors(this, pallete = colors.red_to_green())
+pca.get_category_colors(this, palette = colors.red_to_green())
 }
 \arguments{
 \item{this}{A \code{pca} object containing PCA results.}
 
-\item{pallete}{A character vector representing a color palette.
+\item{palette}{A character vector representing a color palette.
 Must have at least four colors.}
 }
 \value{
