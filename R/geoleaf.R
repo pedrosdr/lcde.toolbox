@@ -6,6 +6,7 @@ library(leaflet)
 library(leaflet)
 
 # class geoleaf
+
 # constructors
 
 #' geoleaf
@@ -24,6 +25,184 @@ geoleaf = function() {
   )
   class(this) = c(class(this), 'geoleaf')
   return(this)
+}
+
+#' Percentage of Proficiency Map
+#'
+#' This function creates a map that visualizes the percentage of proficiency in either mathematics or the Portuguese language, using geographic coordinates.
+#'
+#' @param data A numeric vector representing the percentage of proficiency.
+#' @param subject A character vector indicating the subject, either 'mathematics' or 'portuguese language'.
+#' @param latitude A numeric vector of latitude coordinates.
+#' @param longitude A numeric vector of longitude coordinates.
+#' @param labels An optional vector of labels for the points. Defaults to NULL.
+#' @param add_boundary Logical, indicating whether to add a geographic boundary from a georef object.
+#' @param add_surface Logical, indicating whether to add a surface layer with interpolation.
+#' @param georef_obj A georef object used for geographic boundaries or surface layers.
+#' @param surface_data A numeric vector for the surface data.
+#' @param surface_latitude A numeric vector for the latitude of the surface layer.
+#' @param surface_longitude A numeric vector for the longitude of the surface layer.
+#' @param surface_legend_title A character string for the surface layer's legend title.
+#' @param surface_palette A character vector of colors to use for the surface layer.
+#' @param surface_width Numeric value for the surface layer width.
+#' @param surface_height Numeric value for the surface layer height.
+#'
+#' @return A \code{geoleaf} map object with added proficiency points, boundaries, and optionally a surface layer.
+#'
+#' @export
+geoleaf.percentage_of_proficiency_map = function(
+    data, #: numeric vector
+    subject = c('mathematics', 'portuguese language'), #: character
+    latitude, #: numeric vector
+    longitude, #: numeric vector,
+    labels=NULL,
+    add_boundary=FALSE,
+    add_surface=FALSE,
+    georef_obj=NULL, #: georef
+    surface_data=NULL, #: numeric vector
+    surface_latitude=NULL, #: numeric vector
+    surface_longitude=NULL, #: numeric vector
+    surface_legend_title='Legend Title', #: character
+    surface_palette=colors.purples(), #: character vector
+    surface_width=100, #: numeric
+    surface_height=100 #: numeric
+) {
+  if(add_boundary & is.null(georef_obj)) {
+    stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(georef_obj)) {
+    stop("'add_surface' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(surface_data)) {
+    stop("'add_surface' is set to TRUE but no 'surface_data' was given")
+  }
+  if(add_surface & is.null(surface_latitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+  if(add_surface & is.null(surface_longitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+
+  obj = geoleaf() %>%
+    geoleaf.add_tiles()
+
+  if(add_surface) {
+    obj = obj %>% geoleaf.add_surface(
+      georef_obj,
+      data=surface_data,
+      latitude = surface_latitude,
+      longitude = surface_longitude,
+      add_legend = TRUE,
+      legend_title = surface_legend_title,
+      legend_position = 'bottomleft',
+      palette = surface_palette
+    )
+  }
+
+  if(add_boundary) {
+    obj = obj %>% geoleaf.add_boundary(
+      georef_obj
+    )
+  }
+
+  obj = obj %>% geoleaf.add_points(
+      latitude = latitude,
+      longitude = longitude,
+      colors = inep.get_percentage_of_proficiency_category_colors(data),
+      labels = labels
+  ) %>%
+  geoleaf.add_legend_percentage_of_proficiency(
+      subject = subject
+  )
+
+  return(obj)
+}
+
+#' PCA Map
+#'
+#' This function creates a map that visualizes PCA (Principal Component Analysis) results using geographic coordinates.
+#'
+#' @param pca_obj A PCA object containing the PCA results.
+#' @param latitude A numeric vector of latitude coordinates.
+#' @param longitude A numeric vector of longitude coordinates.
+#' @param labels An optional vector of labels for the points. Defaults to NULL.
+#' @param add_boundary Logical, indicating whether to add a geographic boundary from a georef object.
+#' @param add_surface Logical, indicating whether to add a surface layer with interpolation.
+#' @param georef_obj A georef object used for geographic boundaries or surface layers.
+#' @param surface_data A numeric vector for the surface data.
+#' @param surface_latitude A numeric vector for the latitude of the surface layer.
+#' @param surface_longitude A numeric vector for the longitude of the surface layer.
+#' @param surface_legend_title A character string for the surface layer's legend title.
+#' @param surface_palette A character vector of colors to use for the surface layer.
+#' @param surface_width Numeric value for the surface layer width.
+#' @param surface_height Numeric value for the surface layer height.
+#'
+#' @return A \code{geoleaf} map object with added PCA points, boundaries, and optionally a surface layer.
+#'
+#' @export
+geoleaf.pca_map = function(
+  pca_obj, #: pca
+  latitude, #: numeric vector
+  longitude, #: numeric vector,
+  labels=NULL,
+  add_boundary=FALSE,
+  add_surface=FALSE,
+  georef_obj=NULL, #: georef
+  surface_data=NULL, #: numeric vector
+  surface_latitude=NULL, #: numeric vector
+  surface_longitude=NULL, #: numeric vector
+  surface_legend_title='Legend Title', #: character
+  surface_palette=colors.purples(), #: character vector
+  surface_width=100, #: numeric
+  surface_height=100 #: numeric
+) {
+  if(add_boundary & is.null(georef_obj)) {
+    stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(georef_obj)) {
+    stop("'add_surface' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(surface_data)) {
+    stop("'add_surface' is set to TRUE but no 'surface_data' was given")
+  }
+  if(add_surface & is.null(surface_latitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+  if(add_surface & is.null(surface_longitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+
+  obj = geoleaf() %>%
+    geoleaf.add_tiles()
+
+  if(add_surface) {
+    obj = obj %>% geoleaf.add_surface(
+      georef_obj,
+      data=surface_data,
+      latitude = surface_latitude,
+      longitude = surface_longitude,
+      add_legend = TRUE,
+      legend_title = surface_legend_title,
+      legend_position = 'bottomleft',
+      palette = surface_palette
+    )
+  }
+
+  if(add_boundary) {
+    obj = obj %>% geoleaf.add_boundary(
+      georef_obj
+    )
+  }
+
+  obj = obj %>% geoleaf.add_pca_points(
+      pca_obj,
+      df$latitude,
+      df$longitude,
+      labels=labels
+  ) %>%
+    geoleaf.add_legend_pca()
+
+  return(obj)
 }
 
 # methods
@@ -335,6 +514,41 @@ geoleaf.add_surface = function(
   return(this)
 }
 
+#' Add a Continuous Legend to a GeoLeaf Map
+#'
+#' Adds a continuous legend to a `geoleaf` map based on a numeric vector.
+#'
+#' @param this A `geoleaf` object to which the legend will be added.
+#' @param data A numeric vector used to determine the values for the legend.
+#' @param title A character string specifying the title of the legend.
+#' @param position A character string specifying the position of the legend. Must be one of
+#'   'bottomleft', 'bottomright', 'topleft', or 'topright'.
+#' @param palette A character vector or function defining the color palette to be used in the legend.
+#'   Defaults to `colors.nighty()`.
+#'
+#' @details
+#' This function adds a continuous color legend to a `geoleaf` map using the provided numeric data.
+#' The legend will display a color gradient based on the values in `data`. The `palette` argument
+#' defines the color scheme, while the `position` argument controls where the legend is placed on the map.
+#'
+#' The legend's breaks are calculated based on the minimum and maximum values of the `data` vector,
+#' with five evenly spaced intervals. The function ensures that no missing data values (NA) are shown
+#' by setting their color to transparent.
+#'
+#' @return The updated `geoleaf` object with the added continuous legend.
+#'
+#' @examples
+#' # Example usage:
+#' geo_map <- geoleaf$new() # Assuming geoleaf is a map object
+#' data_values <- c(1.5, 2.3, 4.6, 5.8)
+#' geo_map <- geoleaf.add_legend_continuous(
+#'   geo_map,
+#'   data = data_values,
+#'   title = "Legend Title",
+#'   position = 'bottomright'
+#' )
+#'
+#' @export
 geoleaf.add_legend_continuous = function(
   this, #: geoleaf
   data, #: numeric vector
