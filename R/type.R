@@ -147,4 +147,17 @@ type.check_dataframe = function(
   }
 }
 
+type.check_ggplot = function(
+    obj,
+    property=NULL #: character
+) {
+  if(is.null(property)) {
+    property = 'property'
+  }
+
+  if(!('ggplot' %in% class(obj))) {
+    stop(paste0("'",property,"' must be of type 'ggplot'"))
+  }
+}
+
 

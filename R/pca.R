@@ -80,8 +80,7 @@ pca.get_ID = function(
 ) {
   .pca.check_class(this)
 
-  centroid = as.numeric(lapply(this$data, mean))
-  id = mean(apply(this$data, 1, function(x) sqrt(sum((x-centroid)^2))))
+  id = stats.inequality_indicator(this$data)
 
   return(id)
 }

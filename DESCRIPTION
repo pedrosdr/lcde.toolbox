@@ -27,10 +27,12 @@ RoxygenNote: 7.3.2
 Collate:
     'type.R'
     'colors.R'
+    'stats.R'
     'inep.R'
     'vizsize.R'
     'ggradar.R'
     'pca.R'
     'ggviz.R'
+    'pcaviz.R'
     'georef.R'
     'geoleaf.R'
