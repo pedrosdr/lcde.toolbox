@@ -20,12 +20,21 @@ ggviz.radar = function(
     colors = colors.mixed(), #: character
     labels = NULL, #: vector
     title = NULL, #: character
+    show_score = FALSE, #: logical
+    axes_to_invert = NULL,
     size = vizsize() #: vizsize | text | numeric
 ) {
   size = vizsize.parse(size)
+
   type.check_dataframe(data, 'data')
   type.check_character(colors, 'colors')
+  type.check_logical(show_score, 'show_score')
   .vizsize.check_class(size)
+
+  if(show_score && nrow(data) > 1) {
+    warning("'show_score' is only supported for single-group data; the score
+            will be displayed only for the first row.")
+  }
 
   if(is.null(labels)) {
     labels = paste0('Group ', 1:nrow(data))
@@ -57,9 +66,33 @@ ggviz.radar = function(
 
   if(!is.null(title)) {
     obj = obj +
-      ggtitle(title) +
-      theme(plot.title = element_text(hjust = 0.5, size = size$title))
+      ggtitle(title)
   }
+
+  if(show_score) {
+    data_score = data[1,2:ncol(data)]
+    if(!is.null(axes_to_invert)) {
+        for(axis in axes_to_invert) {
+          data_score[,axis] = 100 - data_score[,axis]
+        }
+    }
+
+    score = stats.relative_magnitude(data_score)
+
+    obj = obj +
+      labs(
+        caption = sprintf("Score: %.2f%%", 100*score)
+      )
+  }
+
+  obj = obj +
+    theme(
+      plot.title = element_text(hjust = 0.5, size = size$title),
+      plot.caption = element_text(
+        hjust = 0.5, size = size$title,
+        color = colors[1]
+      )
+    )
 
   obj = ggviz.from_ggplot(obj)
 

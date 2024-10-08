@@ -666,10 +666,10 @@ geoleaf.add_legend_pca = function(
     title = 'Desempenho Relativo',
     colors = colors.red_to_green(),
     labels = c(
-      'Menor CP1  |-  1º Quartil',
-      '1º Quartil  |-  2º Quartil',
-      '2º Quartil  |-  3º Quartil',
-      '3º Quartil  |-|  Maior CP1'
+      'Nível 1 (0%  |-  25%)',
+      'Nível 2 (25%  |-  50%)',
+      'Nível 3 (50%  |-  75%)',
+      'Nível 4 (75%  |-| 100%)'
     ),
     position = 'bottomright'
   )
