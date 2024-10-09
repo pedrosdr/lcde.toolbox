@@ -4,6 +4,15 @@ library(ggplot2)
 # class ggviz
 
 # constructors
+
+#' Construtor de ggviz a partir de um objeto ggplot
+#'
+#' Cria um objeto da classe `ggviz` a partir de um gráfico `ggplot`.
+#'
+#' @param ggplot_obj Objeto `ggplot` a ser convertido.
+#'
+#' @return Um objeto da classe `ggviz`.
+#' @export
 ggviz.from_ggplot = function(
   ggplot_obj #: ggplot
 ) {
@@ -15,6 +24,27 @@ ggviz.from_ggplot = function(
   return(obj)
 }
 
+#' Construtor de gráfico de radar ggviz
+#'
+#' Gera um gráfico de radar usando um data frame, com opções de personalização
+#' de cores, títulos, rótulos e exibição de pontuação.
+#'
+#' @param data Um `data.frame` contendo os dados para o gráfico de radar.
+#' @param colors Vetor de caracteres que define as cores dos grupos.
+#' @param labels Vetor com os rótulos a serem usados para os grupos. Se `NULL`, será gerado automaticamente.
+#' @param title Título do gráfico. Se `NULL`, nenhum título será exibido.
+#' @param show_score Lógico. Se `TRUE`, exibe a pontuação relativa para o primeiro grupo.
+#' @param axes_to_invert Vetor com os nomes dos eixos que devem ser invertidos (opcional).
+#' @param size Objeto `vizsize` ou valores numéricos para definir os tamanhos do texto e linhas do gráfico.
+#'
+#' @return Um objeto da classe `ggviz` contendo o gráfico de radar.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(Group1 = c(70, 80, 90), Group2 = c(50, 60, 80))
+#' ggviz.radar(data, colors = c("#FF0000", "#00FF00"))
+#' }
 ggviz.radar = function(
     data, #:data.frame
     colors = colors.mixed(), #: character

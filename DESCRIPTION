@@ -22,7 +22,8 @@ Depends:
   tools,
   stringr,
   tibble,
-  scales
+  scales,
+  htmltools
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
@@ -36,3 +37,4 @@ Collate:
     'pcaviz.R'
     'georef.R'
     'geoleaf.R'
+    'widget.R'

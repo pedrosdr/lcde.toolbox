@@ -4,7 +4,7 @@
 \alias{pcaviz.from_ggplot}
 \title{Create a PCA Visualization Object from a ggplot Object}
 \usage{
-pcaviz.from_ggplot(ggplot_obj, pca_obj)
+pcaviz.from_ggplot(ggplot_obj, pca_obj = NULL)
 }
 \arguments{
 \item{ggplot_obj}{A ggplot object that represents the PCA scatter plot.}
