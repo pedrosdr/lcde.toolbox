@@ -3,12 +3,35 @@ library(htmltools)
 # class widget
 
 # constructors
-widget = function() {
+widget = function(
+  html = NULL, #: character
+  build_path = 'widget.html' #:character
+) {
+  if(!is.null(html)){
+    type.check_character(html, 'html')
+  }
+  type.check_character(build_path, 'build_path')
+
   obj = list()
-  class(obj) = 'widget'
-  obj$html = NULL
+  class(obj) = c('widget')
+
+  obj$html = html
+  obj$build_path = build_path
 
   return(obj)
+}
+
+widget.geoleaf_legend = function(
+    this, #: widget
+    geoleaf_obj #: geoleaf
+) {
+  .widget.check_class(this)
+  .geoleaf.check_class(geoleaf_obj)
+
+  htmlwidgets::saveWidget(geoleaf_obj, this$build_path)
+  this$html = readLines(this$build_path)
+
+  return(this)
 }
 
 # methods
@@ -20,14 +43,23 @@ widget = function() {
   }
 }
 
-widget.geoleaf_legend = function(
+widget.save = function(
   this, #: widget
-  geoleaf_obj, #: geoleaf
-  build_path = "./" #: character
+  path, #: character
+  verbose = TRUE #: logical
 ) {
   .widget.check_class(this)
-  .geoleaf.check_class(geoleaf_obj)
-  type.check_character(build_path)
+  type.check_character(path)
+  type.check_logical(verbose)
 
-  return(geoleaf_obj)
+  if(is.null(this$html)) {
+    warning("No content was saved because the 'html' field is NULL or empty.
+            Please ensure that valid HTML content is provided.")
+    return()
+  }
+
+  writeLines(this$html, path)
+  if(verbose) {
+    print(paste0("The HTML content has been successfully saved to '", path, "'."))
+  }
 }
