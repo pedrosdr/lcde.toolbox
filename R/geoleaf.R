@@ -20,7 +20,7 @@ geoleaf = function() {
   this = leaflet(
     options = leafletOptions(
       zoomSnap=0.3,
-      zoomDelta=0.1
+      zoomDelta=0.3
     )
   )
   class(this) = c(class(this), 'geoleaf')
@@ -423,32 +423,7 @@ geoleaf.add_boundary = function(
   return(this)
 }
 
-#' Add Continuous Legend to Map
-#'
-#' This function adds a continuous color gradient legend to a `geoleaf` map based on a numeric vector of data. The legend dynamically reflects the range of the data, with a title and customizable position.
-#'
-#' @param this A `geoleaf` map object.
-#' @param data A numeric vector representing the data used to generate the color gradient for the legend.
-#' @param title A character string specifying the title of the legend.
-#' @param position A character string specifying the position of the legend on the map. Options are 'bottomleft', 'bottomright', 'topleft', or 'topright'.
-#' @param palette A character string specifying the color palette to use for the gradient. Defaults to \code{colors.nighty()}.
-#'
-#' @return The modified `geoleaf` map object with the added continuous legend.
-#'
-#' @details
-#' The function creates a continuous color scale based on the input data, using the specified color palette. The legend is divided into five breaks, which represent the range of the data, and the color gradient is applied accordingly. The position and title of the legend are customizable.
-#'
-#' @seealso \code{\link{addLegend}}, \code{\link{colorNumeric}}, \code{\link{geoleaf}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_legend_continuous(
-#'     data = c(1, 2, 3, 4, 5),
-#'     title = 'Continuous Legend',
-#'     position = 'bottomright'
-#'   )
-#'
-#' @export
+
 geoleaf.add_surface = function(
   this, #: geoleaf
   georef_obj, #: georef

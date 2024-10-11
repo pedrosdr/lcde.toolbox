@@ -23,7 +23,8 @@ Depends:
   stringr,
   tibble,
   scales,
-  htmltools
+  htmltools,
+  webshot
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
