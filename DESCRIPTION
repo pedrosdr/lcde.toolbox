@@ -9,6 +9,23 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Imports:
+  ggplot2,
+  dplyr,
+  stats,
+  ggrepel,
+  terra,
+  sf,
+  gstat,
+  tidyterra,
+  leaflet,
+  tools,
+  stringr,
+  tibble,
+  scales,
+  htmltools,
+  ggspatial,
+  prettymapr
 Depends:
   ggplot2,
   dplyr,
@@ -24,7 +41,8 @@ Depends:
   tibble,
   scales,
   htmltools,
-  webshot
+  ggspatial,
+  prettymapr
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
@@ -38,4 +56,5 @@ Collate:
     'pcaviz.R'
     'georef.R'
     'geoleaf.R'
+    'geogg.R'
     'widget.R'

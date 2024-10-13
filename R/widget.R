@@ -1,5 +1,5 @@
 library(htmltools)
-library(webshot)
+library(mapview)
 
 # class widget
 

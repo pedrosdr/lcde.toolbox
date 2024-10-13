@@ -1,9 +1,5 @@
 library(leaflet)
-
-# class geoleaf
-# constructors
-
-library(leaflet)
+library(mapview)
 
 # class geoleaf
 

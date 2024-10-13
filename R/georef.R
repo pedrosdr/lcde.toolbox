@@ -28,6 +28,35 @@ georef.from_geojson = function(
   return(this)
 }
 
+georef.from_points = function(
+  latitude, #: numeric
+  longitude #: numeric
+) {
+  type.check_numeric(latitude, 'latitude')
+  type.check_numeric(longitude, 'longitude')
+
+  if(length(longitude) != length(latitude)) {
+    stop("'latitude' and 'longitude' must be vectors of the same length")
+  }
+
+  data = data.frame(
+    latitude = latitude,
+    longitude = longitude
+  )
+
+  sf_obj = st_as_sf(
+    data,
+    coords = c('longitude', 'latitude'),
+    crs = 4326
+  )
+
+  this = list()
+  class(this) = 'georef'
+  this$sf_obj = sf_obj
+
+  return(this)
+}
+
 # properties
 
 #' georef.set_sf
