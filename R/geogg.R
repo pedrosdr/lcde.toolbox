@@ -45,6 +45,7 @@ geogg.add_points = function(
   this, #: geogg
   latitude, #: numeric
   longitude, #: numeric
+  labels = NULL, #: vector
   groups=NULL, #: factor
   color_map=NULL, #: key-value character vector
   legend_title = 'Legend Title', #: character
@@ -77,15 +78,30 @@ geogg.add_points = function(
     stop("'groups' and 'latitude' must be vectors of the same length")
   }
 
+  if(!is.null(labels) & length(labels) != length(latitude)) {
+    stop("'labels' and 'latitude' must be vectors of the same length")
+  }
+
   mask = !(is.na(df$longitude) | is.na(df$latitude))
   df_filter = data.frame(
     latitude = latitude,
     longitude = longitude,
     groups = groups
   )
+
+  if(!is.null(labels)) {
+    df_filter$labels = labels
+  }
+
+  df_filter = df_filter[mask,]
+
   latitude = df_filter$latitude
   longitude = df_filter$longitude
   groups = df_filter$groups
+
+  if(!is.null(labels)) {
+    labels = df_filter$labels
+  }
 
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
@@ -102,12 +118,32 @@ geogg.add_points = function(
     geom_sf(
       aes(color=groups),
       data=georef_obj$sf_obj,
-      size=this$size$point_size
+      size=this$size$point_size * 1.2
     ) +
     scale_color_manual(
       name = legend_title,
       values = color_map
     )
+
+  if(!is.null(labels)) {
+    data_labels = georef_obj$sf_obj
+    data_labels$labels = labels
+
+    this = this +
+      geom_text_repel(
+        data = data_labels,
+        aes(
+          label = labels,
+          geometry = geometry
+        ),
+        stat = "sf_coordinates",
+        box.padding = this$size$point_size/4,
+        point.padding = this$size$point_size/6,
+        size = this$size$text / 5,
+        min.segment.length = 0,
+        max.overlaps = 50
+      )
+  }
 
   this = this %>% geogg.guides_points() %>%
     geogg.theme_base()

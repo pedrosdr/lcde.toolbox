@@ -1,5 +1,4 @@
 library(leaflet)
-library(mapview)
 
 # class geoleaf
 
