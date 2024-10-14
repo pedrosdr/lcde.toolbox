@@ -29,6 +29,16 @@ georef.from_geojson = function(
   return(this)
 }
 
+#' georef.from_points
+#'
+#' Creates a \code{georef} object from latitude and longitude points.
+#'
+#' @param latitude A numeric vector of latitude coordinates.
+#' @param longitude A numeric vector of longitude coordinates.
+#'
+#' @return A \code{georef} object containing the Simple Features (SF) representation of the points.
+#'
+#' @export
 georef.from_points = function(
   latitude, #: numeric
   longitude #: numeric

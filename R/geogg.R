@@ -159,11 +159,6 @@ geogg.add_labels = function(
   longitude = df_filter$longitude
   labels = df_filter$labels
 
-  georef_obj = georef.from_points(latitude, longitude)
-
-  data = georef_obj$sf_obj
-  data$labels = labels
-
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
     warning(
@@ -172,6 +167,11 @@ geogg.add_labels = function(
       )
     )
   }
+
+  georef_obj = georef.from_points(latitude, longitude)
+
+  data = georef_obj$sf_obj
+  data$labels = labels
 
   this = this +
     geom_text_repel(
