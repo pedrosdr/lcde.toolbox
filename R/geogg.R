@@ -2,6 +2,7 @@ library(ggplot2)
 library(ggspatial)
 library(ggrepel)
 library(tidyterra)
+library(ggnewscale)
 library(sf)
 
 # class geogg
@@ -51,15 +52,16 @@ geogg.add_points = function(
   this, #: geogg
   latitude, #: numeric
   longitude, #: numeric
-  labels = NULL, #: vector
   groups=NULL, #: factor
   color_map=NULL, #: key-value character vector
-  legend_title = 'Legend Title' #: character
+  legend_title = 'Legend Title', #: character
+  add_new_scale = FALSE #: logical
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(latitude, 'longitude')
   type.check_character(legend_title, 'legend_title')
+  type.check_logical(add_new_scale, 'add_new_scale')
 
   if(length(longitude) != length(latitude)) {
     stop("'latitude' and 'longitude' must be vectors of the same length")
@@ -80,10 +82,6 @@ geogg.add_points = function(
     stop("'groups' and 'latitude' must be vectors of the same length")
   }
 
-  if(!is.null(labels) & length(labels) != length(latitude)) {
-    stop("'labels' and 'latitude' must be vectors of the same length")
-  }
-
   mask = !(is.na(df$longitude) | is.na(df$latitude))
   df_filter = data.frame(
     latitude = latitude,
@@ -91,19 +89,11 @@ geogg.add_points = function(
     groups = groups
   )
 
-  if(!is.null(labels)) {
-    df_filter$labels = labels
-  }
-
   df_filter = df_filter[mask,]
 
   latitude = df_filter$latitude
   longitude = df_filter$longitude
   groups = df_filter$groups
-
-  if(!is.null(labels)) {
-    labels = df_filter$labels
-  }
 
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
@@ -116,41 +106,87 @@ geogg.add_points = function(
 
   georef_obj = georef.from_points(latitude, longitude)
 
+  if(add_new_scale) {
+    this = this +
+      new_scale_fill()
+  }
   this = this +
     geom_sf(
-      aes(color=groups),
+      aes(fill=groups),
       data=georef_obj$sf_obj,
-      size=this$size$point_size * 1.1
+      size=this$size$point_size * 1.1,
+      shape=21
     ) +
-    scale_color_manual(
+    scale_fill_manual(
       name = legend_title,
       values = color_map
     )
 
-  if(!is.null(labels)) {
-    data_labels = georef_obj$sf_obj
-    data_labels$labels = labels
-
-    this = this +
-      geom_text_repel(
-        data = data_labels,
-        aes(
-          label = labels,
-          geometry = geometry
-        ),
-        stat = "sf_coordinates",
-        box.padding = this$size$point_size/4,
-        point.padding = this$size$point_size/6,
-        size = this$size$text / 5,
-        min.segment.length = 0,
-        max.overlaps = 50
-      )
-  }
-
-  this = this %>% geogg.guides_points() %>%
+  this = this %>%
     geogg.theme_base()
 
   return(this)
+}
+
+geogg.add_labels = function(
+  this, #: geogg
+  labels, #: vector
+  latitude, #: numeric
+  longitude #: numeric
+) {
+  .geogg.check_class(this)
+  type.check_numeric(latitude, 'latitude')
+  type.check_numeric(latitude, 'longitude')
+
+  if(length(labels) != length(latitude)) {
+    stop("'labels' and 'latitude' must be vectors of the same length")
+  }
+
+  if(length(labels) != length(longitude)) {
+    stop("'labels' and 'longitude' must be vectors of the same length")
+  }
+
+  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  df_filter = data.frame(
+    latitude = latitude,
+    longitude = longitude,
+    labels = labels
+  )
+
+  df_filter = df_filter[mask,]
+
+  latitude = df_filter$latitude
+  longitude = df_filter$longitude
+  labels = df_filter$labels
+
+  georef_obj = georef.from_points(latitude, longitude)
+
+  data = georef_obj$sf_obj
+  data$labels = labels
+
+  ommited_length = length(mask[mask == FALSE])
+  if(ommited_length != 0) {
+    warning(
+      paste0(
+        ommited_length, ' points were omitted due to missing location data'
+      )
+    )
+  }
+
+  this = this +
+    geom_text_repel(
+      data = data,
+      aes(
+        label = labels,
+        geometry = geometry
+      ),
+      stat = "sf_coordinates",
+      box.padding = this$size$point_size/4,
+      point.padding = this$size$point_size/6,
+      size = this$size$text / 5,
+      min.segment.length = 0,
+      max.overlaps = 50
+    )
 }
 
 geogg.add_boundary = function(
@@ -181,13 +217,15 @@ geogg.add_surface = function(
   height = 100, #: integer
   title = 'Surface Title', #: character
   palette = colors.purples(), #: character
-  opacity = 'CC' #: character (00-FF)
+  opacity = 'CC', #: character (00-FF)
+  add_new_scale = FALSE #: logical
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
   type.check_character(title, 'title')
   type.check_character(palette, 'palette')
   type.check_character(opacity, 'opacity')
+  type.check_logical(add_new_scale, 'add_new_scale')
 
   palette = paste0(palette, opacity)
 
@@ -200,6 +238,10 @@ geogg.add_surface = function(
       height = height
     )
 
+  if(add_new_scale) {
+    this = this +
+      new_scale_fill()
+  }
   this = this +
     geom_spatraster(
       data = surface
@@ -230,19 +272,6 @@ geogg.theme_clean = function(
   return(this)
 }
 
-geogg.guides_points = function(
-    this #: geogg
-) {
-  .geogg.check_class(this)
-
-  this = this +
-    guides(color = guide_legend(
-      position = "right"
-    ))
-
-  return(this)
-}
-
 geogg.theme_base = function(
     this #: geogg
 ) {
@@ -256,4 +285,3 @@ geogg.theme_base = function(
 
   return(this)
 }
-

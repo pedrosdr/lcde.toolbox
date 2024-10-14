@@ -25,7 +25,8 @@ Imports:
   scales,
   htmltools,
   ggspatial,
-  prettymapr
+  prettymapr,
+  ggnewscale
 Depends:
   ggplot2,
   dplyr,
@@ -42,7 +43,8 @@ Depends:
   scales,
   htmltools,
   ggspatial,
-  prettymapr
+  prettymapr,
+  ggnewscale
 RoxygenNote: 7.3.2
 Collate:
     'type.R'

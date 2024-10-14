@@ -20,6 +20,7 @@ georef.from_geojson = function(
 ) {
   type.check_character(geojson)
   sf_obj = st_read(geojson)
+  sf_obj = st_transform(sf_obj, crs = 4326)
 
   this = list()
   class(this) = 'georef'
