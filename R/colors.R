@@ -65,11 +65,11 @@ colors.terra = function() {
   palette = c(
     '#e7e2e0',
     '#d9c1b2',
+    '#bfb4b0',
     '#c4ae9f',
     '#b3a098',
     '#948b86',
-    '#827d7a',
-    '#bfb4b0'
+    '#827d7a'
   )
   return(palette)
 }

@@ -1,6 +1,7 @@
 library(ggplot2)
 library(ggspatial)
 library(ggrepel)
+library(tidyterra)
 library(sf)
 
 # class geogg
@@ -8,13 +9,18 @@ library(sf)
 # constructors
 
 geogg = function(
+  size = vizsize.parse('normal')
 ) {
+  size = vizsize.parse(size)
+
   obj = ggplot() +
     theme_light()
 
   class(obj) = c(class(obj), 'geogg')
 
   obj = obj %>% geogg.theme_clean()
+
+  obj$size = size
 
   return(obj)
 }
@@ -48,16 +54,12 @@ geogg.add_points = function(
   labels = NULL, #: vector
   groups=NULL, #: factor
   color_map=NULL, #: key-value character vector
-  legend_title = 'Legend Title', #: character
-  size = vizsize.parse('normal')
+  legend_title = 'Legend Title' #: character
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(latitude, 'longitude')
   type.check_character(legend_title, 'legend_title')
-
-  size = vizsize.parse(size)
-  this$size = size
 
   if(length(longitude) != length(latitude)) {
     stop("'latitude' and 'longitude' must be vectors of the same length")
@@ -118,7 +120,7 @@ geogg.add_points = function(
     geom_sf(
       aes(color=groups),
       data=georef_obj$sf_obj,
-      size=this$size$point_size * 1.2
+      size=this$size$point_size * 1.1
     ) +
     scale_color_manual(
       name = legend_title,
@@ -147,6 +149,66 @@ geogg.add_points = function(
 
   this = this %>% geogg.guides_points() %>%
     geogg.theme_base()
+
+  return(this)
+}
+
+geogg.add_boundary = function(
+  this, #: geogg
+  georef_obj #: georef
+) {
+  .geogg.check_class(this)
+  .georef.check_class(georef_obj)
+
+  this = this +
+    geom_sf(
+      data = georef_obj$sf,
+      linewidth = this$size$linewidth * 1.5,
+      color = colors.grayscale()[5],
+      fill = 'transparent'
+    )
+
+  return(this)
+}
+
+geogg.add_surface = function(
+  this,
+  georef_obj, #: georef
+  data, #: numeric vector
+  latitude, #: numeric vector
+  longitude, #: numeric vector
+  width = 100, #: integer
+  height = 100, #: integer
+  title = 'Surface Title', #: character
+  palette = colors.purples(), #: character
+  opacity = 'CC' #: character (00-FF)
+) {
+  .geogg.check_class(this)
+  .georef.check_class(georef_obj)
+  type.check_character(title, 'title')
+  type.check_character(palette, 'palette')
+  type.check_character(opacity, 'opacity')
+
+  palette = paste0(palette, opacity)
+
+  surface = georef_obj %>%
+    georef.get_raster(
+      data = data,
+      latitude = latitude,
+      longitude = longitude,
+      width = width,
+      height = height
+    )
+
+  this = this +
+    geom_spatraster(
+      data = surface
+    ) +
+    scale_fill_gradientn(
+      colors = palette,
+      na.value=NA,
+      name=title
+    )
 
   return(this)
 }
