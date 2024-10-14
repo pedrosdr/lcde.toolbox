@@ -1,4 +1,4 @@
-Package: lcde.pca.tools
+Package: lcde.toolbox
 Type: Package
 Title: Principal Component Analysis Tools
 Version: 0.1.0
