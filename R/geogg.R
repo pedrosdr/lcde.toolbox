@@ -26,6 +26,98 @@ geogg = function(
   return(obj)
 }
 
+geogg.pca_map = function(
+    pca_obj, #: pca
+    latitude, #: numeric vector
+    longitude, #: numeric vector,
+    labels=NULL,
+    add_boundary=FALSE,
+    add_surface=FALSE,
+    georef_obj=NULL, #: georef
+    surface_data=NULL, #: numeric vector
+    surface_latitude=NULL, #: numeric vector
+    surface_longitude=NULL, #: numeric vector
+    surface_legend_title='Legend Title', #: character
+    surface_palette=colors.purples(), #: character vector
+    surface_width=100, #: numeric
+    surface_height=100 #: numeric
+) {
+  .pca.check_class(pca_obj)
+
+  if(add_boundary & is.null(georef_obj)) {
+    stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(georef_obj)) {
+    stop("'add_surface' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(surface_data)) {
+    stop("'add_surface' is set to TRUE but no 'surface_data' was given")
+  }
+  if(add_surface & is.null(surface_latitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+  if(add_surface & is.null(surface_longitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+
+  obj = geogg(size = 'normal') %>%
+    geogg.add_tiles()
+
+  if(add_surface) {
+    obj = obj %>%
+      geogg.add_surface(
+        georef_obj = georef_obj,
+        data = surface_data,
+        latitude = surface_latitude,
+        longitude = surface_longitude,
+        width = surface_width,
+        height = surface_height,
+        legend_title = surface_legend_title,
+        palette = surface_palette
+      )
+  }
+
+  if(add_boundary) {
+    obj = obj %>% geogg.add_boundary(georef.from_geojson(malha))
+  }
+
+  data = pca_obj$principal_components$CP1
+
+  obj = obj %>% geogg.add_points(
+    latitude=latitude,
+    longitude=longitude,
+    groups=factor(ifelse(
+      data < quantile(data, 0.25), 'A', ifelse(
+        data < quantile(data, 0.50), 'B', ifelse(
+          data < quantile(data, 0.75), 'C', 'D'
+        )
+      )
+    )
+    ),
+    color_map = c(
+      'A' = colors.red_to_green()[1],
+      'B' = colors.red_to_green()[2],
+      'C' = colors.red_to_green()[3],
+      'D' = colors.red_to_green()[4]
+    ),
+    labels = c(
+      '0%   |-   25%', '25% |-   50%', '50% |-   75%', '75% |-| 100%'
+    ),
+    legend_title = 'Desempenho Relativo',
+    add_new_scale = if(add_surface) TRUE else FALSE
+  )
+
+  if(!is.null(labels)) {
+    obj = obj %>% geogg.add_labels(
+      labels,
+      latitude,
+      longitude
+    )
+  }
+
+  return(obj)
+}
+
 geogg.percentage_of_proficiency_map = function(
   data, #: numeric vector
   subject = c('mathematics', 'portuguese language'), #: character
