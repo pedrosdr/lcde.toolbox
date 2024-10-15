@@ -88,21 +88,18 @@ geogg.pca_map = function(
     latitude=latitude,
     longitude=longitude,
     groups=factor(ifelse(
-      data < quantile(data, 0.25), 'A', ifelse(
-        data < quantile(data, 0.50), 'B', ifelse(
-          data < quantile(data, 0.75), 'C', 'D'
+      data < quantile(data, 0.25), '0% |- 25%', ifelse(
+        data < quantile(data, 0.50), '25% |- 50%', ifelse(
+          data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
         )
       )
     )
     ),
     color_map = c(
-      'A' = colors.red_to_green()[1],
-      'B' = colors.red_to_green()[2],
-      'C' = colors.red_to_green()[3],
-      'D' = colors.red_to_green()[4]
-    ),
-    labels = c(
-      '0%   |-   25%', '25% |-   50%', '50% |-   75%', '75% |-| 100%'
+      '0% |- 25%' = colors.red_to_green()[1],
+      '25% |- 50%' = colors.red_to_green()[2],
+      '50% |- 75%' = colors.red_to_green()[3],
+      '75% |-| 100%' = colors.red_to_green()[4]
     ),
     legend_title = 'Desempenho Relativo',
     add_new_scale = if(add_surface) TRUE else FALSE
@@ -188,21 +185,18 @@ geogg.percentage_of_proficiency_map = function(
       latitude=latitude,
       longitude=longitude,
       groups=factor(ifelse(
-        data < 25, 'A', ifelse(
-          data < 50, 'B', ifelse(
-            data < 70, 'C', 'D'
+        data < 25, '0% |- 25%', ifelse(
+          data < 50, '25% |- 50%', ifelse(
+            data < 70, '50% |- 75%', '75% |-| 100%'
           )
         )
       )
       ),
       color_map = c(
-        'A' = colors.red_to_green()[1],
-        'B' = colors.red_to_green()[2],
-        'C' = colors.red_to_green()[3],
-        'D' = colors.red_to_green()[4]
-      ),
-      labels = c(
-        '0%   |-   25%', '25% |-   50%', '50% |-   70%', '70% |-| 100%'
+        '0% |- 25%' = colors.red_to_green()[1],
+        '25% |- 50%' = colors.red_to_green()[2],
+        '50% |- 75%' = colors.red_to_green()[3],
+        '75% |-| 100%' = colors.red_to_green()[4]
       ),
       legend_title = legend_title,
       add_new_scale = if(add_surface) TRUE else FALSE

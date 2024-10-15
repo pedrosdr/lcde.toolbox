@@ -468,7 +468,7 @@ pcaviz.add_single_group_points = function(
         x=CP1,
         y=CP2
       ),
-      color=colors.mixed()[2],
+      color=colors.mixed()[1],
       size=this$size$point_size
     )
 
@@ -570,7 +570,10 @@ pcaviz.add_labels = function(
         y = y,
         label = labels
       ),
-      size=this$size$text/4
+      min.segment.length = 0,
+      max.overlaps = 50,
+      box.padding = this$size$point_size/2,
+      size=this$size$text/5
     )
 
   return(this)
