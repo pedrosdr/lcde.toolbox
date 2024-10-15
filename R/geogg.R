@@ -200,7 +200,7 @@ geogg.add_boundary = function(
     geom_sf(
       data = georef_obj$sf,
       linewidth = this$size$linewidth * 1.5,
-      color = colors.grayscale()[5],
+      color = colors.grayscale()[4],
       fill = 'transparent'
     )
 
@@ -217,7 +217,7 @@ geogg.add_surface = function(
   height = 100, #: integer
   title = 'Surface Title', #: character
   palette = colors.purples(), #: character
-  opacity = 'CC', #: character (00-FF)
+  opacity = 'BB', #: character (00-FF)
   add_new_scale = FALSE #: logical
 ) {
   .geogg.check_class(this)
