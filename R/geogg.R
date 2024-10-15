@@ -40,7 +40,8 @@ geogg.pca_map = function(
     surface_legend_title='Legend Title', #: character
     surface_palette=colors.purples(), #: character vector
     surface_width=100, #: numeric
-    surface_height=100 #: numeric
+    surface_height=100, #: numeric
+    size = vizsize.parse('large')
 ) {
   .pca.check_class(pca_obj)
 
@@ -60,7 +61,7 @@ geogg.pca_map = function(
     stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
   }
 
-  obj = geogg(size = 'normal') %>%
+  obj = geogg(size = size) %>%
     geogg.add_tiles()
 
   if(add_surface) {
@@ -133,7 +134,8 @@ geogg.percentage_of_proficiency_map = function(
   surface_legend_title='Legend Title', #: character
   surface_palette=colors.purples(), #: character vector
   surface_width=100, #: numeric
-  surface_height=100 #: numeric
+  surface_height=100, #: numeric
+  size = vizsize.parse('large')
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -155,7 +157,7 @@ geogg.percentage_of_proficiency_map = function(
     stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
   }
 
-  obj = geogg(size = 'normal') %>%
+  obj = geogg(size = size) %>%
     geogg.add_tiles()
 
   if(add_surface) {
