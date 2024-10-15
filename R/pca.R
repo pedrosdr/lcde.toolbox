@@ -285,21 +285,21 @@ pca.get_largest_variations = function(
   )
   df_intersection$var = df_intersection$CP1.y - df_intersection$CP1.x
 
-  df_largest_increases = df_intersection %>% rename(labels = labels.x)
+  df_largest_variations = df_intersection %>% rename(labels = labels.x)
 
   if(variation == 'positive') {
-    df_largest_increases = df_largest_increases[
-      order(-df_largest_increases$var),
+    df_largest_variations = df_largest_variations[
+      order(-df_largest_variations$var),
     ]
   } else {
-    df_largest_increases = df_largest_increases[
-      order(df_largest_increases$var),
+    df_largest_variations = df_largest_variations[
+      order(df_largest_variations$var),
     ]
   }
 
-  df_largest_increases = df_largest_increases[1:number,]
+  df_largest_variations = df_largest_variations[1:number,]
 
-  if(nrow(df_largest_increases) < number) {
+  if(nrow(df_largest_variations) < number) {
     if(errors == 'raise') {
       stop("The length of the output vector is shorter than the specified number.
            Please check your input data. To ignore this error set 'errors' to
@@ -311,7 +311,19 @@ pca.get_largest_variations = function(
     }
   }
 
-  return(df_largest_increases)
+  initial_length = nrow(df_largest_variations)
+  df_largest_variations = na.omit(df_largest_variations)
+  omitted_length =  initial_length - nrow(df_largest_variations)
+
+  if(omitted_length != 0) {
+    warning(
+      paste0(
+        omitted_length, ' points were omitted due to missing variations'
+      )
+    )
+  }
+
+  return(df_largest_variations)
 }
 
 #' pca.get_categories

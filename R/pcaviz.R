@@ -265,7 +265,7 @@ pcaviz.explained_variance = function(
         x=this$pca_obj$component_names,
         y=this$pca_obj$explained_variance
       ),
-      fill=colors.mixed()[2]
+      fill=colors.mixed()[1]
     ) +
 
     labs(
@@ -346,10 +346,6 @@ pcaviz.component_loads = function(
 
   loads = this$pca_obj$loads[,component]
   data_names = rownames(this$pca_obj$loads)
-  colors = ifelse(
-    loads < 0, 'neg', 'pos'
-  )
-  colors = as.factor(colors)
 
   this = this +
     theme_light() +
@@ -357,9 +353,9 @@ pcaviz.component_loads = function(
     geom_col(
       aes(
         x=data_names,
-        y=loads,
-        fill = colors
-      )
+        y=loads
+      ),
+      fill = colors.mixed()[1]
     ) +
 
     labs(
@@ -574,7 +570,7 @@ pcaviz.add_labels = function(
         y = y,
         label = labels
       ),
-      size=this$size$text/3
+      size=this$size$text/4
     )
 
   return(this)
@@ -724,12 +720,6 @@ pcaviz.add_largest_variations = function(
     stop("'variation' must be one of ('positive', 'negative')")
   }
 
-  color = if(variation == 'positive'){
-    colors.red_to_green()[4]
-  } else {
-    colors.red_to_green()[1]
-  }
-
   df = this$pca_obj %>% pca.get_largest_variations(
     number = number,
     keys = keys,
@@ -737,6 +727,16 @@ pcaviz.add_largest_variations = function(
     labels = labels,
     variation
   )
+
+  if(variation == 'positive'){
+    color = ifelse(
+      df$var > 0, colors.red_to_green()[4], colors.grayscale()[3]
+    )
+  } else {
+    color = ifelse(
+      df$var < 0, colors.red_to_green()[1], colors.grayscale()[3]
+    )
+  }
 
   unique_years = unique(years)
 
@@ -812,6 +812,10 @@ pcaviz.add_segments = function(
     stop("all vectors must have the same length")
   }
 
+  if(length(color) == 1) {
+    color = rep(color, length(from.x))
+  }
+
   segments_list <- lapply(1:length(from.x), function(i) {
     geom_segment(
       mapping = aes(
@@ -825,7 +829,7 @@ pcaviz.add_segments = function(
         length = unit(this$size$linewidth/10, "inches")
       ),
       linewidth=this$size$linewidth,
-      color=color
+      color=color[i]
     )
   })
 

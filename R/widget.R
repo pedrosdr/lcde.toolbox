@@ -1,5 +1,4 @@
 library(htmltools)
-library(mapview)
 
 # class widget
 
