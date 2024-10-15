@@ -26,6 +26,105 @@ geogg = function(
   return(obj)
 }
 
+geogg.percentage_of_proficiency_map = function(
+  data, #: numeric vector
+  subject = c('mathematics', 'portuguese language'), #: character
+  latitude, #: numeric vector
+  longitude, #: numeric vector,
+  labels=NULL,
+  add_boundary=FALSE,
+  add_surface=FALSE,
+  georef_obj=NULL, #: georef
+  surface_data=NULL, #: numeric vector
+  surface_latitude=NULL, #: numeric vector
+  surface_longitude=NULL, #: numeric vector
+  surface_legend_title='Legend Title', #: character
+  surface_palette=colors.purples(), #: character vector
+  surface_width=100, #: numeric
+  surface_height=100 #: numeric
+) {
+  if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
+    stop("'subject' must be one of 'mathematics', 'portuguese language')")
+  }
+
+  if(add_boundary & is.null(georef_obj)) {
+    stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(georef_obj)) {
+    stop("'add_surface' is set to TRUE but no 'georef_obj' was given")
+  }
+  if(add_surface & is.null(surface_data)) {
+    stop("'add_surface' is set to TRUE but no 'surface_data' was given")
+  }
+  if(add_surface & is.null(surface_latitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+  if(add_surface & is.null(surface_longitude)) {
+    stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
+  }
+
+  obj = geogg(size = 'normal') %>%
+    geogg.add_tiles()
+
+  if(add_surface) {
+    obj = obj %>%
+      geogg.add_surface(
+        georef_obj = georef_obj,
+        data = surface_data,
+        latitude = surface_latitude,
+        longitude = surface_longitude,
+        width = surface_width,
+        height = surface_height,
+        legend_title = surface_legend_title,
+        palette = surface_palette
+      )
+  }
+
+  if(add_boundary) {
+    obj = obj %>% geogg.add_boundary(georef.from_geojson(malha))
+  }
+
+  legend_title = if(subject[1] == 'mathematics') {
+    'Apredizado Adequado\nem Matemática'
+  } else {
+    'Apredizado Adequado\nem Língua Portuguesa'
+  }
+
+  obj = obj %>% geogg.add_points(
+      latitude=latitude,
+      longitude=longitude,
+      groups=factor(ifelse(
+        data < 25, 'A', ifelse(
+          data < 50, 'B', ifelse(
+            data < 70, 'C', 'D'
+          )
+        )
+      )
+      ),
+      color_map = c(
+        'A' = colors.red_to_green()[1],
+        'B' = colors.red_to_green()[2],
+        'C' = colors.red_to_green()[3],
+        'D' = colors.red_to_green()[4]
+      ),
+      labels = c(
+        '0%   |-   25%', '25% |-   50%', '50% |-   70%', '70% |-| 100%'
+      ),
+      legend_title = legend_title,
+      add_new_scale = if(add_surface) TRUE else FALSE
+  )
+
+  if(!is.null(labels)) {
+    obj = obj %>% geogg.add_labels(
+      labels,
+      latitude,
+      longitude
+    )
+  }
+
+  return(obj)
+}
+
 # methods
 .geogg.check_class = function(
   obj
@@ -54,6 +153,7 @@ geogg.add_points = function(
   longitude, #: numeric
   groups=NULL, #: factor
   color_map=NULL, #: key-value character vector
+  labels=NULL, #: vector
   legend_title = 'Legend Title', #: character
   add_new_scale = FALSE #: logical
 ) {
@@ -80,6 +180,10 @@ geogg.add_points = function(
 
   if(length(groups) != length(latitude)) {
     stop("'groups' and 'latitude' must be vectors of the same length")
+  }
+
+  if(is.null(labels)) {
+    labels = levels(groups)
   }
 
   mask = !(is.na(df$longitude) | is.na(df$latitude))
@@ -119,7 +223,8 @@ geogg.add_points = function(
     ) +
     scale_fill_manual(
       name = legend_title,
-      values = color_map
+      values = color_map,
+      labels = labels
     )
 
   this = this %>%
@@ -215,14 +320,14 @@ geogg.add_surface = function(
   longitude, #: numeric vector
   width = 100, #: integer
   height = 100, #: integer
-  title = 'Surface Title', #: character
+  legend_title = 'Surface Title', #: character
   palette = colors.purples(), #: character
   opacity = 'BB', #: character (00-FF)
   add_new_scale = FALSE #: logical
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
-  type.check_character(title, 'title')
+  type.check_character(legend_title, 'legend_title')
   type.check_character(palette, 'palette')
   type.check_character(opacity, 'opacity')
   type.check_logical(add_new_scale, 'add_new_scale')
@@ -249,7 +354,7 @@ geogg.add_surface = function(
     scale_fill_gradientn(
       colors = palette,
       na.value=NA,
-      name=title
+      name=legend_title
     )
 
   return(this)
