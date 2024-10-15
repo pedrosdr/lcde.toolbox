@@ -29,6 +29,28 @@ georef.from_geojson = function(
   return(this)
 }
 
+#' georef.from_sf
+#'
+#' Creates a \code{georef} object from an SF object.
+#'
+#' @param sf_obj An SF object representing the geographical data.
+#'
+#' @return A \code{georef} object containing the transformed SF object with CRS set to 4326.
+#'
+#' @export
+georef.from_sf = function(
+    sf_obj #: sf
+) {
+  type.check_sf(sf_obj)
+  sf_obj = st_transform(sf_obj, crs = 4326)
+
+  this = list()
+  class(this) = 'georef'
+
+  this = this %>% georef.set_sf(sf_obj)
+  return(this)
+}
+
 #' georef.from_points
 #'
 #' Creates a \code{georef} object from latitude and longitude points.
