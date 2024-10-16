@@ -117,9 +117,9 @@ ggviz.radar = function(
 
   obj = obj +
     theme(
-      plot.title = element_text(hjust = 0.5, size = size$title),
+      plot.title = element_text(hjust = 0.5, size = size$text),
       plot.caption = element_text(
-        hjust = 0.5, size = size$title,
+        hjust = 0.5, size = size$text,
         color = colors[1]
       )
     )

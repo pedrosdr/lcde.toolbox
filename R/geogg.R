@@ -187,7 +187,7 @@ geogg.percentage_of_proficiency_map = function(
       groups=factor(ifelse(
         data < 25, '0% |- 25%', ifelse(
           data < 50, '25% |- 50%', ifelse(
-            data < 70, '50% |- 75%', '75% |-| 100%'
+            data < 70, '50% |- 70%', '70% |-| 100%'
           )
         )
       )
@@ -195,8 +195,8 @@ geogg.percentage_of_proficiency_map = function(
       color_map = c(
         '0% |- 25%' = colors.red_to_green()[1],
         '25% |- 50%' = colors.red_to_green()[2],
-        '50% |- 75%' = colors.red_to_green()[3],
-        '75% |-| 100%' = colors.red_to_green()[4]
+        '50% |- 70%' = colors.red_to_green()[3],
+        '70% |-| 100%' = colors.red_to_green()[4]
       ),
       legend_title = legend_title,
       add_new_scale = if(add_surface) TRUE else FALSE
