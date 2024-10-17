@@ -26,7 +26,8 @@ Imports:
   htmltools,
   ggspatial,
   prettymapr,
-  ggnewscale
+  ggnewscale,
+  officer
 Depends:
   ggplot2,
   dplyr,
@@ -44,7 +45,8 @@ Depends:
   htmltools,
   ggspatial,
   prettymapr,
-  ggnewscale
+  ggnewscale,
+  officer
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
@@ -60,3 +62,4 @@ Collate:
     'geoleaf.R'
     'geogg.R'
     'widget.R'
+    'ppt.R'
