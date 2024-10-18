@@ -11,7 +11,7 @@ ppt.from_template = function(
   obj = officer::read_pptx(template_path)
   class(obj) = c(class(obj), 'ppt')
 
-  obj = obj %>% ppt.set_slide(1)
+  obj = obj %>% ppt.on_slide(1)
 
   return(obj)
 }
@@ -25,14 +25,13 @@ ppt.from_template = function(
   }
 }
 
-ppt.set_slide = function(
+ppt.on_slide = function(
   this, #: ppt
   page_number #: integer
 ) {
   type.check_integer(page_number, 'page_number')
 
-  this = this %>%
-    officer::on_slide(page_number)
+  this = this %>% officer::on_slide(page_number)
 
   return(this)
 }
@@ -42,32 +41,17 @@ ppt.new_slide = function(
 ) {
   .ppt.check_class(this)
 
-  # this = this %>% officer::add_slide(
-  #
-  # )
-}
-
-
-ppt.set_layout = function(
-  this, #: ppt
-  layout #: character
-) {
-  .ppt.check_class(this)
-  type.check_character(layout, 'layout')
-
-  this$layout = layout
+  this = this %>% officer::add_slide(
+    layout = this %>% ppt.get_layout,
+    master = this %>% ppt.get_master
+  )
 
   return(this)
 }
-
 ppt.get_layout = function(
   this #: ppt
 ) {
   .ppt.check_class(this)
-
-  if(!is.null(this$layout)) {
-    return(this$layout)
-  }
 
   layouts = officer::layout_summary(this)$layout
   layout = NULL
@@ -90,6 +74,29 @@ ppt.get_layout = function(
   return(layout)
 }
 
+ppt.get_master = function(
+  this #: ppt
+) {
+  .ppt.check_class(this)
+
+  masters = officer::layout_summary(this)$master
+  master = NULL
+
+  if('Tema do Office' %in% masters) {
+    master = 'Tema do Office'
+
+  } else if ('Office Theme' %in% masters) {
+    master = 'Office Theme'
+  }
+
+  if(is.null(master)) {
+    stop(paste("Unable to automatically set a layout. Please specify",
+               "the layout manually using ppt.set_layout."))
+  }
+
+  return(master)
+}
+
 ppt.save = function(
   this, #: ppt
   path #: character
@@ -97,5 +104,5 @@ ppt.save = function(
   .ppt.check_class(this)
   type.check_character(path, 'path')
 
-  print(this$document, path)
+  print(this, path)
 }
