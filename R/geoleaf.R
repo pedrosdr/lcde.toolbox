@@ -14,8 +14,8 @@ library(leaflet)
 geoleaf = function() {
   this = leaflet(
     options = leafletOptions(
-      zoomSnap=0.3,
-      zoomDelta=0.3
+      zoomSnap=0.7,
+      zoomDelta=0.7
     )
   )
   class(this) = c(class(this), 'geoleaf')
@@ -151,6 +151,7 @@ geoleaf.pca_map = function(
   surface_width=100, #: numeric
   surface_height=100 #: numeric
 ) {
+
   if(add_boundary & is.null(georef_obj)) {
     stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
   }
@@ -191,11 +192,12 @@ geoleaf.pca_map = function(
 
   obj = obj %>% geoleaf.add_pca_points(
       pca_obj,
-      df$latitude,
-      df$longitude,
-      labels=labels
-  ) %>%
-    geoleaf.add_legend_pca()
+      latitude = latitude,
+      longitude = longitude,
+      labels = labels
+  )
+
+  obj = obj %>% geoleaf.add_legend_pca()
 
   return(obj)
 }
@@ -259,7 +261,7 @@ geoleaf.add_pca_points = function(
     pca_obj, #: pca
     latitude, #: numeric vector
     longitude, #: numeric vector,
-    labels=NULL
+    labels=NULL #: vector
 ) {
   .geoleaf.check_class(this)
   .pca.check_class(pca_obj)
@@ -313,6 +315,7 @@ geoleaf.add_points = function(
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(longitude, 'longitude')
 
+
   radius = 9
   if(is.null(labels)) {
     radius = 7
@@ -329,12 +332,13 @@ geoleaf.add_points = function(
   if(is.null(colors)) {
     colors = rep(colors.mixed()[1], length(longitude))
   }
+
   type.check_character(colors, 'colors')
   if(length(longitude) != length(colors)) {
     stop("'longitude' and 'colors' must be vectors of the same length")
   }
 
-  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  mask = !(is.na(longitude) | is.na(latitude))
   df_filter = data.frame(
     latitude = latitude,
     longitude = longitude,
