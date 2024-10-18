@@ -41,7 +41,7 @@ type.check_numeric = function(
     property = 'property'
   }
 
-  if(!('numeric' %in% class(obj))) {
+  if(!is.numeric(obj)) {
     stop(paste0("'",property,"' must be of type 'numeric'"))
   }
 }
