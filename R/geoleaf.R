@@ -31,6 +31,7 @@ geoleaf = function() {
 #' @param latitude A numeric vector of latitude coordinates.
 #' @param longitude A numeric vector of longitude coordinates.
 #' @param labels An optional vector of labels for the points. Defaults to NULL.
+#' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #' @param add_boundary Logical, indicating whether to add a geographic boundary from a georef object.
 #' @param add_surface Logical, indicating whether to add a surface layer with interpolation.
 #' @param georef_obj A georef object used for geographic boundaries or surface layers.
@@ -50,9 +51,9 @@ geoleaf.percentage_of_proficiency_map = function(
     subject = c('mathematics', 'portuguese language'), #: character
     latitude, #: numeric vector
     longitude, #: numeric vector,
-    labels=NULL,
-    add_boundary=FALSE,
-    add_surface=FALSE,
+    labels=NULL, #: vector
+    add_boundary=FALSE, #: logical
+    add_surface=FALSE, #: logical
     georef_obj=NULL, #: georef
     surface_data=NULL, #: numeric vector
     surface_latitude=NULL, #: numeric vector
@@ -104,7 +105,8 @@ geoleaf.percentage_of_proficiency_map = function(
       latitude = latitude,
       longitude = longitude,
       colors = inep.get_percentage_of_proficiency_category_colors(data),
-      labels = labels
+      labels = labels,
+      popups = popups
   ) %>%
   geoleaf.add_legend_percentage_of_proficiency(
       subject = subject
@@ -121,6 +123,7 @@ geoleaf.percentage_of_proficiency_map = function(
 #' @param latitude A numeric vector of latitude coordinates.
 #' @param longitude A numeric vector of longitude coordinates.
 #' @param labels An optional vector of labels for the points. Defaults to NULL.
+#' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #' @param add_boundary Logical, indicating whether to add a geographic boundary from a georef object.
 #' @param add_surface Logical, indicating whether to add a surface layer with interpolation.
 #' @param georef_obj A georef object used for geographic boundaries or surface layers.
@@ -139,9 +142,10 @@ geoleaf.pca_map = function(
   pca_obj, #: pca
   latitude, #: numeric vector
   longitude, #: numeric vector,
-  labels=NULL,
-  add_boundary=FALSE,
-  add_surface=FALSE,
+  labels=NULL, #: vector
+  popups=NULL, #: vector
+  add_boundary=FALSE, #: logical
+  add_surface=FALSE, #: logical
   georef_obj=NULL, #: georef
   surface_data=NULL, #: numeric vector
   surface_latitude=NULL, #: numeric vector
@@ -194,7 +198,8 @@ geoleaf.pca_map = function(
       pca_obj,
       latitude = latitude,
       longitude = longitude,
-      labels = labels
+      labels = labels,
+      popups = popups
   )
 
   obj = obj %>% geoleaf.add_legend_pca()
@@ -250,6 +255,8 @@ geoleaf.add_tiles = function(
 #' @param pca_obj A 'pca' object.
 #' @param latitude A numeric vector of latitude coordinates for the PCA points.
 #' @param longitude A numeric vector of longitude coordinates for the PCA points.
+#' @param labels An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.
+#' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #'
 #' @return The updated \code{geoleaf} object with added PCA points.
 #'
@@ -261,7 +268,8 @@ geoleaf.add_pca_points = function(
     pca_obj, #: pca
     latitude, #: numeric vector
     longitude, #: numeric vector,
-    labels=NULL #: vector
+    labels=NULL, #: vector
+    popups=NULL #: vector
 ) {
   .geoleaf.check_class(this)
   .pca.check_class(pca_obj)
@@ -271,11 +279,13 @@ geoleaf.add_pca_points = function(
       latitude = latitude,
       longitude = longitude,
       colors = pca_obj %>% pca.get_category_colors(),
-      labels = labels
+      labels = labels,
+      popups = popups
     )
 
   return(this)
 }
+
 
 #' Add Points to Map
 #'
@@ -286,6 +296,7 @@ geoleaf.add_pca_points = function(
 #' @param longitude A numeric vector specifying the longitude coordinates for the points.
 #' @param colors An optional character vector specifying the colors for each marker. If not provided, a default color is used.
 #' @param labels An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.
+#' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #'
 #' @return The modified `geoleaf` map object with the added points.
 #'
@@ -309,7 +320,8 @@ geoleaf.add_points = function(
   latitude, #: numeric vector
   longitude, #: numeric vector
   colors=NULL, #: character vector
-  labels=NULL #: vector
+  labels=NULL, #: vector
+  popups=NULL #: vector
 ) {
   .geoleaf.check_class(this)
   type.check_numeric(latitude, 'latitude')
@@ -320,6 +332,9 @@ geoleaf.add_points = function(
   if(is.null(labels)) {
     radius = 7
     labels = rep('', length(longitude))
+  }
+  if(is.null(popups)) {
+    popups = rep('', length(longitude))
   }
 
   if(length(longitude) != length(latitude)) {
@@ -343,7 +358,8 @@ geoleaf.add_points = function(
     latitude = latitude,
     longitude = longitude,
     colors = colors,
-    labels = labels
+    labels = labels,
+    popups = popups
   )
 
   df_filter = df_filter[mask,]
@@ -351,6 +367,7 @@ geoleaf.add_points = function(
   longitude = df_filter$longitude
   colors = df_filter$colors
   labels = df_filter$labels
+  popups = df_filter$popups
 
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
@@ -372,6 +389,7 @@ geoleaf.add_points = function(
       fillOpacity = 1,
       radius = radius,
       label = labels,
+      popup = popups,
       labelOptions = labelOptions(
         noHide = TRUE,
         direction = "center",
