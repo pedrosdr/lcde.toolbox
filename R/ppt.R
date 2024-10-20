@@ -11,7 +11,7 @@ ppt.from_template = function(
   obj = officer::read_pptx(template_path)
   class(obj) = c(class(obj), 'ppt')
 
-  obj = obj %>% ppt.on_slide(1)
+  obj$current_index = obj %>% ppt.get_length()
 
   return(obj)
 }
@@ -27,11 +27,13 @@ ppt.from_template = function(
 
 ppt.on_slide = function(
   this, #: ppt
-  page_number #: integer
+  index #: integer
 ) {
-  type.check_integer(page_number, 'page_number')
+  .ppt.check_class(this)
+  type.check_integer(index, 'index')
 
-  this = this %>% officer::on_slide(page_number)
+  this = this %>% officer::on_slide(index)
+  this$current_index = index
 
   return(this)
 }
@@ -50,10 +52,35 @@ ppt.new_slide = function(
     master = this %>% ppt.get_master
   )
 
+  this$current_index = this$current_index + 1
+
+  this = this %>% ppt.move_slide(to=this$current_index)
+  this = this %>% ppt.on_slide(this$current_index)
+
   if(!is.null(title)){
     this = this %>%
       ppt.add_title(title)
   }
+
+  return(this)
+}
+
+ppt.move_slide = function(
+  this, #: ppt
+  index = NULL, #: integer
+  to #: integer
+) {
+  .ppt.check_class(this)
+  if(!is.null(index)) {
+    type.check_integer(index, 'index')
+  }
+  type.check_integer(to, 'to')
+
+  this = this %>%
+    officer::move_slide(
+      index = index,
+      to = to
+    )
 
   return(this)
 }
@@ -125,6 +152,14 @@ ppt.get_height = function(
   height = (this %>% officer::slide_size())$height
 
   return(height)
+}
+
+ppt.get_length = function(
+  this #: ppt
+) {
+  .ppt.check_class(this)
+
+  return(length(this))
 }
 
 ppt.get_vertical_dimension = function(
