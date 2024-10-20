@@ -250,6 +250,35 @@ ppt.add_text = function(
   return(this)
 }
 
+ppt.add_ggplot = function(
+  this, #: ppt
+  ggplot_obj, #: ggplot
+  left = 0.1, #: numeric
+  top = 0.2, #: numeric
+  width = 0.8, #: numeric
+  height = 0.7 #: numeric
+) {
+  .ppt.check_class(this)
+  type.check_ggplot(ggplot_obj, 'ggplot_obj')
+  type.check_numeric(left, 'left')
+  type.check_numeric(top, 'top')
+  type.check_numeric(width, 'width')
+  type.check_numeric(height, 'height')
+
+  this = this %>%
+    officer::ph_with(
+      ggplot_obj,
+      location = officer::ph_location(
+        left = this %>% ppt.get_horizontal_dimension(left),
+        top = this %>% ppt.get_vertical_dimension(top),
+        width = this %>% ppt.get_horizontal_dimension(width),
+        height = this %>% ppt.get_vertical_dimension(height)
+      )
+    )
+
+  return(this)
+}
+
 ppt.save = function(
   this, #: ppt
   path #: character
