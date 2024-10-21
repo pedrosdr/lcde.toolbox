@@ -196,10 +196,7 @@ ppt.add_title = function(
   this = this %>%
     ppt.add_text(
       text = title,
-      left = 0,
-      top = 0.05,
-      width = 1,
-      height = 0.08,
+      position = pptpos.title(),
       size = 28,
       bold = TRUE
     )
@@ -210,10 +207,7 @@ ppt.add_title = function(
 ppt.add_text = function(
   this, #: ppt
   text, #: character
-  left, #: numeric (0 - 1)
-  top, #: numeric (0 - 1)
-  width, #: numeric (0 - 1)
-  height, #: numeric (0 - 1)
+  position, #: pptpos
   font = 'Calibri', #: character
   size = 18, #: numeric
   bold = FALSE #: logical
@@ -223,10 +217,7 @@ ppt.add_text = function(
   type.check_character(font, 'font')
   type.check_numeric(size, 'size')
   type.check_logical(bold, 'bold')
-  type.check_numeric(left, 'left')
-  type.check_numeric(top, 'top')
-  type.check_numeric(width, 'width')
-  type.check_numeric(height, 'height')
+  position = pptpos.parse(position)
 
   this = this %>%
     officer::ph_with(
@@ -240,39 +231,32 @@ ppt.add_text = function(
         fp_p = officer::fp_par(text.align = 'center')
       ),
       officer::ph_location(
-        left = this%>%ppt.get_horizontal_dimension(left),
-        top = this%>%ppt.get_vertical_dimension(top),
-        width = this%>%ppt.get_horizontal_dimension(width),
-        height = this%>%ppt.get_vertical_dimension(height)
+        left = this%>%ppt.get_horizontal_dimension(position$left),
+        top = this%>%ppt.get_vertical_dimension(position$top),
+        width = this%>%ppt.get_horizontal_dimension(position$width),
+        height = this%>%ppt.get_vertical_dimension(position$height)
       )
     )
 
   return(this)
 }
 
-ppt.add_ggplot = function(
+ppt.add_object = function(
   this, #: ppt
-  ggplot_obj, #: ggplot
-  left = 0.1, #: numeric
-  top = 0.2, #: numeric
-  width = 0.8, #: numeric
-  height = 0.7 #: numeric
+  obj,
+  position #: pptpos
 ) {
   .ppt.check_class(this)
-  type.check_ggplot(ggplot_obj, 'ggplot_obj')
-  type.check_numeric(left, 'left')
-  type.check_numeric(top, 'top')
-  type.check_numeric(width, 'width')
-  type.check_numeric(height, 'height')
+  position = pptpos.parse(position)
 
   this = this %>%
     officer::ph_with(
-      ggplot_obj,
+      obj,
       location = officer::ph_location(
-        left = this %>% ppt.get_horizontal_dimension(left),
-        top = this %>% ppt.get_vertical_dimension(top),
-        width = this %>% ppt.get_horizontal_dimension(width),
-        height = this %>% ppt.get_vertical_dimension(height)
+        left = this %>% ppt.get_horizontal_dimension(position$left),
+        top = this %>% ppt.get_vertical_dimension(position$top),
+        width = this %>% ppt.get_horizontal_dimension(position$width),
+        height = this %>% ppt.get_vertical_dimension(position$height)
       )
     )
 
