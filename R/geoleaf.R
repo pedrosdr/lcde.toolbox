@@ -52,6 +52,7 @@ geoleaf.percentage_of_proficiency_map = function(
     latitude, #: numeric vector
     longitude, #: numeric vector,
     labels=NULL, #: vector
+    popups=NULL, #: vector
     add_boundary=FALSE, #: logical
     add_surface=FALSE, #: logical
     georef_obj=NULL, #: georef
@@ -346,6 +347,10 @@ geoleaf.add_points = function(
 
   if(is.null(colors)) {
     colors = rep(colors.mixed()[1], length(longitude))
+  }
+
+  if(length(colors) == 1) {
+    colors = rep(colors, length(latitude))
   }
 
   type.check_character(colors, 'colors')
