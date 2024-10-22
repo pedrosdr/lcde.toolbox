@@ -34,8 +34,8 @@ pptpos = function(
 
   this$top = offset_top + (row - 1 + margin) * row_height
   this$left = offset_left + (column - 1 + margin) * column_width
-  this$width = (1 - 2 * margin) * column_width
-  this$height = (1 - 2 * margin) * row_height
+  this$width = (1 - 2 * margin) * column_width * width
+  this$height = (1 - 2 * margin) * row_height * height
 
   return(this)
 }
@@ -81,15 +81,87 @@ pptpos.left_half = function() {
   return(this)
 }
 
+pptpos.left_half = function() {
+  this = pptpos(
+    n_rows = 1,
+    n_columns = 2,
+    column = 1,
+    row = 1,
+    offset_top = 0.13,
+    offset_bottom = 0.15,
+    margin = 0.03
+  )
+
+  return(this)
+}
+
 pptpos.right_half = function() {
   this = pptpos(
     n_rows = 1,
     n_columns = 2,
-    column = 2,
     row = 1,
+    column = 2,
     offset_top = 0.13,
     offset_bottom = 0.15,
     margin = 0.05
+  )
+
+  return(this)
+}
+
+pptpos.wide_left = function() {
+  this = pptpos(
+    n_rows = 1,
+    n_columns = 4,
+    row = 1,
+    column = 1,
+    width = 3,
+    offset_top = 0.13,
+    offset_bottom = 0.05,
+    offset_right = 0.01,
+    offset_left = 0.01,
+    margin = 0.02
+  )
+
+  return(this)
+}
+
+pptpos.wide_right = function() {
+  this = pptpos(
+    n_rows = 1,
+    n_columns = 4,
+    column = 2,
+    row = 1,
+    width = 3,
+    offset_top = 0.13,
+    offset_bottom = 0.05,
+    offset_right = 0.01,
+    offset_left = 0.01,
+    margin = 0.02
+  )
+
+  return(this)
+}
+
+pptpos.grid = function(
+  n_rows, #: integer
+  n_columns, #: integer
+  index #: integer
+) {
+  row = trunc(index / n_columns) + 1
+  column = index %% n_columns
+
+  this = pptpos(
+    n_rows = n_rows,
+    n_columns = n_columns,
+    row = row,
+    column = column,
+    width = 1,
+    offset_top = 0.13,
+    offset_bottom = 0.05,
+    offset_right = 0.01,
+    offset_left = 0.01,
+    margin = 0.03
   )
 
   return(this)
@@ -108,10 +180,14 @@ pptpos.parse = function(
     this = pptpos.left_half()
   } else if(obj == 'right-half') {
     this = pptpos.right_half()
+  } else if(obj == 'wide-left') {
+    this = pptpos.wide_left()
+  } else if(obj == 'wide-right') {
+    this = pptpos.wide_right()
   } else {
     stop(paste("Failed to parse 'obj'. Ensure it is of type 'pptpos' or one",
                "of the following character options: ('center', 'left-half',",
-               " 'right-half')"))
+               " 'right-half', 'wide-left', 'wide-right)"))
   }
 
   return(this)

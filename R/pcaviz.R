@@ -371,14 +371,7 @@ pcaviz.component_loads = function(
         )
       ),
       size = this$size$text/3
-    ) +
-
-    scale_fill_manual(
-      values=c(
-        'neg' = colors.red_to_green()[1],
-        'pos' = colors.red_to_green()[4]
-      )
-    ) +
+    )
 
     scale_y_continuous(labels = function(x) {sprintf("%.2f", x)})
 
@@ -539,9 +532,16 @@ pcaviz.add_labels = function(
   this, #: pcaviz
   labels, #: vector
   x = NULL, #: vector
-  y = NULL #: vector
+  y = NULL, #: vector
+  type = c('text', 'label') #: character
 ) {
   .pcaviz.check_class(this)
+  type.check_character(type, 'type')
+
+  type = type[1]
+  if(!(type %in% c('text', 'label'))) {
+    stop("'type' must be one of ('text', 'label'")
+  }
 
   if((is.null(x) || is.null(y)) &&
      length(labels) != nrow(this$pca_obj$principal_components)
@@ -563,8 +563,14 @@ pcaviz.add_labels = function(
     stop("all vectors must have the same length")
   }
 
+  label_function = if(type == 'text') {
+    ggrepel::geom_text_repel
+  } else {
+    ggrepel::geom_label_repel
+  }
+
   this = this +
-    geom_text_repel(
+    label_function(
       mapping = aes(
         x = x,
         y = y,
@@ -573,7 +579,7 @@ pcaviz.add_labels = function(
       min.segment.length = 0,
       max.overlaps = 50,
       box.padding = this$size$point_size/2,
-      size=this$size$text/5
+      size=this$size$text/4
     )
 
   return(this)
@@ -751,7 +757,8 @@ pcaviz.add_largest_variations = function(
   this = this %>% pcaviz.add_labels(
     labels = rep(df$labels, 2),
     x = c(df$CP1.x, df$CP1.y),
-    y = c(df$CP2.x, df$CP2.y)
+    y = c(df$CP2.x, df$CP2.y),
+    type = 'label'
   )
 
   return(this)
