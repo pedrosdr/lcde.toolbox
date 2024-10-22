@@ -285,7 +285,7 @@ pca.get_largest_variations = function(
   )
   df_intersection$var = df_intersection$CP1.y - df_intersection$CP1.x
 
-  df_largest_variations = df_intersection %>% rename(labels = labels.x)
+  df_largest_variations = df_intersection %>% dplyr::rename(labels = labels.x)
 
   if(variation == 'positive') {
     df_largest_variations = df_largest_variations[

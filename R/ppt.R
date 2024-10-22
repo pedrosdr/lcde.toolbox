@@ -65,6 +65,35 @@ ppt.new_slide = function(
   return(this)
 }
 
+ppt.add_transition = function(
+  this, #: ppt
+  text #: character
+) {
+  .ppt.check_class(this)
+  type.check_character(text, 'text')
+
+  this = this %>%
+    ppt.new_slide() %>%
+    ppt.add_text(
+      text = text,
+      size = 44,
+      position = pptpos(
+        n_columns = 1,
+        n_rows = 3,
+        column = 1,
+        row = 2,
+        width = 1,
+        height = 1,
+        offset_top = 0,
+        offset_left = 0.1,
+        offset_right = 0.1,
+        margin = 0
+      )
+    )
+
+  return(this)
+}
+
 ppt.move_slide = function(
   this, #: ppt
   index = NULL, #: integer
@@ -225,7 +254,7 @@ ppt.add_text = function(
         ftext(
           text,
           officer::fp_text(
-            color = '#333333', font.family = 'Calibri', font.size = size, bold = TRUE
+            color = '#333333', font.family = font, font.size = size, bold = bold
           )
         ),
         fp_p = officer::fp_par(text.align = 'center')
