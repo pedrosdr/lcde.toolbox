@@ -4,7 +4,14 @@
 \alias{geoleaf.add_points}
 \title{Add Points to Map}
 \usage{
-geoleaf.add_points(this, latitude, longitude, colors = NULL, labels = NULL)
+geoleaf.add_points(
+  this,
+  latitude,
+  longitude,
+  colors = NULL,
+  labels = NULL,
+  popups = NULL
+)
 }
 \arguments{
 \item{this}{A `geoleaf` map object.}
@@ -16,6 +23,8 @@ geoleaf.add_points(this, latitude, longitude, colors = NULL, labels = NULL)
 \item{colors}{An optional character vector specifying the colors for each marker. If not provided, a default color is used.}
 
 \item{labels}{An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.}
+
+\item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
 }
 \value{
 The modified `geoleaf` map object with the added points.

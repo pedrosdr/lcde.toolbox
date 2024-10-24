@@ -4,7 +4,14 @@
 \alias{geoleaf.add_pca_points}
 \title{geoleaf.add_pca_points}
 \usage{
-geoleaf.add_pca_points(this, pca_obj, latitude, longitude, labels = NULL)
+geoleaf.add_pca_points(
+  this,
+  pca_obj,
+  latitude,
+  longitude,
+  labels = NULL,
+  popups = NULL
+)
 }
 \arguments{
 \item{this}{A \code{geoleaf} object.}
@@ -14,6 +21,10 @@ geoleaf.add_pca_points(this, pca_obj, latitude, longitude, labels = NULL)
 \item{latitude}{A numeric vector of latitude coordinates for the PCA points.}
 
 \item{longitude}{A numeric vector of longitude coordinates for the PCA points.}
+
+\item{labels}{An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.}
+
+\item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
 }
 \value{
 The updated \code{geoleaf} object with added PCA points.

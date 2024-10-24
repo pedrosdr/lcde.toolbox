@@ -432,4 +432,40 @@ pca.filter = function(
   return(obj)
 }
 
+#' Sort PCA Components and Data
+#'
+#' Sorts the principal components and the data matrix of a PCA object based on a specified vector.
+#'
+#' @param this An object of the PCA class.
+#' @param by A numeric vector of the same length as the number of rows in the PCA data. It specifies the ordering criteria.
+#' @param descending A logical value indicating whether the sorting should be in descending order (default is `FALSE`).
+#'
+#' @return The modified PCA object with sorted principal components and data.
+#'
+#' @examples
+#' pca_object <- pca.sort(pca_object, by = some_vector, descending = TRUE)
+#'
+#' @export
+pca.sort = function(
+  this, #: pca
+  by, #: vector
+  descending = FALSE #: logical
+) {
+  .pca.check_class(this)
+  type.check_logical(descending, 'descending')
+
+  if(descending) {
+    by = -by
+  }
+
+  if(length(by) != nrow(this$data)) {
+    stop("'by' must be a vector of the same length as 'data'")
+  }
+
+  this$principal_components = this$principal_components[order(by),]
+  this$data = this$data[order(by),]
+
+  return(this)
+}
+
 

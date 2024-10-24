@@ -10,6 +10,7 @@ geoleaf.percentage_of_proficiency_map(
   latitude,
   longitude,
   labels = NULL,
+  popups = NULL,
   add_boundary = FALSE,
   add_surface = FALSE,
   georef_obj = NULL,
@@ -32,6 +33,8 @@ geoleaf.percentage_of_proficiency_map(
 \item{longitude}{A numeric vector of longitude coordinates.}
 
 \item{labels}{An optional vector of labels for the points. Defaults to NULL.}
+
+\item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
 
 \item{add_boundary}{Logical, indicating whether to add a geographic boundary from a georef object.}
 

@@ -4,7 +4,7 @@
 \alias{pcaviz.add_labels}
 \title{Add Labels to Points in PCA Scatter Plot}
 \usage{
-pcaviz.add_labels(this, labels, x = NULL, y = NULL)
+pcaviz.add_labels(this, labels, x = NULL, y = NULL, type = c("text", "label"))
 }
 \arguments{
 \item{this}{A PCA visualization object of class 'pcaviz'.}
