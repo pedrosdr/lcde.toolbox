@@ -27,7 +27,8 @@ Imports:
   ggspatial,
   prettymapr,
   ggnewscale,
-  officer
+  officer,
+  flextable
 Depends:
   ggplot2,
   dplyr,
@@ -46,7 +47,8 @@ Depends:
   ggspatial,
   prettymapr,
   ggnewscale,
-  officer
+  officer,
+  flextable
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
@@ -56,6 +58,7 @@ Collate:
     'vizsize.R'
     'ggradar.R'
     'pca.R'
+    'table.R'
     'ggviz.R'
     'pcaviz.R'
     'georef.R'
