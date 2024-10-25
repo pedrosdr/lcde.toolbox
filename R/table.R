@@ -16,16 +16,19 @@ table = function(
     ))
   }
 
-  colnames(dataframe) = column_names
-
   this = flextable::flextable(dataframe)
   class(this) = c(class(this), 'table')
+
+  this = this %>%
+    flextable::set_header_labels(values = column_names)
 
   this = this %>%
     table.set_theme_dark() %>%
     flextable::set_table_properties(layout = "autofit") %>%
     flextable::autofit() %>%
-    flextable::padding(padding = 1, part = 'all')
+    flextable::padding(padding = 1, part = 'all') %>%
+    flextable::height(height = 0.25, part = 'header') %>%
+    flextable::height(height = 0.25, part = 'body')
 
   return(this)
 }
@@ -53,7 +56,8 @@ table.add_header_row = function(
     flextable::add_header_row(
       values = column_names,
       colwidths = column_widths
-    )
+    ) %>%
+    flextable::height(height = 0.25, part = 'header') %>%
 
   return(this)
 }
@@ -63,13 +67,18 @@ table.set_theme_dark = function(
 ) {
   .table.check_class(this)
 
+  std_border <- fp_border(width = 1, color = "#000000")
+
   this = this %>%
     flextable::bg(bg = colors.grayscale()[5], part = "header") %>%
     flextable::color(color = "#ffffff", part = "header") %>%
-    flextable::valign(i = 1, valign = "bottom") %>%
+    flextable::valign(valign = "center", part = 'all') %>%
     flextable::align(align = 'center', part='all') %>%
-    flextable::fontsize(size = 12, part='header') %>%
-    flextable::fontsize(size = 10, part='body')
+    flextable::fontsize(size = 10, part='header') %>%
+    flextable::fontsize(size = 10, part='body') %>%
+    border_outer(part="all", border = std_border) %>%
+    border_inner_h(border = std_border, part="all") %>%
+    border_inner_v(border = std_border, part="all")
 
   return(this)
 }
@@ -94,6 +103,9 @@ table.fit_to_page = function(
     )
 
     this <- this %>% flextable::height(
+      height = calculated_height,
+      part = 'header'
+    ) %>% flextable::height(
       height = calculated_height,
       part = 'body'
     )

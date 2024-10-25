@@ -146,7 +146,8 @@ pptpos.wide_right = function() {
 pptpos.grid = function(
   n_rows, #: integer
   n_columns, #: integer
-  index #: integer
+  index, #: integer
+  margin = 0.1
 ) {
   row = trunc(index / n_columns) + 1
   column = index %% n_columns
@@ -161,7 +162,7 @@ pptpos.grid = function(
     offset_bottom = 0.05,
     offset_right = 0.01,
     offset_left = 0.01,
-    margin = 0.03
+    margin = margin
   )
 
   return(this)

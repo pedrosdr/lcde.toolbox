@@ -315,7 +315,7 @@ ppt.add_table = function(
     this, #: ppt
     table_obj, #: table
     position, #: pptpos
-    fit_height = TRUE
+    fit_height = FALSE
 ) {
   .ppt.check_class(this)
   type.check_table(table_obj, 'table_obj')
