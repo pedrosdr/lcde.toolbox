@@ -292,6 +292,58 @@ ppt.add_object = function(
   return(this)
 }
 
+ppt.add_ggplot = function(
+    this, #: ppt
+    ggplot_obj, #: ggplot
+    position #: pptpos
+) {
+  .ppt.check_class(this)
+  type.check_ggplot(ggplot_obj, 'ggplot_obj')
+
+  position = pptpos.parse(position)
+
+  this = this %>%
+    ppt.add_object(
+      ggplot_obj,
+      position
+    )
+
+  return(this)
+}
+
+ppt.add_table = function(
+    this, #: ppt
+    table_obj, #: table
+    position, #: pptpos
+    fit_height = TRUE
+) {
+  .ppt.check_class(this)
+  type.check_table(table_obj, 'table_obj')
+
+  position = pptpos.parse(position)
+
+  width = this %>% ppt.get_horizontal_dimension(position$width)
+  height = if(fit_height) {
+    height = this %>% ppt.get_vertical_dimension(position$height)
+  } else {
+    NULL
+  }
+
+  table_obj = table_obj %>%
+    table.fit_to_page(
+      page_width = width,
+      page_height = height
+    )
+
+  this = this %>%
+    ppt.add_object(
+      table_obj,
+      position
+    )
+
+  return(this)
+}
+
 ppt.save = function(
   this, #: ppt
   path #: character

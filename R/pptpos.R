@@ -9,7 +9,7 @@ pptpos = function(
   width = 1, #: integer
   height = 1, #: integer
   margin = 0.1, #: numeric
-  offset_top = 0.13, #: numeric
+  offset_top = 0.1, #: numeric
   offset_right = 0, #: numeric
   offset_bottom = 0, #: numeric
   offset_left = 0 #: numeric
@@ -60,7 +60,7 @@ pptpos.center = function() {
     n_columns = 1,
     column = 1,
     row = 1,
-    offset_top = 0.13,
+    offset_top = 0.1,
     margin = 0.05
   )
 

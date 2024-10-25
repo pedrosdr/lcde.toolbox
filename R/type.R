@@ -160,4 +160,17 @@ type.check_ggplot = function(
   }
 }
 
+type.check_table = function(
+    obj,
+    property=NULL #: character
+) {
+  if(is.null(property)) {
+    property = 'property'
+  }
+
+  if(!('table' %in% class(obj))) {
+    stop(paste0("'",property,"' must be of type 'table'"))
+  }
+}
+
 
