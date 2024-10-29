@@ -140,6 +140,7 @@ pcaviz.set_pca_obj = function(
 #' @param labels Optional labels for the points (default is NULL).
 #' @param groups Optional grouping factor for coloring points (default is NULL).
 #' @param size Size properties for the plot (default is `vizsize()`).
+#' @param text If provided, sets aes(text = text) to enable tooltips during Plotly conversion (default is NULL).
 #'
 #' @return A ggplot object representing the PCA scatter plot.
 #'
@@ -149,14 +150,21 @@ pcaviz.scatter = function(
   labels = NULL, #: vector
   groups = NULL, #: factor
   include_ID = TRUE, #: logical
-  size = vizsize() #: vizsize | text | numeric
+  size = vizsize(), #: vizsize | text | numeric
+  text = NULL #: character
 ) {
   .pca.check_class(pca_obj)
   if(class(include_ID) != 'logical') {
     stop("'include_ID' must be of type 'logical'")
   }
 
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  ggplot_obj = if(is.null(text)) {
+    ggplot()
+  } else {
+    ggplot(mapping=aes(text=text))
+  }
+
+  this = pcaviz.from_ggplot(ggplot_obj, pca_obj)
   if(!is.null(groups)) {
     this %>% .pcaviz.check_groups(groups)
   }
