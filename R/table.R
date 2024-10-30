@@ -33,6 +33,55 @@ table = function(
   return(this)
 }
 
+table.pca_variation = function(
+  pca_obj, #: pca
+  rank, #: positive integer
+  keys, #: vector
+  years, #: integer vector
+  labels, #: vector
+  variation = c('positive', 'negative') #: character
+) {
+  .pca.check_class(pca_obj)
+
+  variations = pca_obj %>% pca.get_largest_variations(
+    number = rank,
+    keys = keys,
+    years = years,
+    labels = labels,
+    variation = variation[1]
+  )
+
+  variation = variations[rank,]
+
+  unique_years = unique(years)
+  unique_years = unique_years[order(unique_years)]
+
+  year.x = unique_years[1]
+  year.y = unique_years[length(unique(years))]
+
+  df_table = data.frame()
+  for(column_name in pca_obj$data_names) {
+    dfi = data.frame(
+      'A' = c(column_name),
+      'B' = c(variation[1,paste0(column_name, '.x')]),
+      'C' = c(variation[1,paste0(column_name, '.y')])
+    )
+
+    df_table = if(nrow(df_table) == 0) dfi else rbind(df_table, dfi)
+  }
+
+  tbl = table(
+      df_table,
+      column_names = c('', year.x, year.y)
+    ) %>%
+    table.add_header_row(
+      column_names = c(variation$labels),
+      column_widths = c(3)
+    )
+
+  return(tbl)
+}
+
 # methods
 .table.check_class = function(
   obj

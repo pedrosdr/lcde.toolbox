@@ -323,6 +323,16 @@ pca.get_largest_variations = function(
     )
   }
 
+  order_mask = if(variation == 'negative') {
+    df_largest_variations$var
+  } else {
+    -df_largest_variations$var
+  }
+
+  df_largest_variations = df_largest_variations[
+    order(order_mask),
+  ]
+
   return(df_largest_variations)
 }
 
