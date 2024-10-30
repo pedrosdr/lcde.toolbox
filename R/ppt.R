@@ -233,6 +233,42 @@ ppt.add_title = function(
   return(this)
 }
 
+ppt.add_document_title = function(
+    this, #: ppt
+    title #: character
+) {
+  .ppt.check_class(this)
+  type.check_character(title, 'title')
+
+  this = this %>%
+    ppt.add_text(
+      text = title,
+      position = pptpos.document_title(),
+      size = 44,
+      bold = TRUE
+    )
+
+  return(this)
+}
+
+ppt.add_title = function(
+    this, #: ppt
+    title #: character
+) {
+  .ppt.check_class(this)
+  type.check_character(title, 'title')
+
+  this = this %>%
+    ppt.add_text(
+      text = title,
+      position = pptpos.title(),
+      size = 28,
+      bold = TRUE
+    )
+
+  return(this)
+}
+
 ppt.add_text = function(
   this, #: ppt
   text, #: character

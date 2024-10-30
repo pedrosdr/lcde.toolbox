@@ -54,13 +54,29 @@ pptpos.title = function() {
   return(this)
 }
 
+pptpos.document_title = function() {
+  this = pptpos(
+    n_rows = 3,
+    n_columns = 1,
+    row = 1,
+    column = 1,
+    margin = 0,
+    offset_top = 0.1,
+    offset_right = 0.05,
+    offset_bottom = 0.1,
+    offset_left = 0.05
+  )
+
+  return(this)
+}
+
 pptpos.center = function() {
   this = pptpos(
     n_rows = 1,
     n_columns = 1,
     column = 1,
     row = 1,
-    offset_top = 0.1,
+    offset_top = 0.08,
     margin = 0.05
   )
 
@@ -185,10 +201,15 @@ pptpos.parse = function(
     this = pptpos.wide_left()
   } else if(obj == 'wide-right') {
     this = pptpos.wide_right()
+  } else if(obj == 'title') {
+    this = pptpos.title()
+  } else if(obj == 'document-title') {
+    this = pptpos.document_title()
   } else {
     stop(paste("Failed to parse 'obj'. Ensure it is of type 'pptpos' or one",
                "of the following character options: ('center', 'left-half',",
-               " 'right-half', 'wide-left', 'wide-right)"))
+               " 'right-half', 'wide-left', 'wide-right', 'title',",
+               " 'document-title)"))
   }
 
   return(this)
