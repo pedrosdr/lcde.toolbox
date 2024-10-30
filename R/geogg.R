@@ -79,7 +79,7 @@ geogg.pca_map = function(
   }
 
   if(add_boundary) {
-    obj = obj %>% geogg.add_boundary(georef.from_geojson(malha))
+    obj = obj %>% geogg.add_boundary(georef_obj)
   }
 
   data = pca_obj$principal_components$CP1
@@ -172,7 +172,7 @@ geogg.percentage_of_proficiency_map = function(
   }
 
   if(add_boundary) {
-    obj = obj %>% geogg.add_boundary(georef.from_geojson(malha))
+    obj = obj %>% geogg.add_boundary(georef_obj)
   }
 
   legend_title = if(subject[1] == 'mathematics') {
