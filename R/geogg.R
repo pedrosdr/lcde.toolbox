@@ -306,7 +306,7 @@ geogg.add_points = function(
     geom_sf(
       aes(fill=groups),
       data=georef_obj$sf_obj,
-      size=this$size$point_size * 1.1,
+      size=this$size$point_size * 0.7,
       shape=21
     ) +
     scale_fill_manual(

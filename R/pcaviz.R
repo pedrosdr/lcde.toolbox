@@ -150,21 +150,14 @@ pcaviz.scatter = function(
   labels = NULL, #: vector
   groups = NULL, #: factor
   include_ID = TRUE, #: logical
-  size = vizsize(), #: vizsize | text | numeric
-  text = NULL #: character
+  size = vizsize() #: vizsize | text | numeric
 ) {
   .pca.check_class(pca_obj)
   if(class(include_ID) != 'logical') {
     stop("'include_ID' must be of type 'logical'")
   }
 
-  ggplot_obj = if(is.null(text)) {
-    ggplot()
-  } else {
-    ggplot(mapping=aes(text=text))
-  }
-
-  this = pcaviz.from_ggplot(ggplot_obj, pca_obj)
+  this = pcaviz.from_ggplot(ggplot(), pca_obj)
   if(!is.null(groups)) {
     this %>% .pcaviz.check_groups(groups)
   }
