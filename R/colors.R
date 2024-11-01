@@ -120,6 +120,17 @@ colors.red_to_green = function() {
   return(palette)
 }
 
+#' Purples Color Palette
+#'
+#' This function returns a purple color palette with various shades for use in visualizations.
+#'
+#' @return A character vector of hexadecimal color codes representing the purple color palette.
+#'
+#' @examples
+#' purple_colors <- colors.purples()
+#' plot(1:7, col = purple_colors, pch = 19, cex = 3)
+#'
+#' @export
 colors.purples = function() {
   palette = c(
     '#f1eff6',

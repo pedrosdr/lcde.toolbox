@@ -20,6 +20,8 @@ pcaviz.scatter(
 \item{groups}{Optional grouping factor for coloring points (default is NULL).}
 
 \item{size}{Size properties for the plot (default is `vizsize()`).}
+
+\item{text}{If provided, sets aes(text = text) to enable tooltips during Plotly conversion (default is NULL).}
 }
 \value{
 A ggplot object representing the PCA scatter plot.

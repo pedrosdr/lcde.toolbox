@@ -9,6 +9,13 @@ library(sf)
 
 # constructors
 
+#' Initialize Geographical ggplot (geogg)
+#'
+#' Creates a ggplot object for geographical visualizations with a specified size and theme.
+#'
+#' @param size A vizsize object or character to define the plot size, defaults to "normal".
+#' @return An object of class 'geogg' initialized with a clean theme for geographical data.
+#' @export
 geogg = function(
   size = vizsize.parse('normal')
 ) {
@@ -26,6 +33,32 @@ geogg = function(
   return(obj)
 }
 
+#' Add PCA Map to Geographical Plot
+#'
+#' This function creates a geographical plot that visualizes relative performance using principal component analysis (PCA) scores, with optional boundaries, surfaces, and custom color scales.
+#'
+#' @param pca_obj A PCA object containing principal component scores for each observation.
+#' @param latitude A numeric vector of latitudes for the data points.
+#' @param longitude A numeric vector of longitudes for the data points.
+#' @param labels An optional vector of labels for each point, default is NULL.
+#' @param add_boundary A logical value indicating whether to add a boundary overlay, default is FALSE.
+#' @param add_surface A logical value indicating whether to add a surface overlay, default is FALSE.
+#' @param georef_obj A georef object for geographical reference, required if add_boundary or add_surface is TRUE.
+#' @param surface_data A numeric vector representing surface data, required if add_surface is TRUE.
+#' @param surface_latitude A numeric vector of latitudes for the surface data, required if add_surface is TRUE.
+#' @param surface_longitude A numeric vector of longitudes for the surface data, required if add_surface is TRUE.
+#' @param surface_legend_title A character string for the legend title of the surface overlay, default is 'Legend Title'.
+#' @param surface_palette A character vector of colors for the surface overlay, default is a purple color palette.
+#' @param surface_width A numeric value specifying the width of the surface grid, default is 100.
+#' @param surface_height A numeric value specifying the height of the surface grid, default is 100.
+#' @param size An object defining size specifications, default is 'large'.
+#'
+#' @return A geogg object with the PCA map added.
+#'
+#' @examples
+#' geogg_obj <- geogg.pca_map(pca_obj = my_pca, latitude = c(-15, -20), longitude = c(-47, -48), labels = c("School A", "School B"))
+#'
+#' @export
 geogg.pca_map = function(
     pca_obj, #: pca
     latitude, #: numeric vector
@@ -116,6 +149,33 @@ geogg.pca_map = function(
   return(obj)
 }
 
+#' Add Percentage of Proficiency Map to Geographical Plot
+#'
+#' This function creates a geographical plot that visualizes proficiency levels in a specified subject by adding points for each location, optionally with boundary and surface data.
+#'
+#' @param data A numeric vector representing the percentage of proficiency values.
+#' @param subject A character string indicating the subject, either 'mathematics' or 'portuguese language'. Default is 'mathematics'.
+#' @param latitude A numeric vector of latitudes for the proficiency points.
+#' @param longitude A numeric vector of longitudes for the proficiency points.
+#' @param labels An optional vector of labels for each point, default is NULL.
+#' @param add_boundary A logical value to include a boundary overlay, default is FALSE.
+#' @param add_surface A logical value to include a surface overlay, default is FALSE.
+#' @param georef_obj A georef object for geographic reference, required if add_boundary or add_surface is TRUE.
+#' @param surface_data A numeric vector representing surface data, required if add_surface is TRUE.
+#' @param surface_latitude A numeric vector of latitudes for the surface data, required if add_surface is TRUE.
+#' @param surface_longitude A numeric vector of longitudes for the surface data, required if add_surface is TRUE.
+#' @param surface_legend_title A character string for the legend title of the surface overlay, default is 'Legend Title'.
+#' @param surface_palette A character vector of colors for the surface overlay, default is a purple color palette.
+#' @param surface_width A numeric value specifying the width of the surface grid, default is 100.
+#' @param surface_height A numeric value specifying the height of the surface grid, default is 100.
+#' @param size An object defining size specifications, default is 'large'.
+#'
+#' @return A geogg object with the proficiency map added.
+#'
+#' @examples
+#' geogg_obj <- geogg.percentage_of_proficiency_map(data = c(20, 40, 60, 80), subject = 'mathematics', latitude = c(-15, -20), longitude = c(-47, -48))
+#'
+#' @export
 geogg.percentage_of_proficiency_map = function(
   data, #: numeric vector
   subject = c('mathematics', 'portuguese language'), #: character
@@ -214,6 +274,24 @@ geogg.percentage_of_proficiency_map = function(
 }
 
 # methods
+#' Check Geographical Plot Class
+#'
+#' This internal function verifies if the given object is of class `geogg`.
+#' It raises an error if the object is not of the correct class.
+#'
+#' @param obj An object to be checked.
+#'
+#' @return NULL. This function is called for its side effect of error-checking.
+#'
+#' @details
+#' The function ensures that the input `obj` is of type `geogg`. It is typically used within other `geogg` methods to validate input objects.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' \dontrun{
+#' .geogg.check_class(my_geogg_obj)
+#' }
 .geogg.check_class = function(
   obj
 ) {
@@ -222,6 +300,21 @@ geogg.percentage_of_proficiency_map = function(
   }
 }
 
+#' Add Tile Background to Geographical Plot
+#'
+#' This function adds a tile layer as a background to a `geogg` object, enhancing the map visualization with a predefined cartographic style.
+#'
+#' @param this A `geogg` object to which the tile layer will be added.
+#'
+#' @return A `geogg` object with an added tile background layer.
+#'
+#' @details
+#' This function utilizes `annotation_map_tile` with a "cartolight" tile style, adding a light cartographic background to the map. The function is typically used to enhance readability and provide geographic context to overlaid data.
+#'
+#' @export
+#'
+#' @examples
+#' my_geogg <- geogg() %>% geogg.add_tiles()
 geogg.add_tiles = function(
   this #: geogg
 ) {
@@ -235,6 +328,22 @@ geogg.add_tiles = function(
   return(this)
 }
 
+#' Add Points to Geographical Plot
+#'
+#' This function adds points to a geographical ggplot object, with options for grouping and color mapping.
+#'
+#' @param this An object of class 'geogg'.
+#' @param latitude A numeric vector of latitudes for the points.
+#' @param longitude A numeric vector of longitudes for the points.
+#' @param groups An optional factor vector for grouping the points, default is NULL.
+#' @param color_map A named character vector for color mapping groups, default is NULL.
+#' @param labels An optional vector of labels for each group, default is NULL.
+#' @param legend_title A character string for the legend title, default is 'Legend Title'.
+#' @param add_new_scale A logical value indicating if a new color scale should be added, default is FALSE.
+#' @return The updated geogg object with points added.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = factor(c("A", "B")), color_map = c("A" = "red", "B" = "blue"))
+#' @export
 geogg.add_points = function(
   this, #: geogg
   latitude, #: numeric
@@ -321,6 +430,18 @@ geogg.add_points = function(
   return(this)
 }
 
+#' Add Labels to Geographical Plot
+#'
+#' This function adds labels to specified points on a geographical ggplot.
+#'
+#' @param this An object of class 'geogg'.
+#' @param labels A vector of labels for each point.
+#' @param latitude A numeric vector for the latitudes of each point.
+#' @param longitude A numeric vector for the longitudes of each point.
+#' @return The updated geogg object with labels added.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.add_labels(labels = c("A", "B"), latitude = c(0, 10), longitude = c(0, 10))
+#' @export
 geogg.add_labels = function(
   this, #: geogg
   labels, #: vector
@@ -382,6 +503,16 @@ geogg.add_labels = function(
     )
 }
 
+#' Add Boundary Layer to Geographical Plot
+#'
+#' Adds boundary lines to a geographical ggplot based on the input georef object.
+#'
+#' @param this An object of class 'geogg'.
+#' @param georef_obj A georef object containing the boundary data in an sf format.
+#' @return The updated geogg object with the boundary added.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.add_boundary(georef_obj)
+#' @export
 geogg.add_boundary = function(
   this, #: geogg
   georef_obj #: georef
@@ -400,6 +531,25 @@ geogg.add_boundary = function(
   return(this)
 }
 
+#' Add Surface Layer to Geographical Plot
+#'
+#' Adds a surface layer (such as a heatmap or raster) to the geographical ggplot for additional data visualization.
+#'
+#' @param this An object of class 'geogg'.
+#' @param georef_obj A georef object containing georeferenced information.
+#' @param data A numeric vector representing the data values for the surface.
+#' @param latitude A numeric vector for the latitudes corresponding to the data.
+#' @param longitude A numeric vector for the longitudes corresponding to the data.
+#' @param width An integer specifying the raster width.
+#' @param height An integer specifying the raster height.
+#' @param legend_title A character string for the legend title, default is 'Surface Title'.
+#' @param palette A character vector defining the color palette, default is colors.purples().
+#' @param opacity A character specifying the opacity in hexadecimal (00-FF), default is 'BB'.
+#' @param add_new_scale A logical value indicating if a new color scale should be added, default is FALSE.
+#' @return The updated geogg object with the surface layer added.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.add_surface(georef_obj, data = c(1, 2), latitude = c(0, 1), longitude = c(0, 1))
+#' @export
 geogg.add_surface = function(
   this,
   georef_obj, #: georef
@@ -448,6 +598,15 @@ geogg.add_surface = function(
   return(this)
 }
 
+#' Apply Clean Theme to Geographical ggplot
+#'
+#' Removes default ggplot elements to create a clean canvas for geographical data.
+#'
+#' @param this An object of class 'geogg'.
+#' @return The updated geogg object with a clean theme applied.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.theme_clean()
+#' @export
 geogg.theme_clean = function(
   this #: geogg
 ) {
@@ -465,6 +624,15 @@ geogg.theme_clean = function(
   return(this)
 }
 
+#' Apply Base Theme to Geographical ggplot
+#'
+#' Adds a base theme with formatted legend text to the geographical ggplot.
+#'
+#' @param this An object of class 'geogg'.
+#' @return The updated geogg object with base theme formatting applied.
+#' @examples
+#' geogg_obj <- geogg() %>% geogg.theme_base()
+#' @export
 geogg.theme_base = function(
     this #: geogg
 ) {

@@ -64,6 +64,5 @@ Collate:
     'georef.R'
     'geoleaf.R'
     'geogg.R'
-    'widget.R'
     'pptpos.R'
     'ppt.R'
