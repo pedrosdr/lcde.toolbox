@@ -381,6 +381,23 @@ pcaviz.component_loads = function(
   return(this)
 }
 
+#' Add Title to PCA Visualization
+#'
+#' This function adds a title to a PCA visualization object, enhancing interpretability.
+#'
+#' @param this A \code{pcaviz} object representing the PCA visualization.
+#' @param title A character string containing the title text to add to the visualization.
+#'
+#' @return The modified \code{pcaviz} object with the title added.
+#'
+#' @details
+#' This function appends a specified title to an existing PCA plot, allowing for better context and understanding of the visualization. The title is typically displayed at the top of the plot.
+#'
+#' @examples
+#' pca_viz <- pcaviz(pca_obj)
+#' pca_viz <- pcaviz.add_title(pca_viz, title = "Principal Component Analysis of School Performance")
+#'
+#' @export
 pcaviz.add_title = function(
   this, #: pcaviz
   title #: character
@@ -621,6 +638,22 @@ pcaviz.set_theme_scatter = function(
   return(this)
 }
 
+#' Set Theme for PCA Column Plot
+#'
+#' Applies a standardized theme to a PCA column plot, enhancing visual consistency across elements like borders, grid lines, axis titles, and text sizes.
+#'
+#' @param this A \code{pcaviz} object representing the PCA visualization.
+#'
+#' @return The modified \code{pcaviz} object with the custom theme applied.
+#'
+#' @details
+#' This function is designed to streamline the appearance of PCA column plots, setting specific sizes for axis titles, text, plot title, subtitle, and caption. It also adjusts margins for axis labels and removes unnecessary elements like minor grid lines and legends, providing a cleaner, more focused visualization.
+#'
+#' @examples
+#' pca_viz <- pcaviz(pca_obj)
+#' pca_viz <- pcaviz.set_theme_column(pca_viz)
+#'
+#' @export
 pcaviz.set_theme_column = function(
   this #: pcaviz
 ) {

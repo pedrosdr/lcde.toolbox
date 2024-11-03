@@ -3,6 +3,16 @@ library(officer)
 # class ppt
 
 # constructors
+
+#' Create a PPT Object from Template
+#'
+#' Initializes a `ppt` object from a specified PowerPoint template file.
+#'
+#' @param template_path A character string specifying the path to the template PowerPoint file.
+#'
+#' @return A `ppt` object with the loaded template.
+#'
+#' @export
 ppt.from_template = function(
   template_path #: character
 ) {
@@ -17,6 +27,14 @@ ppt.from_template = function(
 }
 
 # methods
+
+#' Check PPT Class
+#'
+#' Verifies if the provided object is of class `ppt`.
+#'
+#' @param obj The object to be checked.
+#'
+#' @return NULL if the object is valid; otherwise, an error is raised.
 .ppt.check_class = function(
   obj
 ) {
@@ -25,6 +43,16 @@ ppt.from_template = function(
   }
 }
 
+#' Go to Slide
+#'
+#' Sets the specified slide as the current slide in the `ppt` object.
+#'
+#' @param this A `ppt` object.
+#' @param index An integer specifying the slide index to set as current.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.on_slide = function(
   this, #: ppt
   index #: integer
@@ -38,6 +66,16 @@ ppt.on_slide = function(
   return(this)
 }
 
+#' Add a New Slide
+#'
+#' Adds a new slide to the `ppt` object and sets it as the current slide.
+#'
+#' @param this A `ppt` object.
+#' @param title An optional character string specifying the title of the new slide.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.new_slide = function(
   this, #: ppt
   title = NULL #: character
@@ -65,6 +103,16 @@ ppt.new_slide = function(
   return(this)
 }
 
+#' Add Transition Slide
+#'
+#' Adds a transition slide with specified text in a predefined position.
+#'
+#' @param this A `ppt` object.
+#' @param text A character string for the transition text.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_transition = function(
   this, #: ppt
   text #: character
@@ -94,6 +142,17 @@ ppt.add_transition = function(
   return(this)
 }
 
+#' Move Slide
+#'
+#' Moves the current slide to a specified position within the slide order.
+#'
+#' @param this A `ppt` object.
+#' @param index An optional integer specifying the current slide index.
+#' @param to An integer specifying the target slide index.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.move_slide = function(
   this, #: ppt
   index = NULL, #: integer
@@ -114,6 +173,15 @@ ppt.move_slide = function(
   return(this)
 }
 
+#' Get Slide Layout
+#'
+#' Retrieves the default layout name for blank slides in the template.
+#'
+#' @param this A `ppt` object.
+#'
+#' @return A character string representing the layout name.
+#'
+#' @export
 ppt.get_layout = function(
   this #: ppt
 ) {
@@ -140,6 +208,15 @@ ppt.get_layout = function(
   return(layout)
 }
 
+#' Get Slide Master
+#'
+#' Retrieves the default master name for slides in the template.
+#'
+#' @param this A `ppt` object.
+#'
+#' @return A character string representing the master name.
+#'
+#' @export
 ppt.get_master = function(
   this #: ppt
 ) {
@@ -163,6 +240,15 @@ ppt.get_master = function(
   return(master)
 }
 
+#' Get Slide Width
+#'
+#' Retrieves the width of the slides in the `ppt` object.
+#'
+#' @param this A `ppt` object.
+#'
+#' @return A numeric value representing the slide width.
+#'
+#' @export
 ppt.get_width = function(
   this #: ppt
 ) {
@@ -173,6 +259,15 @@ ppt.get_width = function(
   return(width)
 }
 
+#' Get Slide Height
+#'
+#' Retrieves the height of the slides in the `ppt` object.
+#'
+#' @param this A `ppt` object.
+#'
+#' @return A numeric value representing the slide height.
+#'
+#' @export
 ppt.get_height = function(
     this #: ppt
 ) {
@@ -183,6 +278,15 @@ ppt.get_height = function(
   return(height)
 }
 
+#' Get Number of Slides
+#'
+#' Retrieves the total number of slides in the `ppt` object.
+#'
+#' @param this A `ppt` object.
+#'
+#' @return An integer representing the number of slides.
+#'
+#' @export
 ppt.get_length = function(
   this #: ppt
 ) {
@@ -191,6 +295,16 @@ ppt.get_length = function(
   return(length(this))
 }
 
+#' Get Vertical Dimension
+#'
+#' Calculates the vertical dimension relative to the slide height.
+#'
+#' @param this A `ppt` object.
+#' @param relative_dimension A numeric value (0 - 1) specifying the relative dimension.
+#'
+#' @return A numeric value for the absolute vertical dimension.
+#'
+#' @export
 ppt.get_vertical_dimension = function(
     this, #: ppt
     relative_dimension #: numeric (0 - 1)
@@ -203,6 +317,16 @@ ppt.get_vertical_dimension = function(
   return(relative_dimension * height)
 }
 
+#' Get Horizontal Dimension
+#'
+#' Calculates the horizontal dimension relative to the slide width.
+#'
+#' @param this A `ppt` object.
+#' @param relative_dimension A numeric value (0 - 1) specifying the relative dimension.
+#'
+#' @return A numeric value for the absolute horizontal dimension.
+#'
+#' @export
 ppt.get_horizontal_dimension = function(
     this, #: ppt
     relative_dimension #: numeric (0 - 1)
@@ -215,24 +339,16 @@ ppt.get_horizontal_dimension = function(
   return(relative_dimension * width)
 }
 
-ppt.add_title = function(
-  this, #: ppt
-  title #: character
-) {
-  .ppt.check_class(this)
-  type.check_character(title, 'title')
-
-  this = this %>%
-    ppt.add_text(
-      text = title,
-      position = pptpos.title(),
-      size = 28,
-      bold = TRUE
-    )
-
-  return(this)
-}
-
+#' Add Document Title
+#'
+#' Adds a large title to the current slide.
+#'
+#' @param this A `ppt` object.
+#' @param title A character string for the document title.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_document_title = function(
     this, #: ppt
     title #: character
@@ -251,6 +367,16 @@ ppt.add_document_title = function(
   return(this)
 }
 
+#' Add Title to Slide
+#'
+#' Adds a title to the current slide.
+#'
+#' @param this A `ppt` object.
+#' @param title A character string for the slide title.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_title = function(
     this, #: ppt
     title #: character
@@ -269,6 +395,20 @@ ppt.add_title = function(
   return(this)
 }
 
+#' Add Text to Slide
+#'
+#' Adds text to the current slide at a specified position.
+#'
+#' @param this A `ppt` object.
+#' @param text A character string for the text.
+#' @param position A `pptpos` object specifying the text position.
+#' @param font A character string specifying the font family.
+#' @param size A numeric value for the font size.
+#' @param bold A logical value indicating whether the text is bold.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_text = function(
   this, #: ppt
   text, #: character
@@ -306,6 +446,17 @@ ppt.add_text = function(
   return(this)
 }
 
+#' Add Object to Slide
+#'
+#' Adds an object (e.g., table or ggplot) to the slide at a specified position.
+#'
+#' @param this A `ppt` object.
+#' @param obj The object to add to the slide.
+#' @param position A `pptpos` object specifying the position.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_object = function(
   this, #: ppt
   obj,
@@ -328,6 +479,17 @@ ppt.add_object = function(
   return(this)
 }
 
+#' Add ggplot to Slide
+#'
+#' Adds a ggplot object to the current slide at a specified position.
+#'
+#' @param this A `ppt` object.
+#' @param ggplot_obj A ggplot object to add to the slide.
+#' @param position A `pptpos` object specifying the position.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_ggplot = function(
     this, #: ppt
     ggplot_obj, #: ggplot
@@ -347,6 +509,18 @@ ppt.add_ggplot = function(
   return(this)
 }
 
+#' Add Table to Slide
+#'
+#' Adds a table to the slide at a specified position.
+#'
+#' @param this A `ppt` object.
+#' @param table_obj A table object to add to the slide.
+#' @param position A `pptpos` object specifying the position.
+#' @param fit_height A logical indicating whether to fit the table height.
+#'
+#' @return The modified `ppt` object.
+#'
+#' @export
 ppt.add_table = function(
     this, #: ppt
     table_obj, #: table
@@ -380,6 +554,14 @@ ppt.add_table = function(
   return(this)
 }
 
+#' Save PowerPoint
+#'
+#' Saves the `ppt` object as a PowerPoint file at the specified path.
+#'
+#' @param this A `ppt` object.
+#' @param path A character string specifying the file path.
+#'
+#' @export
 ppt.save = function(
   this, #: ppt
   path #: character

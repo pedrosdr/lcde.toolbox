@@ -121,6 +121,17 @@ type.check_logical = function(
   }
 }
 
+#' type.check_factor
+#'
+#' Checks if an object is of type factor.
+#'
+#' This function verifies that the provided object is classified as a factor.
+#'
+#' @param obj The object to check.
+#' @param property Optional name of the property for error messages.
+#'
+#' @return NULL if the check passes; otherwise, an error is raised.
+#' @export
 type.check_factor = function(
     obj,
     property=NULL #: character
@@ -134,6 +145,17 @@ type.check_factor = function(
   }
 }
 
+#' type.check_dataframe
+#'
+#' Checks if an object is of type data frame.
+#'
+#' This function verifies that the provided object is classified as a data frame.
+#'
+#' @param obj The object to check.
+#' @param property Optional name of the property for error messages.
+#'
+#' @return NULL if the check passes; otherwise, an error is raised.
+#' @export
 type.check_dataframe = function(
     obj,
     property=NULL #: character
@@ -147,6 +169,17 @@ type.check_dataframe = function(
   }
 }
 
+#' type.check_ggplot
+#'
+#' Checks if an object is of class ggplot.
+#'
+#' This function verifies that the provided object is a ggplot object.
+#'
+#' @param obj The object to check.
+#' @param property Optional name of the property for error messages.
+#'
+#' @return NULL if the check passes; otherwise, an error is raised.
+#' @export
 type.check_ggplot = function(
     obj,
     property=NULL #: character
@@ -160,6 +193,17 @@ type.check_ggplot = function(
   }
 }
 
+#' type.check_table
+#'
+#' Checks if an object is of type table.
+#'
+#' This function verifies that the provided object is classified as a table object.
+#'
+#' @param obj The object to check.
+#' @param property Optional name of the property for error messages.
+#'
+#' @return NULL if the check passes; otherwise, an error is raised.
+#' @export
 type.check_table = function(
     obj,
     property=NULL #: character

@@ -1,6 +1,26 @@
 # class pptpos
 
 # constructors
+
+#' Create pptpos Object
+#'
+#' Initializes a `pptpos` object that defines the position and size of elements in a slide grid layout.
+#'
+#' @param n_rows An integer specifying the total number of rows in the slide layout.
+#' @param n_columns An integer specifying the total number of columns in the slide layout.
+#' @param row An integer indicating the row position of the element.
+#' @param column An integer indicating the column position of the element.
+#' @param width An integer specifying the number of columns spanned by the element. Defaults to 1.
+#' @param height An integer specifying the number of rows spanned by the element. Defaults to 1.
+#' @param margin A numeric value for the margin around the element, as a proportion of the slide size. Defaults to 0.1.
+#' @param offset_top A numeric value for the offset from the top, as a proportion of the slide height. Defaults to 0.1.
+#' @param offset_right A numeric value for the offset from the right. Defaults to 0.
+#' @param offset_bottom A numeric value for the offset from the bottom. Defaults to 0.
+#' @param offset_left A numeric value for the offset from the left. Defaults to 0.
+#'
+#' @return A `pptpos` object with computed top, left, width, and height properties.
+#'
+#' @export
 pptpos = function(
   n_rows, #: integer
   n_columns, #: integer
@@ -40,6 +60,13 @@ pptpos = function(
   return(this)
 }
 
+#' Title Position
+#'
+#' Defines the position for a title element in a slide, taking up the top section.
+#'
+#' @return A `pptpos` object with coordinates for positioning a title.
+#'
+#' @export
 pptpos.title = function() {
   this = pptpos(
     n_rows = 1,
@@ -54,6 +81,13 @@ pptpos.title = function() {
   return(this)
 }
 
+#' Document Title Position
+#'
+#' Defines the position for a document title in the slide, occupying the top section with increased padding.
+#'
+#' @return A `pptpos` object with coordinates for positioning a document title.
+#'
+#' @export
 pptpos.document_title = function() {
   this = pptpos(
     n_rows = 3,
@@ -70,6 +104,13 @@ pptpos.document_title = function() {
   return(this)
 }
 
+#' Center Large Position
+#'
+#' Defines the position for a large element in the center of the slide.
+#'
+#' @return A `pptpos` object with coordinates for a centered large element.
+#'
+#' @export
 pptpos.center_large = function() {
   this = pptpos(
     n_rows = 1,
@@ -83,6 +124,13 @@ pptpos.center_large = function() {
   return(this)
 }
 
+#' Center Position
+#'
+#' Defines the position for a centered element in the slide with additional side margins.
+#'
+#' @return A `pptpos` object with coordinates for a centered element.
+#'
+#' @export
 pptpos.center = function() {
   this = pptpos(
     n_rows = 1,
@@ -98,6 +146,13 @@ pptpos.center = function() {
   return(this)
 }
 
+#' Left Half Position
+#'
+#' Defines the position for an element occupying the left half of the slide.
+#'
+#' @return A `pptpos` object with coordinates for positioning an element on the left half.
+#'
+#' @export
 pptpos.left_half = function() {
   this = pptpos(
     n_rows = 1,
@@ -112,20 +167,13 @@ pptpos.left_half = function() {
   return(this)
 }
 
-pptpos.left_half = function() {
-  this = pptpos(
-    n_rows = 1,
-    n_columns = 2,
-    column = 1,
-    row = 1,
-    offset_top = 0.13,
-    offset_bottom = 0.15,
-    margin = 0.03
-  )
-
-  return(this)
-}
-
+#' Wide Left Position
+#'
+#' Defines the position for a wide element occupying the left side of the slide.
+#'
+#' @return A `pptpos` object with coordinates for a wide left-aligned element.
+#'
+#' @export
 pptpos.right_half = function() {
   this = pptpos(
     n_rows = 1,
@@ -140,6 +188,13 @@ pptpos.right_half = function() {
   return(this)
 }
 
+#' Wide Left Position
+#'
+#' Defines the position for a wide element occupying the left side of the slide.
+#'
+#' @return A `pptpos` object with coordinates for a wide left-aligned element.
+#'
+#' @export
 pptpos.wide_left = function() {
   this = pptpos(
     n_rows = 1,
@@ -157,6 +212,13 @@ pptpos.wide_left = function() {
   return(this)
 }
 
+#' Wide Right Position
+#'
+#' Defines the position for a wide element occupying the right side of the slide.
+#'
+#' @return A `pptpos` object with coordinates for a wide right-aligned element.
+#'
+#' @export
 pptpos.wide_right = function() {
   this = pptpos(
     n_rows = 1,
@@ -174,6 +236,19 @@ pptpos.wide_right = function() {
   return(this)
 }
 
+#' Grid Position
+#'
+#' Defines a custom grid-based position for an element within the slide layout.
+#'
+#' @param n_rows An integer specifying the total number of rows in the layout grid.
+#' @param n_columns An integer specifying the total number of columns in the layout grid.
+#' @param row An integer indicating the row in which the element should be positioned.
+#' @param column An integer indicating the column in which the element should be positioned.
+#' @param margin A numeric value for the margin around the element. Defaults to 0.1.
+#'
+#' @return A `pptpos` object with calculated positions for the specified grid cell.
+#'
+#' @export
 pptpos.grid = function(
   n_rows, #: integer
   n_columns, #: integer
@@ -199,6 +274,17 @@ pptpos.grid = function(
 }
 
 # methods
+
+#' Parse pptpos Object or Character Identifier
+#'
+#' Converts a `pptpos` object or character identifier into a `pptpos` position. Supported identifiers include
+#' 'center', 'center-large', 'left-half', 'right-half', 'wide-left', 'wide-right', 'title', and 'document-title'.
+#'
+#' @param obj A `pptpos` object or character identifier specifying a position preset.
+#'
+#' @return A `pptpos` object corresponding to the specified position.
+#'
+#' @export
 pptpos.parse = function(
   obj
 ) {
@@ -231,6 +317,13 @@ pptpos.parse = function(
   return(this)
 }
 
+#' Check pptpos Class
+#'
+#' Verifies if the provided object is of class `pptpos`.
+#'
+#' @param obj The object to check.
+#'
+#' @return NULL if the object is valid; otherwise, an error is raised.
 .pptpos.check_class = function(
   obj
 ) {

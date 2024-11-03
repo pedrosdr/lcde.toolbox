@@ -3,6 +3,21 @@ library(flextable)
 # class table
 
 # constructors
+
+#' Table Constructor
+#'
+#' Creates a `table` object, extending the `flextable` class for formatted tables.
+#'
+#' @param dataframe A data frame containing the data for the table.
+#' @param column_names A vector of column names for the table headers. Defaults to the column names of the `dataframe`.
+#'
+#' @return A `table` object styled with a dark theme.
+#'
+#' @examples
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data, column_names = c("Col A", "Col B"))
+#'
+#' @export
 table = function(
   dataframe, #: data.frame
   column_names = colnames(dataframe) #: vector
@@ -33,6 +48,24 @@ table = function(
   return(this)
 }
 
+#' PCA Variation Table
+#'
+#' Generates a table showing the largest variations in PCA components for a specific rank.
+#'
+#' @param pca_obj A `pca` object containing PCA results.
+#' @param rank A positive integer indicating the variation rank to display.
+#' @param keys A vector of keys identifying each observation.
+#' @param years An integer vector specifying the years for each observation.
+#' @param labels A vector of labels for each observation.
+#' @param variation A character string specifying the variation type. Must be either "positive" or "negative".
+#'
+#' @return A `table` object displaying the PCA variation values for a specified rank.
+#'
+#' @examples
+#' pca_result <- pca(data) # Assuming `data` is a prepared dataset
+#' tbl_variation <- table.pca_variation(pca_result, rank = 1, keys, years, labels, "positive")
+#'
+#' @export
 table.pca_variation = function(
   pca_obj, #: pca
   rank, #: positive integer
@@ -83,6 +116,14 @@ table.pca_variation = function(
 }
 
 # methods
+
+#' Check Table Class
+#'
+#' Verifies if an object is of class `table`.
+#'
+#' @param obj An object to check.
+#'
+#' @return NULL if the check passes; otherwise, an error is raised.
 .table.check_class = function(
   obj
 ) {
@@ -91,6 +132,22 @@ table.pca_variation = function(
   }
 }
 
+#' Add Header Row
+#'
+#' Adds a header row with specified column names and widths to a `table` object.
+#'
+#' @param this A `table` object.
+#' @param column_names A vector of column names for the header row.
+#' @param column_widths A vector of column widths, corresponding to each column name.
+#'
+#' @return The modified `table` object with the new header row.
+#'
+#' @examples
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data, column_names = c("Col A", "Col B"))
+#' tbl <- table.add_header_row(tbl, column_names = c("Header 1"), column_widths = c(2))
+#'
+#' @export
 table.add_header_row = function(
   this, #: table
   column_names, #: vector
@@ -111,6 +168,20 @@ table.add_header_row = function(
   return(this)
 }
 
+#' Dark Theme for Table
+#'
+#' Applies a dark theme to a `table` object.
+#'
+#' @param this A `table` object.
+#'
+#' @return The styled `table` object with a dark theme applied.
+#'
+#' @examples
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data, column_names = c("Col A", "Col B"))
+#' tbl <- table.set_theme_dark(tbl)
+#'
+#' @export
 table.set_theme_dark = function(
     this #: theme
 ) {
@@ -132,6 +203,22 @@ table.set_theme_dark = function(
   return(this)
 }
 
+#' Fit Table to Page
+#'
+#' Adjusts the table size to fit within specified page dimensions.
+#'
+#' @param this A `table` object.
+#' @param page_width A numeric value specifying the page width to fit the table within.
+#' @param page_height An optional numeric value specifying the page height to fit the table within.
+#'
+#' @return The resized `table` object.
+#'
+#' @examples
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data, column_names = c("Col A", "Col B"))
+#' tbl <- table.fit_to_page(tbl, page_width = 6, page_height = 8)
+#'
+#' @export
 table.fit_to_page = function(
   this, #: table
   page_width, #: numeric
