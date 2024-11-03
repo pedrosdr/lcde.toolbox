@@ -34,10 +34,7 @@ The package is organized into the following main classes, each responsible for s
 - **Key Methods**:
   - `from_geojson()`, `from_sf()`, `from_points()`: Constructors for `georef` objects.
   - `get_raster()`: Generates a raster layer for surface visualization.
-
-### 5. `ggradar`
-- **Purpose**: Creates radar charts for comparative visualizations.
-- **Key Methods**: Constructors and functions for radar charts, useful for comparing performance profiles or categories.
+- **Reference**: This module builds upon the original [`ggradar`](https://github.com/ricardo-bion/ggradar) by Ricardo Bion. The `ggradar2` version, developed by Pedro Sartori, is available in [his forked repository](https://github.com/pedrosdr/ggradar/tree/ggradar2) and introduces additional features, including multiple grid lines for enhanced customization.
 
 ### 6. `ggviz`
 - **Purpose**: Manages custom `ggplot2` themes and layouts.
