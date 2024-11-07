@@ -185,8 +185,8 @@ vizsize.parse = function(
 ) {
   .vizsize.check_class(this)
 
-  this$linewidth = 0.5
-  this$point_size = 1
+  this$linewidth = 0.7
+  this$point_size = 2
 
   return(this)
 }
@@ -245,10 +245,10 @@ vizsize.parse = function(
 ) {
   .vizsize.check_class(this)
 
-  this$text = 5
-  this$title = 10
-  this$subtitle = 8
-  this$axis_title = 8
+  this$text = 10
+  this$title = 15
+  this$subtitle = 13
+  this$axis_title = 13
 
   return(this)
 }
