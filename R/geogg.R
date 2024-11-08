@@ -618,7 +618,11 @@ geogg.theme_clean = function(
       panel.grid = element_blank(),
       axis.text = element_blank(),
       axis.ticks = element_blank(),
-      axis.title = element_blank()
+      axis.title = element_blank(),
+      plot.title = element_text(
+        size=this$size$text,
+        hjust = 0.5
+      )
     )
 
   return(this)
@@ -641,7 +645,11 @@ geogg.theme_base = function(
   this = this +
     theme(
       legend.text = element_text(size=this$size$text),
-      legend.title = element_text(size=this$size$text)
+      legend.title = element_text(size=this$size$text),
+      plot.title = element_text(
+        size=this$size$text,
+        hjust = 0.5
+      )
     )
 
   return(this)
@@ -661,13 +669,42 @@ geogg.theme_base = function(
 #'
 #' @export
 geogg.without_legend = function(
-    this
+    this #: geogg
 ) {
   .geogg.check_class(this)
 
   this = this +
     theme(
       legend.position = 'none'
+    )
+
+  return(this)
+}
+
+#' Add Title to Geogg Plot
+#'
+#' This function adds a title to a `geogg` plot.
+#'
+#' @param this A `geogg` object.
+#' @param title A character string specifying the title to be added to the plot.
+#'
+#' @return The modified `geogg` object with the specified title added.
+#'
+#' @examples
+#' my_plot <- geogg() %>%
+#'   geogg.add_title("Sample Plot Title")
+#'
+#' @export
+geogg.add_title = function(
+    this, #: geogg
+    title #: character
+) {
+  .geogg.check_class(this)
+  type.check_character(title, 'title')
+
+  this = this +
+    labs(
+      title = title
     )
 
   return(this)
