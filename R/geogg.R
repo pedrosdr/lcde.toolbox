@@ -646,3 +646,29 @@ geogg.theme_base = function(
 
   return(this)
 }
+
+#' Remove Legend from geogg Plot
+#'
+#' This function removes the legend from a \code{geogg} plot, making it suitable for visualizations where the legend is not needed.
+#'
+#' @param this A \code{geogg} object.
+#'
+#' @return The updated \code{geogg} object with the legend removed.
+#'
+#' @examples
+#' # Example usage:
+#' plot <- geogg() %>% geogg.without_legend()
+#'
+#' @export
+geogg.without_legend = function(
+    this
+) {
+  .geogg.check_class(this)
+
+  this = this +
+    theme(
+      legend.position = 'none'
+    )
+
+  return(this)
+}
