@@ -174,7 +174,7 @@ pca.get_ID = function(
     for(i in 1:nrow(this$loads)) {
       row = rownames(this$loads)[i]
       signal = if(this$loads[i,j] < 0) '-' else '+'
-      signal = if(i == 1) '' else signal
+      signal = if(i == 1 && signal == '+') '' else signal
       equation = paste(
         equation, signal, sprintf(
           "%.2f", abs(this$loads[i,j])
