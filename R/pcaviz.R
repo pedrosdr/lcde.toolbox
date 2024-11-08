@@ -346,7 +346,8 @@ pcaviz.component_loads = function(
   }
 
   loads = this$pca_obj$loads[,component]
-  data_names = rownames(this$pca_obj$loads)
+  data_names = rownames(this$pca_obj$loads) %>%
+    factor(levels = rownames(this$pca_obj$loads))
 
   this = this +
     theme_light() +
