@@ -172,6 +172,20 @@ pcaviz.scatter = function(
     this = this %>% pcaviz.add_multi_group_points(groups)
   }
 
+  caption = paste0(
+    pca_obj$component_equations[1],
+    '\n',
+    pca_obj$component_equations[2]
+  )
+
+  if(include_ID) {
+    caption = paste0(
+      caption,
+      "\nIndicador de Desigualdade: ",
+      sprintf("%.2f", this$pca_obj %>% pca.get_ID())
+    )
+  }
+
   this = this + labs(
       x = paste0(
         'CP1 (',
@@ -185,9 +199,7 @@ pcaviz.scatter = function(
         ')'
       ),
 
-      caption = paste0(pca_obj$component_equations[1],
-                       '\n',
-                       pca_obj$component_equations[2])
+      caption = caption
     ) +
 
     geom_hline(yintercept = 0, linetype='dashed',
@@ -196,10 +208,6 @@ pcaviz.scatter = function(
     geom_vline(xintercept = 0, linetype='dashed',
                linewidth=this$size$linewidth,
                color=colors.grayscale()[5])
-
-  if(include_ID) {
-    this = this %>% pcaviz.add_ID()
-  }
 
   if(!is.null(labels)) {
     this = this %>% pcaviz.add_labels(labels)
