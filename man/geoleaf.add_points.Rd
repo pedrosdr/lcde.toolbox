@@ -10,7 +10,8 @@ geoleaf.add_points(
   longitude,
   colors = NULL,
   labels = NULL,
-  popups = NULL
+  popups = NULL,
+  point_size = 1
 )
 }
 \arguments{
@@ -25,15 +26,17 @@ geoleaf.add_points(
 \item{labels}{An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.}
 
 \item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
+
+\item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
 }
 \value{
 The modified `geoleaf` map object with the added points.
 }
 \description{
-This function adds circular markers at specified geographic coordinates (latitude and longitude) to a `geoleaf` map. Markers can be customized with colors and labels.
+This function adds circular markers at specified geographic coordinates (latitude and longitude) to a `geoleaf` map. Markers can be customized with colors, labels, optional popups, and an adjustable point size.
 }
 \details{
-The function checks that `latitude` and `longitude` are numeric vectors of the same length. If `labels` are not provided, they default to empty strings, and the marker radius is set to a smaller size. If `colors` are not provided, a default color is used for all markers. The function omits any points with missing coordinates and issues a warning indicating how many points were omitted.
+The function verifies that `latitude` and `longitude` are numeric vectors of the same length. If `labels` are not provided, they default to empty strings, and the marker radius is set to a smaller size. If `colors` are not provided, a default color is used for all markers. Popups, when provided, display additional information on each marker. The `point_size` parameter allows customization of the point size on the map. Points with missing coordinates are omitted with a warning indicating the number of points omitted.
 }
 \examples{
 geoleaf.map <- geoleaf() \%>\%
@@ -41,7 +44,9 @@ geoleaf.map <- geoleaf() \%>\%
     latitude = c(-23.5505, -22.9068),
     longitude = c(-46.6333, -43.1729),
     colors = c('#FF0000', '#00FF00'),
-    labels = c('São Paulo', 'Rio de Janeiro')
+    labels = c('São Paulo', 'Rio de Janeiro'),
+    popups = c('Capital of SP', 'Capital of RJ'),
+    point_size = 2
   )
 
 }

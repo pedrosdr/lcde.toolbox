@@ -19,7 +19,8 @@ geoleaf.pca_map(
   surface_legend_title = "Legend Title",
   surface_palette = colors.purples(),
   surface_width = 100,
-  surface_height = 100
+  surface_height = 100,
+  point_size = 1
 )
 }
 \arguments{
@@ -52,6 +53,8 @@ geoleaf.pca_map(
 \item{surface_width}{Numeric value for the surface layer width.}
 
 \item{surface_height}{Numeric value for the surface layer height.}
+
+\item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
 }
 \value{
 A \code{geoleaf} map object with added PCA points, boundaries, and optionally a surface layer.

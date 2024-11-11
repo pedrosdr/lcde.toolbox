@@ -42,6 +42,7 @@ geoleaf = function() {
 #' @param surface_palette A character vector of colors to use for the surface layer.
 #' @param surface_width Numeric value for the surface layer width.
 #' @param surface_height Numeric value for the surface layer height.
+#' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
 #'
 #' @return A \code{geoleaf} map object with added proficiency points, boundaries, and optionally a surface layer.
 #'
@@ -62,7 +63,8 @@ geoleaf.percentage_of_proficiency_map = function(
     surface_legend_title='Legend Title', #: character
     surface_palette=colors.purples(), #: character vector
     surface_width=100, #: numeric
-    surface_height=100 #: numeric
+    surface_height=100, #: numeric
+    point_size=1 #: numeric
 ) {
   if(add_boundary & is.null(georef_obj)) {
     stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
@@ -107,7 +109,8 @@ geoleaf.percentage_of_proficiency_map = function(
       longitude = longitude,
       colors = inep.get_percentage_of_proficiency_category_colors(data),
       labels = labels,
-      popups = popups
+      popups = popups,
+      point_size = point_size
   ) %>%
   geoleaf.add_legend_percentage_of_proficiency(
       subject = subject
@@ -135,6 +138,7 @@ geoleaf.percentage_of_proficiency_map = function(
 #' @param surface_palette A character vector of colors to use for the surface layer.
 #' @param surface_width Numeric value for the surface layer width.
 #' @param surface_height Numeric value for the surface layer height.
+#' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
 #'
 #' @return A \code{geoleaf} map object with added PCA points, boundaries, and optionally a surface layer.
 #'
@@ -154,7 +158,8 @@ geoleaf.pca_map = function(
   surface_legend_title='Legend Title', #: character
   surface_palette=colors.purples(), #: character vector
   surface_width=100, #: numeric
-  surface_height=100 #: numeric
+  surface_height=100, #: numeric
+  point_size=1 #: numeric
 ) {
 
   if(add_boundary & is.null(georef_obj)) {
@@ -200,7 +205,8 @@ geoleaf.pca_map = function(
       latitude = latitude,
       longitude = longitude,
       labels = labels,
-      popups = popups
+      popups = popups,
+      point_size = point_size
   )
 
   obj = obj %>% geoleaf.add_legend_pca()
@@ -258,6 +264,7 @@ geoleaf.add_tiles = function(
 #' @param longitude A numeric vector of longitude coordinates for the PCA points.
 #' @param labels An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.
 #' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
+#' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
 #'
 #' @return The updated \code{geoleaf} object with added PCA points.
 #'
@@ -270,7 +277,8 @@ geoleaf.add_pca_points = function(
     latitude, #: numeric vector
     longitude, #: numeric vector,
     labels=NULL, #: vector
-    popups=NULL #: vector
+    popups=NULL, #: vector
+    point_size=1 #: numeric
 ) {
   .geoleaf.check_class(this)
   .pca.check_class(pca_obj)
@@ -281,7 +289,8 @@ geoleaf.add_pca_points = function(
       longitude = longitude,
       colors = pca_obj %>% pca.get_category_colors(),
       labels = labels,
-      popups = popups
+      popups = popups,
+      point_size = point_size
     )
 
   return(this)
@@ -290,7 +299,7 @@ geoleaf.add_pca_points = function(
 
 #' Add Points to Map
 #'
-#' This function adds circular markers at specified geographic coordinates (latitude and longitude) to a `geoleaf` map. Markers can be customized with colors and labels.
+#' This function adds circular markers at specified geographic coordinates (latitude and longitude) to a `geoleaf` map. Markers can be customized with colors, labels, optional popups, and an adjustable point size.
 #'
 #' @param this A `geoleaf` map object.
 #' @param latitude A numeric vector specifying the latitude coordinates for the points.
@@ -298,11 +307,12 @@ geoleaf.add_pca_points = function(
 #' @param colors An optional character vector specifying the colors for each marker. If not provided, a default color is used.
 #' @param labels An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.
 #' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
+#' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
 #'
 #' @return The modified `geoleaf` map object with the added points.
 #'
 #' @details
-#' The function checks that `latitude` and `longitude` are numeric vectors of the same length. If `labels` are not provided, they default to empty strings, and the marker radius is set to a smaller size. If `colors` are not provided, a default color is used for all markers. The function omits any points with missing coordinates and issues a warning indicating how many points were omitted.
+#' The function verifies that `latitude` and `longitude` are numeric vectors of the same length. If `labels` are not provided, they default to empty strings, and the marker radius is set to a smaller size. If `colors` are not provided, a default color is used for all markers. Popups, when provided, display additional information on each marker. The `point_size` parameter allows customization of the point size on the map. Points with missing coordinates are omitted with a warning indicating the number of points omitted.
 #'
 #' @seealso \code{\link{addCircleMarkers}}, \code{\link{geoleaf}}, \code{\link{leaflet}}
 #'
@@ -312,7 +322,9 @@ geoleaf.add_pca_points = function(
 #'     latitude = c(-23.5505, -22.9068),
 #'     longitude = c(-46.6333, -43.1729),
 #'     colors = c('#FF0000', '#00FF00'),
-#'     labels = c('São Paulo', 'Rio de Janeiro')
+#'     labels = c('São Paulo', 'Rio de Janeiro'),
+#'     popups = c('Capital of SP', 'Capital of RJ'),
+#'     point_size = 2
 #'   )
 #'
 #' @export
@@ -322,16 +334,18 @@ geoleaf.add_points = function(
   longitude, #: numeric vector
   colors=NULL, #: character vector
   labels=NULL, #: vector
-  popups=NULL #: vector
+  popups=NULL, #: vector
+  point_size=1 #: numeric
 ) {
   .geoleaf.check_class(this)
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(longitude, 'longitude')
+  type.check_numeric(point_size)
 
 
-  radius = 9
+  radius = 5 * point_size
   if(is.null(labels)) {
-    radius = 7
+    radius = 3 * point_size
     labels = rep('', length(longitude))
   }
   if(is.null(popups)) {
