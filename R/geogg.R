@@ -52,6 +52,8 @@ geogg = function(
 #' @param surface_width A numeric value specifying the width of the surface grid, default is 100.
 #' @param surface_height A numeric value specifying the height of the surface grid, default is 100.
 #' @param size An object defining size specifications, default is 'large'.
+#' @param point_size A numeric describing the size of the points to be added into the plot.
+#' @param boundary_width A numeric describing the width of the boundaries in the plot, if any.
 #'
 #' @return A geogg object with the PCA map added.
 #'
@@ -74,7 +76,9 @@ geogg.pca_map = function(
     surface_palette=colors.purples(), #: character vector
     surface_width=100, #: numeric
     surface_height=100, #: numeric
-    size = vizsize.parse('large')
+    size = vizsize.parse('large'),
+    point_size = 1, #: numeric
+    boundary_width = 1 #: numeric
 ) {
   .pca.check_class(pca_obj)
 
@@ -112,7 +116,7 @@ geogg.pca_map = function(
   }
 
   if(add_boundary) {
-    obj = obj %>% geogg.add_boundary(georef_obj)
+    obj = obj %>% geogg.add_boundary(georef_obj, boundary_width = boundary_width)
   }
 
   data = pca_obj$principal_components$CP1
@@ -135,7 +139,8 @@ geogg.pca_map = function(
       '75% |-| 100%' = colors.red_to_green()[4]
     ),
     legend_title = 'Desempenho Relativo',
-    add_new_scale = if(add_surface) TRUE else FALSE
+    add_new_scale = if(add_surface) TRUE else FALSE,
+    point_size = point_size
   )
 
   if(!is.null(labels)) {
@@ -169,6 +174,8 @@ geogg.pca_map = function(
 #' @param surface_width A numeric value specifying the width of the surface grid, default is 100.
 #' @param surface_height A numeric value specifying the height of the surface grid, default is 100.
 #' @param size An object defining size specifications, default is 'large'.
+#' @param point_size A numeric describing the size of the points to be added.
+#'
 #'
 #' @return A geogg object with the proficiency map added.
 #'
@@ -192,7 +199,9 @@ geogg.percentage_of_proficiency_map = function(
   surface_palette=colors.purples(), #: character vector
   surface_width=100, #: numeric
   surface_height=100, #: numeric
-  size = vizsize.parse('large')
+  size = vizsize.parse('large'),
+  point_size = 1, #: numeric
+  boundary_width = 1
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -232,7 +241,7 @@ geogg.percentage_of_proficiency_map = function(
   }
 
   if(add_boundary) {
-    obj = obj %>% geogg.add_boundary(georef_obj)
+    obj = obj %>% geogg.add_boundary(georef_obj, boundary_width = boundary_width)
   }
 
   legend_title = if(subject[1] == 'mathematics') {
@@ -259,7 +268,8 @@ geogg.percentage_of_proficiency_map = function(
         '70% |-| 100%' = colors.red_to_green()[4]
       ),
       legend_title = legend_title,
-      add_new_scale = if(add_surface) TRUE else FALSE
+      add_new_scale = if(add_surface) TRUE else FALSE,
+      point_size = point_size
   )
 
   if(!is.null(labels)) {
@@ -340,6 +350,7 @@ geogg.add_tiles = function(
 #' @param labels An optional vector of labels for each group, default is NULL.
 #' @param legend_title A character string for the legend title, default is 'Legend Title'.
 #' @param add_new_scale A logical value indicating if a new color scale should be added, default is FALSE.
+#' @param point_size The size of the points to be added into the plot.
 #' @return The updated geogg object with points added.
 #' @examples
 #' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = factor(c("A", "B")), color_map = c("A" = "red", "B" = "blue"))
@@ -352,13 +363,15 @@ geogg.add_points = function(
   color_map=NULL, #: key-value character vector
   labels=NULL, #: vector
   legend_title = 'Legend Title', #: character
-  add_new_scale = FALSE #: logical
+  add_new_scale = FALSE, #: logical
+  point_size = 1 #: numeric
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(latitude, 'longitude')
   type.check_character(legend_title, 'legend_title')
   type.check_logical(add_new_scale, 'add_new_scale')
+  type.check_numeric(point_size, 'point_size')
 
   if(length(longitude) != length(latitude)) {
     stop("'latitude' and 'longitude' must be vectors of the same length")
@@ -415,7 +428,7 @@ geogg.add_points = function(
     geom_sf(
       aes(fill=groups),
       data=georef_obj$sf_obj,
-      size=this$size$point_size * 0.7,
+      size=this$size$point_size * 0.6 * point_size,
       shape=21
     ) +
     scale_fill_manual(
@@ -509,21 +522,24 @@ geogg.add_labels = function(
 #'
 #' @param this An object of class 'geogg'.
 #' @param georef_obj A georef object containing the boundary data in an sf format.
+#' @param boundary_width A numeric describing the width of the boundaries.
 #' @return The updated geogg object with the boundary added.
 #' @examples
 #' geogg_obj <- geogg() %>% geogg.add_boundary(georef_obj)
 #' @export
 geogg.add_boundary = function(
   this, #: geogg
-  georef_obj #: georef
+  georef_obj, #: georef
+  boundary_width = 1 #: numeric
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
+  type.check_numeric(boundary_width, 'boundary_width')
 
   this = this +
     geom_sf(
       data = georef_obj$sf,
-      linewidth = this$size$linewidth * 1.5,
+      linewidth = this$size$linewidth * 1.0 * boundary_width,
       color = colors.grayscale()[4],
       fill = 'transparent'
     )
