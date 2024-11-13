@@ -54,6 +54,7 @@ geogg = function(
 #' @param size An object defining size specifications, default is 'large'.
 #' @param point_size A numeric describing the size of the points to be added into the plot.
 #' @param boundary_width A numeric describing the width of the boundaries in the plot, if any.
+#' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #'
 #' @return A geogg object with the PCA map added.
 #'
@@ -78,7 +79,8 @@ geogg.pca_map = function(
     surface_height=100, #: numeric
     size = vizsize.parse('large'),
     point_size = 1, #: numeric
-    boundary_width = 1 #: numeric
+    boundary_width = 1, #: numeric
+    zoom = NULL #: integer
 ) {
   .pca.check_class(pca_obj)
 
@@ -99,7 +101,7 @@ geogg.pca_map = function(
   }
 
   obj = geogg(size = size) %>%
-    geogg.add_tiles()
+    geogg.add_tiles(zoom = zoom)
 
   if(add_surface) {
     obj = obj %>%
@@ -175,6 +177,7 @@ geogg.pca_map = function(
 #' @param surface_height A numeric value specifying the height of the surface grid, default is 100.
 #' @param size An object defining size specifications, default is 'large'.
 #' @param point_size A numeric describing the size of the points to be added.
+#' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #'
 #'
 #' @return A geogg object with the proficiency map added.
@@ -201,7 +204,8 @@ geogg.percentage_of_proficiency_map = function(
   surface_height=100, #: numeric
   size = vizsize.parse('large'),
   point_size = 1, #: numeric
-  boundary_width = 1
+  boundary_width = 1,
+  zoom = NULL #: integer
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -224,7 +228,7 @@ geogg.percentage_of_proficiency_map = function(
   }
 
   obj = geogg(size = size) %>%
-    geogg.add_tiles()
+    geogg.add_tiles(zoom = zoom)
 
   if(add_surface) {
     obj = obj %>%
@@ -315,6 +319,7 @@ geogg.percentage_of_proficiency_map = function(
 #' This function adds a tile layer as a background to a `geogg` object, enhancing the map visualization with a predefined cartographic style.
 #'
 #' @param this A `geogg` object to which the tile layer will be added.
+#' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #'
 #' @return A `geogg` object with an added tile background layer.
 #'
@@ -326,13 +331,18 @@ geogg.percentage_of_proficiency_map = function(
 #' @examples
 #' my_geogg <- geogg() %>% geogg.add_tiles()
 geogg.add_tiles = function(
-  this #: geogg
+    this, #: geogg
+    zoom = NULL #: integer
 ) {
   .geogg.check_class(this)
+  if(!is.null(zoom)) {
+    type.check_integer(zoom, 'zoom')
+  }
 
   this = this +
     annotation_map_tile(
-      type='cartolight'
+      type='cartolight',
+      zoom=zoom
     )
 
   return(this)
@@ -660,8 +670,8 @@ geogg.theme_base = function(
 
   this = this +
     theme(
-      legend.text = element_text(size=this$size$text),
-      legend.title = element_text(size=this$size$text),
+      legend.text = element_text(size=this$size$text * 0.7),
+      legend.title = element_text(size=this$size$text * 0.7),
       plot.title = element_text(
         size=this$size$text,
         hjust = 0.5

@@ -19,7 +19,10 @@ geogg.pca_map(
   surface_palette = colors.purples(),
   surface_width = 100,
   surface_height = 100,
-  size = vizsize.parse("large")
+  size = vizsize.parse("large"),
+  point_size = 1,
+  boundary_width = 1,
+  zoom = NULL
 )
 }
 \arguments{
@@ -52,6 +55,12 @@ geogg.pca_map(
 \item{surface_height}{A numeric value specifying the height of the surface grid, default is 100.}
 
 \item{size}{An object defining size specifications, default is 'large'.}
+
+\item{point_size}{A numeric describing the size of the points to be added into the plot.}
+
+\item{boundary_width}{A numeric describing the width of the boundaries in the plot, if any.}
+
+\item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 }
 \value{
 A geogg object with the PCA map added.

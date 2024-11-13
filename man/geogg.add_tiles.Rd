@@ -4,10 +4,12 @@
 \alias{geogg.add_tiles}
 \title{Add Tile Background to Geographical Plot}
 \usage{
-geogg.add_tiles(this)
+geogg.add_tiles(this, zoom = NULL)
 }
 \arguments{
 \item{this}{A `geogg` object to which the tile layer will be added.}
+
+\item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 }
 \value{
 A `geogg` object with an added tile background layer.

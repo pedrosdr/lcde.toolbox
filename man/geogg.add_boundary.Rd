@@ -4,12 +4,14 @@
 \alias{geogg.add_boundary}
 \title{Add Boundary Layer to Geographical Plot}
 \usage{
-geogg.add_boundary(this, georef_obj)
+geogg.add_boundary(this, georef_obj, boundary_width = 1)
 }
 \arguments{
 \item{this}{An object of class 'geogg'.}
 
 \item{georef_obj}{A georef object containing the boundary data in an sf format.}
+
+\item{boundary_width}{A numeric describing the width of the boundaries.}
 }
 \value{
 The updated geogg object with the boundary added.

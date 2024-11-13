@@ -12,7 +12,8 @@ geogg.add_points(
   color_map = NULL,
   labels = NULL,
   legend_title = "Legend Title",
-  add_new_scale = FALSE
+  add_new_scale = FALSE,
+  point_size = 1
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ geogg.add_points(
 \item{legend_title}{A character string for the legend title, default is 'Legend Title'.}
 
 \item{add_new_scale}{A logical value indicating if a new color scale should be added, default is FALSE.}
+
+\item{point_size}{The size of the points to be added into the plot.}
 }
 \value{
 The updated geogg object with points added.

@@ -245,10 +245,10 @@ vizsize.parse = function(
 ) {
   .vizsize.check_class(this)
 
-  this$text = 10
-  this$title = 15
-  this$subtitle = 13
-  this$axis_title = 13
+  this$text = 13
+  this$title = 17
+  this$subtitle = 15
+  this$axis_title = 15
 
   return(this)
 }
