@@ -279,7 +279,7 @@ pcaviz.explained_variance = function(
 
     labs(
       x='Componente Principal',
-      y='% de Variância Explicada'
+      y='Variância Explicada (%)'
     ) +
 
     geom_label(

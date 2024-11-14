@@ -55,6 +55,8 @@ geogg = function(
 #' @param point_size A numeric describing the size of the points to be added into the plot.
 #' @param boundary_width A numeric describing the width of the boundaries in the plot, if any.
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
+#' @param groups An optional factor vector for grouping the points, default is NULL.
+#' @param color_map A named character vector for color mapping groups, default is NULL.
 #'
 #' @return A geogg object with the PCA map added.
 #'
@@ -80,9 +82,26 @@ geogg.pca_map = function(
     size = vizsize.parse('large'),
     point_size = 1, #: numeric
     boundary_width = 1, #: numeric
-    zoom = NULL #: integer
+    zoom = NULL, #: integer
+    groups = NULL, #: factor
+    color_map = NULL
 ) {
   .pca.check_class(pca_obj)
+
+  if(!is.null(groups)) {
+    if(length(groups) != nrow(pca_obj$data)) {
+      stop("'groups' must be a factor of the same length as data")
+    }
+
+    type.check_factor(groups, 'groups')
+  }
+
+  if(
+      (is.null(groups) && !is.null(color_map)) ||
+      (!is.null(groups) && is.null(color_map))
+  ) {
+    stop("'color_map' and 'groups' must be both specified or null")
+  }
 
   if(add_boundary & is.null(georef_obj)) {
     stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
@@ -123,23 +142,35 @@ geogg.pca_map = function(
 
   data = pca_obj$principal_components$CP1
 
-  obj = obj %>% geogg.add_points(
-    latitude=latitude,
-    longitude=longitude,
-    groups=factor(ifelse(
-      data < quantile(data, 0.25), '0% |- 25%', ifelse(
-        data < quantile(data, 0.50), '25% |- 50%', ifelse(
-          data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
+  groups = if(!is.null(groups)) {
+    groups
+  } else {
+    factor(ifelse(
+        data < quantile(data, 0.25), '0% |- 25%', ifelse(
+          data < quantile(data, 0.50), '25% |- 50%', ifelse(
+            data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
+          )
         )
       )
     )
-    ),
-    color_map = c(
+  }
+
+  color_map = if(!is.null(color_map)) {
+    color_map
+  } else {
+    c(
       '0% |- 25%' = colors.red_to_green()[1],
       '25% |- 50%' = colors.red_to_green()[2],
       '50% |- 75%' = colors.red_to_green()[3],
       '75% |-| 100%' = colors.red_to_green()[4]
-    ),
+    )
+  }
+
+  obj = obj %>% geogg.add_points(
+    latitude=latitude,
+    longitude=longitude,
+    groups=groups,
+    color_map = color_map,
     legend_title = 'Desempenho Relativo',
     add_new_scale = if(add_surface) TRUE else FALSE,
     point_size = point_size
@@ -406,7 +437,7 @@ geogg.add_points = function(
     labels = levels(groups)
   }
 
-  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  mask = !(is.na(longitude) | is.na(latitude))
   df_filter = data.frame(
     latitude = latitude,
     longitude = longitude,

@@ -22,7 +22,9 @@ geogg.pca_map(
   size = vizsize.parse("large"),
   point_size = 1,
   boundary_width = 1,
-  zoom = NULL
+  zoom = NULL,
+  groups = NULL,
+  color_map = NULL
 )
 }
 \arguments{
@@ -61,6 +63,10 @@ geogg.pca_map(
 \item{boundary_width}{A numeric describing the width of the boundaries in the plot, if any.}
 
 \item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
+
+\item{groups}{An optional factor vector for grouping the points, default is NULL.}
+
+\item{color_map}{A named character vector for color mapping groups, default is NULL.}
 }
 \value{
 A geogg object with the PCA map added.
