@@ -132,24 +132,46 @@ pcaviz.set_pca_obj = function(
   }
 }
 
-#' Create a Scatter Plot for PCA Results
+#' Scatter Plot for PCA Visualization
 #'
-#' This function generates a scatter plot of the principal components from a PCA object.
+#' Generates a scatter plot for visualizing the results of a Principal Component Analysis (PCA),
+#' including options for grouping and labeling data points.
 #'
-#' @param pca_obj A PCA object containing principal components.
-#' @param labels Optional labels for the points (default is NULL).
-#' @param groups Optional grouping factor for coloring points (default is NULL).
-#' @param size Size properties for the plot (default is `vizsize()`).
-#' @param text If provided, sets aes(text = text) to enable tooltips during Plotly conversion (default is NULL).
+#' @param pca_obj A `pca` object containing the PCA results.
+#' @param labels An optional vector of labels for the data points. Defaults to `NULL`.
+#' @param groups An optional factor for grouping the data points. Defaults to `NULL`.
+#' @param include_ID Logical, indicating whether to include the inequality indicator in the plot caption. Defaults to `FALSE`.
+#' @param size A `vizsize` object or a numeric/text size parameter for customizing plot dimensions. Defaults to `vizsize()`.
 #'
-#' @return A ggplot object representing the PCA scatter plot.
+#' @return A `pcaviz` object representing the scatter plot.
+#'
+#' @details
+#' The scatter plot visualizes the first two principal components (CP1 and CP2) from the PCA analysis.
+#' The function provides options to:
+#' - Include data point labels.
+#' - Group data points using distinct colors.
+#' - Add the inequality indicator to the plot caption.
+#'
+#' The axes are labeled with the percentage of variance explained by each principal component, and
+#' the caption includes the equations for CP1 and CP2. Dashed horizontal and vertical lines are drawn at
+#' the origin for reference.
+#'
+#' @examples
+#' # Example usage:
+#' pca_results <- perform_pca(data)
+#' scatter_plot <- pcaviz.scatter(
+#'   pca_obj = pca_results,
+#'   labels = c("A", "B", "C"),
+#'   groups = factor(c("Group1", "Group2", "Group1")),
+#'   include_ID = TRUE
+#' )
 #'
 #' @export
 pcaviz.scatter = function(
   pca_obj, #: pca
   labels = NULL, #: vector
   groups = NULL, #: factor
-  include_ID = TRUE, #: logical
+  include_ID = FALSE, #: logical
   size = vizsize() #: vizsize | text | numeric
 ) {
   .pca.check_class(pca_obj)
@@ -218,6 +240,14 @@ pcaviz.scatter = function(
   }
 
   this = this %>% pcaviz.set_theme_scatter()
+
+  xlim = max(abs(pca_obj$principal_components$CP1))
+  ylim = max(abs(pca_obj$principal_components$CP2))
+  this = this +
+    coord_cartesian(
+      xlim = c(-xlim, xlim),
+      ylim = c(-ylim, ylim)
+    )
 
   return(this)
 }
