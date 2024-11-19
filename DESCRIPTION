@@ -28,6 +28,26 @@ Imports:
   ggnewscale,
   officer,
   flextable
+Depends:
+  ggplot2,
+  dplyr,
+  stats,
+  ggrepel,
+  terra,
+  sf,
+  gstat,
+  tidyterra,
+  leaflet,
+  tools,
+  stringr,
+  tibble,
+  scales,
+  htmltools,
+  ggspatial,
+  prettymapr,
+  ggnewscale,
+  officer,
+  flextable
 RoxygenNote: 7.3.2
 Collate:
     'type.R'
