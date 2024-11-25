@@ -11,7 +11,8 @@ geoleaf.add_pca_points(
   longitude,
   labels = NULL,
   popups = NULL,
-  point_size = 1
+  point_size = 1,
+  colors = NULL
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ geoleaf.add_pca_points(
 \item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
 
 \item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
+
+\item{colors}{An optional character vector specifying the colors for each PCA point. If not provided, default colors are used.}
 }
 \value{
 The updated \code{geoleaf} object with added PCA points.

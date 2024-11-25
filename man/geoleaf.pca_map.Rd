@@ -20,7 +20,8 @@ geoleaf.pca_map(
   surface_palette = colors.purples(),
   surface_width = 100,
   surface_height = 100,
-  point_size = 1
+  point_size = 1,
+  colors = NULL
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ geoleaf.pca_map(
 \item{surface_height}{Numeric value for the surface layer height.}
 
 \item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
+
+\item{colors}{An optional character vector specifying the colors for each PCA point. If not provided, default colors are used.}
 }
 \value{
 A \code{geoleaf} map object with added PCA points, boundaries, and optionally a surface layer.

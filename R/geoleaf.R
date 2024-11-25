@@ -139,6 +139,7 @@ geoleaf.percentage_of_proficiency_map = function(
 #' @param surface_width Numeric value for the surface layer width.
 #' @param surface_height Numeric value for the surface layer height.
 #' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
+#' @param colors An optional character vector specifying the colors for each PCA point. If not provided, default colors are used.
 #'
 #' @return A \code{geoleaf} map object with added PCA points, boundaries, and optionally a surface layer.
 #'
@@ -159,9 +160,9 @@ geoleaf.pca_map = function(
   surface_palette=colors.purples(), #: character vector
   surface_width=100, #: numeric
   surface_height=100, #: numeric
-  point_size=1 #: numeric
+  point_size=1, #: numeric
+  colors = NULL #: character vector
 ) {
-
   if(add_boundary & is.null(georef_obj)) {
     stop("'add_boundary' is set to TRUE but no 'georef_obj' was given")
   }
@@ -206,7 +207,8 @@ geoleaf.pca_map = function(
       longitude = longitude,
       labels = labels,
       popups = popups,
-      point_size = point_size
+      point_size = point_size,
+      colors = colors
   )
 
   obj = obj %>% geoleaf.add_legend_pca()
@@ -265,6 +267,7 @@ geoleaf.add_tiles = function(
 #' @param labels An optional vector of labels corresponding to each marker. If not provided, no labels are displayed.
 #' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #' @param point_size A numeric value indicating the size of the points on the map. Defaults to 1.
+#' @param colors An optional character vector specifying the colors for each PCA point. If not provided, default colors are used.
 #'
 #' @return The updated \code{geoleaf} object with added PCA points.
 #'
@@ -278,16 +281,35 @@ geoleaf.add_pca_points = function(
     longitude, #: numeric vector,
     labels=NULL, #: vector
     popups=NULL, #: vector
-    point_size=1 #: numeric
+    point_size=1, #: numeric
+    colors = NULL #: character | character vector
 ) {
   .geoleaf.check_class(this)
   .pca.check_class(pca_obj)
+
+  if (!is.null(colors)) {
+    if(length(colors) != nrow(pca_obj$data) && length(colors) != 1) {
+      stop("'colors' must be a vector of length 1 or the same length as data")
+    }
+
+    if(length(colors) == 1) {
+      colors = rep(colors, nrow(pca_obj$data))
+    }
+
+    type.check_character(colors, "colors")
+  }
+
+  colors = if(is.null(colors)) {
+    pca_obj %>% pca.get_category_colors()
+  } else {
+    colors
+  }
 
   this = this %>%
     geoleaf.add_points(
       latitude = latitude,
       longitude = longitude,
-      colors = pca_obj %>% pca.get_category_colors(),
+      colors = colors,
       labels = labels,
       popups = popups,
       point_size = point_size
