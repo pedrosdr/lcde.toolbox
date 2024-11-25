@@ -96,6 +96,7 @@ geogg.pca_map = function(
     type.check_factor(groups, 'groups')
   }
 
+
   if(
       (is.null(groups) && !is.null(color_map)) ||
       (!is.null(groups) && is.null(color_map))
@@ -514,7 +515,7 @@ geogg.add_labels = function(
     stop("'labels' and 'longitude' must be vectors of the same length")
   }
 
-  mask = !(is.na(df$longitude) | is.na(df$latitude))
+  mask = !(is.na(longitude) | is.na(latitude))
   df_filter = data.frame(
     latitude = latitude,
     longitude = longitude,
