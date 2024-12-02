@@ -634,7 +634,7 @@ pcaviz.add_labels = function(
         label = labels
       ),
       min.segment.length = 0,
-      max.overlaps = 50,
+      max.overlaps = 20,
       box.padding = this$size$point_size/2,
       size=this$size$text/4
     )
