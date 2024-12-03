@@ -19,8 +19,8 @@ georef.from_geojson = function(
   geojson #: character
 ) {
   type.check_character(geojson)
-  sf_obj = st_read(geojson)
-  sf_obj = st_transform(sf_obj, crs = 4326)
+  sf_obj = sf::st_read(geojson)
+  sf_obj = sf::st_transform(sf_obj, crs = 4326)
 
   this = list()
   class(this) = 'georef'
@@ -42,7 +42,7 @@ georef.from_sf = function(
     sf_obj #: sf
 ) {
   type.check_sf(sf_obj)
-  sf_obj = st_transform(sf_obj, crs = 4326)
+  sf_obj = sf::st_transform(sf_obj, crs = 4326)
 
   this = list()
   class(this) = 'georef'
@@ -77,7 +77,7 @@ georef.from_points = function(
     longitude = longitude
   )
 
-  sf_obj = st_as_sf(
+  sf_obj = sf::st_as_sf(
     data,
     coords = c('longitude', 'latitude'),
     crs = 4326
@@ -186,25 +186,25 @@ georef.get_raster = function(
     )
   }
 
-  boundary = st_union(this$sf) %>% st_as_sf()
+  boundary = sf::st_union(this$sf) %>% sf::st_as_sf()
 
   data_sf = data.frame(
     data = data,
     latitude = latitude,
     longitude = longitude
   )
-  data_sf =  st_as_sf(
+  data_sf =  sf::st_as_sf(
     data_sf,
     coords = c('longitude', 'latitude'),
-    crs = st_crs(boundary)
+    crs = sf::st_crs(boundary)
   )
 
   grid = terra::rast(boundary, nrows=height, ncols=width)
-  xy = terra::xyFromCell(grid, 1:ncell(grid)) %>% as.data.frame()
-  coop = st_as_sf(xy, coords = c("x", "y"), crs = st_crs(boundary))
-  coop = st_filter(coop, boundary)
+  xy = terra::xyFromCell(grid, 1:terra::ncell(grid)) %>% as.data.frame()
+  coop = sf::st_as_sf(xy, coords = c("x", "y"), crs = sf::st_crs(boundary))
+  coop = sf::st_filter(coop, boundary)
 
-  model <- gstat(formula = data ~ 1, locations = data_sf, nmax = 3,
+  model <- gstat::gstat(formula = data ~ 1, locations = data_sf, nmax = 3,
                  set = list(idp = 1))
   resp <- predict(model, coop)
   pred <- terra::rasterize(resp, grid, field = "var1.pred", fun = "mean")
