@@ -1,7 +1,3 @@
-library(terra)
-library(sf)
-library(gstat)
-
 # class georef
 
 # constructors

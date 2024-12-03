@@ -1,5 +1,3 @@
-library(leaflet)
-
 # class geoleaf
 
 # constructors

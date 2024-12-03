@@ -1,10 +1,3 @@
-library(ggplot2)
-library(ggspatial)
-library(ggrepel)
-library(tidyterra)
-library(ggnewscale)
-library(sf)
-
 # class geogg
 
 # constructors
@@ -21,8 +14,8 @@ geogg = function(
 ) {
   size = vizsize.parse(size)
 
-  obj = ggplot() +
-    theme_light()
+  obj = ggplot2::ggplot() +
+    ggplot2::theme_light()
 
   class(obj) = c(class(obj), 'geogg')
 
@@ -372,7 +365,7 @@ geogg.add_tiles = function(
   }
 
   this = this +
-    annotation_map_tile(
+    ggspatial::annotation_map_tile(
       type='cartolight',
       zoom=zoom
     )
@@ -464,16 +457,16 @@ geogg.add_points = function(
 
   if(add_new_scale) {
     this = this +
-      new_scale_fill()
+      ggnewscale::new_scale_fill()
   }
   this = this +
-    geom_sf(
-      aes(fill=groups),
+    ggplot2::geom_sf(
+      ggplot2::aes(fill=groups),
       data=georef_obj$sf_obj,
       size=this$size$point_size * 0.6 * point_size,
       shape=21
     ) +
-    scale_fill_manual(
+    ggplot2::scale_fill_manual(
       name = legend_title,
       values = color_map,
       labels = labels
@@ -543,9 +536,9 @@ geogg.add_labels = function(
   data$labels = labels
 
   this = this +
-    geom_text_repel(
+    ggrepel::geom_text_repel(
       data = data,
-      aes(
+      ggplot2::aes(
         label = labels,
         geometry = geometry
       ),
@@ -579,7 +572,7 @@ geogg.add_boundary = function(
   type.check_numeric(boundary_width, 'boundary_width')
 
   this = this +
-    geom_sf(
+    ggplot2::geom_sf(
       data = georef_obj$sf,
       linewidth = this$size$linewidth * 1.0 * boundary_width,
       color = colors.grayscale()[4],
@@ -641,13 +634,13 @@ geogg.add_surface = function(
 
   if(add_new_scale) {
     this = this +
-      new_scale_fill()
+      ggnewscale::new_scale_fill()
   }
   this = this +
-    geom_spatraster(
+    tidyterra::geom_spatraster(
       data = surface
     ) +
-    scale_fill_gradientn(
+    ggplot2::scale_fill_gradientn(
       colors = palette,
       na.value=NA,
       name=legend_title
@@ -671,13 +664,13 @@ geogg.theme_clean = function(
   .geogg.check_class(this)
 
   this = this +
-    theme(
-      panel.border = element_blank(),
-      panel.grid = element_blank(),
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank(),
-      plot.title = element_text(
+    ggplot2::theme(
+      panel.border = ggplot2::element_blank(),
+      panel.grid = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      axis.title = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(
         size=this$size$text,
         hjust = 0.5
       )
@@ -701,10 +694,10 @@ geogg.theme_base = function(
   .geogg.check_class(this)
 
   this = this +
-    theme(
-      legend.text = element_text(size=this$size$text * 0.7),
-      legend.title = element_text(size=this$size$text * 0.7),
-      plot.title = element_text(
+    ggplot2::theme(
+      legend.text = ggplot2::element_text(size=this$size$text * 0.7),
+      legend.title = ggplot2::element_text(size=this$size$text * 0.7),
+      plot.title = ggplot2::element_text(
         size=this$size$text,
         hjust = 0.5
       )
@@ -732,7 +725,7 @@ geogg.without_legend = function(
   .geogg.check_class(this)
 
   this = this +
-    theme(
+    ggplot2::theme(
       legend.position = 'none'
     )
 
