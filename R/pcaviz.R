@@ -1,7 +1,3 @@
-library(dplyr)
-library(ggplot2)
-library(ggrepel)
-
 # class pcaviz
 
 # constructors
@@ -179,14 +175,14 @@ pcaviz.scatter = function(
     stop("'include_ID' must be of type 'logical'")
   }
 
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = pcaviz.from_ggplot(ggplot2::ggplot(), pca_obj)
   if(!is.null(groups)) {
     this %>% .pcaviz.check_groups(groups)
   }
 
   this = this %>% pcaviz.set_size(size)
 
-  this = this + theme_minimal()
+  this = this + ggplot2::theme_minimal()
 
   if(is.null(groups)) {
     this = this %>% pcaviz.add_single_group_points()
@@ -208,7 +204,7 @@ pcaviz.scatter = function(
     )
   }
 
-  this = this + labs(
+  this = this + ggplot2::labs(
       x = paste0(
         'CP1 (',
         sprintf("%.2f%%", 100*pca_obj$explained_variance[1]),
@@ -224,10 +220,10 @@ pcaviz.scatter = function(
       caption = caption
     ) +
 
-    geom_hline(yintercept = 0, linetype='dashed',
+    ggplot2::geom_hline(yintercept = 0, linetype='dashed',
                linewidth=this$size$linewidth,
                color=colors.grayscale()[5]) +
-    geom_vline(xintercept = 0, linetype='dashed',
+    ggplot2::geom_vline(xintercept = 0, linetype='dashed',
                linewidth=this$size$linewidth,
                color=colors.grayscale()[5])
 
@@ -244,7 +240,7 @@ pcaviz.scatter = function(
   xlim = max(abs(pca_obj$principal_components$CP1))
   ylim = max(abs(pca_obj$principal_components$CP2))
   this = this +
-    coord_cartesian(
+    ggplot2::coord_cartesian(
       xlim = c(-xlim, xlim),
       ylim = c(-ylim, ylim)
     )
@@ -292,28 +288,28 @@ pcaviz.explained_variance = function(
   size = vizsize() #: vizsize
 ) {
   .pca.check_class(pca_obj)
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = pcaviz.from_ggplot(ggplot2::ggplot(), pca_obj)
 
   this = this %>% pcaviz.set_size(size)
 
   this = this +
-    theme_light() +
+    ggplot2::theme_light() +
 
-    geom_col(
-      aes(
+    ggplot2::geom_col(
+      ggplot2::aes(
         x=this$pca_obj$component_names,
         y=this$pca_obj$explained_variance
       ),
       fill=colors.mixed()[1]
     ) +
 
-    labs(
+    ggplot2::labs(
       x='Componente Principal',
       y='Variância Explicada (%)'
     ) +
 
-    geom_label(
-      aes(
+    ggplot2::geom_label(
+      ggplot2::aes(
         x=this$pca_obj$component_names,
         y=this$pca_obj$explained_variance,
         label=sprintf(
@@ -323,7 +319,7 @@ pcaviz.explained_variance = function(
       size = this$size$text/3
     ) +
 
-    scale_y_continuous(labels = function(x) {sprintf("%.2f%%", 100*x)})
+    ggplot2::scale_y_continuous(labels = function(x) {sprintf("%.2f%%", 100*x)})
 
   this = this %>% pcaviz.set_theme_column()
 
@@ -374,7 +370,7 @@ pcaviz.component_loads = function(
 ) {
   .pca.check_class(pca_obj)
 
-  this = pcaviz.from_ggplot(ggplot(), pca_obj)
+  this = pcaviz.from_ggplot(ggplot2::ggplot(), pca_obj)
   this = this %>% pcaviz.set_size(size)
 
   type.check_integer(component)
@@ -388,22 +384,22 @@ pcaviz.component_loads = function(
     factor(levels = rownames(this$pca_obj$loads))
 
   this = this +
-    theme_light() +
+    ggplot2::theme_light() +
 
-    geom_col(
-      aes(
+    ggplot2::geom_col(
+      ggplot2::aes(
         x=data_names,
         y=loads
       ),
       fill = colors.mixed()[1]
     ) +
 
-    labs(
+    ggplot2::labs(
       y='Carga'
     ) +
 
-    geom_label(
-      aes(
+    ggplot2::geom_label(
+      ggplot2::aes(
         x=data_names,
         y=loads,
         label=sprintf(
@@ -413,7 +409,7 @@ pcaviz.component_loads = function(
       size = this$size$text/3
     )
 
-    scale_y_continuous(labels = function(x) {sprintf("%.2f", x)})
+  ggplot2::scale_y_continuous(labels = function(x) {sprintf("%.2f", x)})
 
   this = this %>% pcaviz.set_theme_column()
 
@@ -445,7 +441,7 @@ pcaviz.add_title = function(
   type.check_character(title)
 
   this = this +
-    labs(
+    ggplot2::labs(
       title = title
     )
   return(this)
@@ -486,7 +482,7 @@ pcaviz.add_ID = function(
   y = min(cp2) + 0.1*range_cp2
 
   this = this +
-    annotate(
+    ggplot2::annotate(
       'text',
       x=x,
       y=y,
@@ -512,9 +508,9 @@ pcaviz.add_single_group_points = function(
   .pcaviz.check_class(this)
 
   this = this +
-    geom_point(
+    ggplot2::geom_point(
       data = this$pca_obj$principal_components,
-      aes(
+      ggplot2::aes(
         x=CP1,
         y=CP2
       ),
@@ -546,9 +542,9 @@ pcaviz.add_multi_group_points = function(
   data$groups = groups
 
   this = this +
-    geom_point(
+    ggplot2::geom_point(
       data = data,
-      aes(
+      ggplot2::aes(
         x=CP1,
         y=CP2,
         color=groups,
@@ -628,7 +624,7 @@ pcaviz.add_labels = function(
 
   this = this +
     label_function(
-      mapping = aes(
+      mapping = ggplot2::aes(
         x = x,
         y = y,
         label = labels
@@ -657,22 +653,22 @@ pcaviz.set_theme_scatter = function(
   .pcaviz.check_class(this)
 
   this = this +
-    theme(
-      panel.border = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      axis.title = element_text(size=this$size$axis_title),
-      axis.title.x = element_text(margin = ggplot2::margin(10, 0, 0, 0)),
-      axis.title.y = element_text(margin = ggplot2::margin(0, 10, 0, 0)),
-      axis.text = element_text(size=this$size$text),
-      plot.title = element_text(size=this$size$title, hjust=0.5),
-      plot.subtitle = element_text(size=this$size$subtitle, hjust=0.5),
-      plot.caption = element_text(
+    ggplot2::theme(
+      panel.border = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      axis.title = ggplot2::element_text(size=this$size$axis_title),
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(10, 0, 0, 0)),
+      axis.title.y = ggplot2::element_text(margin = ggplot2::margin(0, 10, 0, 0)),
+      axis.text = ggplot2::element_text(size=this$size$text),
+      plot.title = ggplot2::element_text(size=this$size$title, hjust=0.5),
+      plot.subtitle = ggplot2::element_text(size=this$size$subtitle, hjust=0.5),
+      plot.caption = ggplot2::element_text(
         size=this$size$text,
         hjust=0.5
       ),
-      legend.title = element_blank(),
-      legend.text = element_text(size=this$size$text)
+      legend.title = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(size=this$size$text)
     )
   return(this)
 }
@@ -698,23 +694,23 @@ pcaviz.set_theme_column = function(
 ) {
   .pcaviz.check_class(this)
 
-  this = this + theme(
-    panel.border = element_blank(),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    axis.title = element_text(size=this$size$axis_title),
-    axis.title.x = element_blank(),
-    axis.title.y = element_text(margin = ggplot2::margin(0, 10, 0, 0)),
-    axis.text = element_text(size=this$size$text),
-    axis.ticks = element_blank(),
-    plot.title = element_text(size=this$size$title, hjust=0.5),
-    plot.subtitle = element_text(size=this$size$subtitle, hjust=0.5),
-    plot.caption = element_text(
+  this = this + ggplot2::theme(
+    panel.border = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    axis.title = ggplot2::element_text(size=this$size$axis_title),
+    axis.title.x = ggplot2::element_blank(),
+    axis.title.y = ggplot2::element_text(margin = ggplot2::margin(0, 10, 0, 0)),
+    axis.text = ggplot2::element_text(size=this$size$text),
+    axis.ticks = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(size=this$size$title, hjust=0.5),
+    plot.subtitle = ggplot2::element_text(size=this$size$subtitle, hjust=0.5),
+    plot.caption = ggplot2::element_text(
       size=this$size$text,
       hjust=0.5
     ),
     legend.position = 'none',
-    legend.text = element_text(size=this$size$text)
+    legend.text = ggplot2::element_text(size=this$size$text)
   )
 
   return(this)
@@ -747,7 +743,7 @@ pcaviz.set_scale_scatter = function(
   this %>% .pcaviz.check_groups(groups)
 
   this = this +
-    scale_color_manual(
+    ggplot2::scale_color_manual(
       values = colors.mixed()[1:length(unique(groups))]
     )
 
@@ -900,16 +896,16 @@ pcaviz.add_segments = function(
   }
 
   segments_list <- lapply(1:length(from.x), function(i) {
-    geom_segment(
-      mapping = aes(
+    ggplot2::geom_segment(
+      mapping = ggplot2::aes(
         x = from.x[i],
         xend = to.x[i],
         y = from.y[i],
         yend = to.y[i]
       ),
-      arrow = arrow(
+      arrow = ggplot2::arrow(
         type = "closed",
-        length = unit(this$size$linewidth/10, "inches")
+        length = ggplot2::unit(this$size$linewidth/10, "inches")
       ),
       linewidth=this$size$linewidth,
       color=color[i]
