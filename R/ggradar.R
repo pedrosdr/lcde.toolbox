@@ -1,8 +1,3 @@
-library(ggplot2)
-library(dplyr)
-library(scales)
-library(tibble)
-
 # Functions
 #
 #
@@ -235,15 +230,15 @@ ggradar <- function(plot.data,
 
   # Declare 'theme_clear', with or without a plot legend as required by user
   # [default = no legend if only 1 group [path] being plotted]
-  theme_clear <- theme_bw(base_size = base.size) +
-    theme(
-      axis.text.y = element_blank(),
-      axis.text.x = element_blank(),
-      axis.ticks = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.border = element_blank(),
-      legend.key = element_rect(linetype = "blank")
+  theme_clear <- ggplot2::theme_bw(base_size = base.size) +
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_blank(),
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      panel.border = ggplot2::element_blank(),
+      legend.key = ggplot2::element_rect(linetype = "blank")
     )
 
   if (plot.legend == FALSE) legend.position = "none"
@@ -259,120 +254,123 @@ ggradar <- function(plot.data,
   # identify plot extent when plotting first (base) layer]
 
   # base layer = axis labels for axes to left of central y-axis [x< -(x.centre.range)]
-  base <- ggplot(axis$label) + xlab(NULL) + ylab(NULL) + coord_equal() +
-    geom_text(
+  base <- ggplot2::ggplot(axis$label) +
+    ggplot2::xlab(NULL) +
+    ggplot2::ylab(NULL) +
+    ggplot2::coord_equal() +
+    ggplot2::geom_text(
       data = subset(axis$label, axis$label$x < (-x.centre.range)),
-      aes(x = x, y = y, label = text), size = axis.label.size, hjust = 1, family = font.radar
+      ggplot2::aes(x = x, y = y, label = text), size = axis.label.size, hjust = 1, family = font.radar
     ) +
-    scale_x_continuous(limits = c(-1.5 * plot.extent.x, 1.5 * plot.extent.x)) +
-    scale_y_continuous(limits = c(-plot.extent.y, plot.extent.y))
+    ggplot2::scale_x_continuous(limits = c(-1.5 * plot.extent.x, 1.5 * plot.extent.x)) +
+    ggplot2::scale_y_continuous(limits = c(-plot.extent.y, plot.extent.y))
 
   # ... + circular grid-lines at 'min', 'n2', 'n3', 'n4', 'n5' and 'max' y-axis values
   if(gridlines.show[1]) {
-    base <- base + geom_path(
-      data = gridline$min$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$min$path, ggplot2::aes(x = x, y = y),
       lty = gridline.min.linetype, colour = gridline.min.colour, size = grid.line.width
     )
   }
   if(gridlines.show[2]) {
-    base <- base + geom_path(
-      data = gridline$n2$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$n2$path, ggplot2::aes(x = x, y = y),
       lty = gridline.n2.linetype, colour = gridline.n2.colour, size = grid.line.width
     )
   }
   if(gridlines.show[3]) {
-    base <- base + geom_path(
-      data = gridline$n3$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$n3$path, ggplot2::aes(x = x, y = y),
       lty = gridline.n3.linetype, colour = gridline.n3.colour, size = grid.line.width
     )
   }
   if(gridlines.show[4]) {
-    base <- base + geom_path(
-      data = gridline$n4$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$n4$path, ggplot2::aes(x = x, y = y),
       lty = gridline.n4.linetype, colour = gridline.n4.colour, size = grid.line.width
     )
   }
   if(gridlines.show[5]) {
-    base <- base + geom_path(
-      data = gridline$n5$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$n5$path, ggplot2::aes(x = x, y = y),
       lty = gridline.n5.linetype, colour = gridline.n5.colour, size = grid.line.width
     )
   }
   if(gridlines.show[6]) {
-    base <- base + geom_path(
-      data = gridline$max$path, aes(x = x, y = y),
+    base <- base + ggplot2::geom_path(
+      data = gridline$max$path, ggplot2::aes(x = x, y = y),
       lty = gridline.max.linetype, colour = gridline.max.colour, size = grid.line.width
     )
   }
 
   # + axis labels for any vertical axes [abs(x)<=x.centre.range]
-  base <- base + geom_text(
+  base <- base + ggplot2::geom_text(
     data = subset(axis$label, abs(axis$label$x) <= x.centre.range),
-    aes(x = x, y = y, label = text), size = axis.label.size, hjust = 0.5, family = font.radar
+    ggplot2::aes(x = x, y = y, label = text), size = axis.label.size, hjust = 0.5, family = font.radar
   )
   # + axis labels for any vertical axes [x>x.centre.range]
-  base <- base + geom_text(
+  base <- base + ggplot2::geom_text(
     data = subset(axis$label, axis$label$x > x.centre.range),
-    aes(x = x, y = y, label = text), size = axis.label.size, hjust = 0, family = font.radar
+    ggplot2::aes(x = x, y = y, label = text), size = axis.label.size, hjust = 0, family = font.radar
   )
   # + theme_clear [to remove grey plot background, grid lines, axis tick marks and axis text]
   base <- base + theme_clear
   #  + background circle against which to plot radar data
-  base <- base + geom_polygon(
-    data = gridline$max$path, aes(x, y),
+  base <- base + ggplot2::geom_polygon(
+    data = gridline$max$path, ggplot2::aes(x, y),
     fill = background.circle.colour,
     alpha = background.circle.transparency
   )
 
   # + radial axes
-  base <- base + geom_path(
-    data = axis$path, aes(x = x, y = y, group = axis.no),
+  base <- base + ggplot2::geom_path(
+    data = axis$path, ggplot2::aes(x = x, y = y, group = axis.no),
     colour = axis.line.colour
   )
 
   theGroupName <- names(group$path[1])
 
   # ... + group (cluster) 'paths'
-  base <- base + geom_path(
-    data = group$path, aes_string(x = "x", y = "y", group = theGroupName, colour = theGroupName),
+  base <- base + ggplot2::geom_path(
+    data = group$path, ggplot2::aes_string(x = "x", y = "y", group = theGroupName, colour = theGroupName),
     size = group.line.width
   )
 
   # ... + group points (cluster data)
-  base <- base + geom_point(data = group$path, aes_string(x = "x", y = "y", group = theGroupName, colour = theGroupName), size = group.point.size)
+  base <- base + ggplot2::geom_point(data = group$path, ggplot2::aes_string(x = "x", y = "y", group = theGroupName, colour = theGroupName), size = group.point.size)
 
   # ... + group (cluster) fills
   if(fill == TRUE) {
-    base <- base + geom_polygon(data = group$path, aes_string(x = "x", y = "y", group = theGroupName, fill = theGroupName), alpha = fill.alpha)
+    base <- base + ggplot2::geom_polygon(data = group$path, ggplot2::aes_string(x = "x", y = "y", group = theGroupName, fill = theGroupName), alpha = fill.alpha)
   }
 
 
   # ... + amend Legend title
-  if (plot.legend == TRUE) base <- base + labs(colour = legend.title, size = legend.text.size)
+  if (plot.legend == TRUE) base <- base + ggplot2::labs(colour = legend.title, size = legend.text.size)
 
   # ... + grid-line labels (min; n2; n3; n4; n5; max)
   if (label.gridlines.show[1]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[1]), color = grid.label.color, data = gridline$min$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[1]), color = grid.label.color, data = gridline$min$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   if (label.gridlines.show[2]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[2]), color = grid.label.color, data = gridline$n2$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[2]), color = grid.label.color, data = gridline$n2$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   if (label.gridlines.show[3]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[3]), color = grid.label.color, data = gridline$n3$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[3]), color = grid.label.color, data = gridline$n3$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   if (label.gridlines.show[4]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[4]), color = grid.label.color, data = gridline$n4$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[4]), color = grid.label.color, data = gridline$n4$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   if (label.gridlines.show[5]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[5]), color = grid.label.color, data = gridline$n5$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[5]), color = grid.label.color, data = gridline$n5$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   if (label.gridlines.show[6]) {
-    base <- base + geom_text(aes(x = x, y = y, label = values.radar[6]), color = grid.label.color, data = gridline$max$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = values.radar[6]), color = grid.label.color, data = gridline$max$label, size = grid.label.size * 0.8, hjust = 1, vjust = -gridline.label.offset.y, family = font.radar)
   }
   # ... + centre.y label if required [i.e. value of y at centre of plot circle]
   if (label.centre.y == TRUE) {
     centre.y.label <- data.frame(x = 0, y = 0, text = as.character(centre.y))
-    base <- base + geom_text(aes(x = x, y = y, label = text), data = centre.y.label, size = grid.label.size, hjust = 0.5, family = font.radar)
+    base <- base + ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = text), data = centre.y.label, size = grid.label.size, hjust = 0.5, family = font.radar)
   }
 
   if (!is.null(group.colours)) {
@@ -384,28 +382,28 @@ ggradar <- function(plot.data,
     ), 100)
   }
 
-  base <- base + theme(legend.key.width = unit(3, "line")) + theme(text = element_text(
+  base <- base + ggplot2::theme(legend.key.width = ggplot2::unit(3, "line")) + ggplot2::theme(text = ggplot2::element_text(
     size = 20,
     family = font.radar
   )) +
-    theme(legend.text = element_text(size = legend.text.size), legend.position = legend.position) +
-    theme(legend.key.height = unit(2, "line")) +
-    scale_colour_manual(values = colour_values) +
-    theme(text = element_text(family = font.radar)) +
-    theme(legend.title = element_blank())
+    ggplot2::theme(legend.text = ggplot2::element_text(size = legend.text.size), legend.position = legend.position) +
+    ggplot2::theme(legend.key.height = ggplot2::unit(2, "line")) +
+    ggplot2::scale_colour_manual(values = colour_values) +
+    ggplot2::theme(text = ggplot2::element_text(family = font.radar)) +
+    ggplot2::theme(legend.title = ggplot2::element_blank())
 
 
   if(isTRUE(fill)) {
     base <- base +
-      scale_fill_manual(values = colour_values, guide = "none")
+      ggplot2::scale_fill_manual(values = colour_values, guide = "none")
   }
 
   if(legend.title != "") {
-    base <- base + theme(legend.title = element_text())
+    base <- base + ggplot2::theme(legend.title = ggplot2::element_text())
   }
 
   if (plot.title != "") {
-    base <- base + ggtitle(plot.title)
+    base <- base + ggplot2::ggtitle(plot.title)
   }
 
   return(base)

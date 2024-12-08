@@ -1,5 +1,3 @@
-library(leaflet)
-
 # class geoleaf
 
 # constructors
@@ -12,8 +10,8 @@ library(leaflet)
 #'
 #' @export
 geoleaf = function() {
-  this = leaflet(
-    options = leafletOptions(
+  this = leaflet::leaflet(
+    options = leaflet::leafletOptions(
       zoomSnap=0.7,
       zoomDelta=0.7
     )
@@ -431,7 +429,7 @@ geoleaf.add_points = function(
       radius = radius,
       label = labels,
       popup = popups,
-      labelOptions = labelOptions(
+      labelOptions = leaflet::labelOptions(
         noHide = TRUE,
         direction = "center",
         textOnly = TRUE,
@@ -469,7 +467,7 @@ geoleaf.add_boundary = function(
   .georef.check_class(georef_obj)
 
   this = this %>%
-    addPolygons(
+    leaflet::addPolygons(
       data=georef_obj$sf,
       color = colors.grayscale()[4],
       fillColor = colors.grayscale()[1],
@@ -523,11 +521,11 @@ geoleaf.add_surface = function(
   )
 
   this = this %>%
-    addRasterImage(
+    leaflet::addRasterImage(
       surface,
-      colors=colorNumeric(
+      colors=leaflet::colorNumeric(
         palette=palette,
-        domain=values(surface),
+        domain=terra::values(surface),
         na.color='transparent'
         ),
       opacity = 0.7,
@@ -598,8 +596,8 @@ geoleaf.add_legend_continuous = function(
   breaks <- seq(min(data)-0.01, max(data), length.out = 5)
   breaks = as.numeric(sprintf('%.2f', breaks))
   this = this %>%
-    addLegend(
-      pal = colorNumeric(
+    leaflet::addLegend(
+      pal = leaflet::colorNumeric(
         palette=palette,
         domain=data,
         na.color='transparent'
@@ -654,7 +652,7 @@ geoleaf.add_legend_discrete = function(
     stop("'labels' and 'colors' must be vectors of the same length")
   }
 
-  this = this %>% addLegend(
+  this = this %>% leaflet::addLegend(
     title = title,
     colors = colors,
     labels = labels,

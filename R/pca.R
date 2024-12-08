@@ -1,6 +1,3 @@
-library(stats)
-library(dplyr)
-
 # class pca
 
 # constructors

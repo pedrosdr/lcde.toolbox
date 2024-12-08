@@ -1,6 +1,3 @@
-library(dplyr)
-library(ggplot2)
-
 # class ggviz
 
 # constructors
@@ -96,7 +93,7 @@ ggviz.radar = function(
 
   if(!is.null(title)) {
     obj = obj +
-      ggtitle(title)
+      ggplot2::ggtitle(title)
   }
 
   if(show_score) {
@@ -110,15 +107,15 @@ ggviz.radar = function(
     score = stats.relative_magnitude(data_score)
 
     obj = obj +
-      labs(
+      ggplot2::labs(
         caption = sprintf("Score: %.2f%%", 100*score)
       )
   }
 
   obj = obj +
-    theme(
-      plot.title = element_text(hjust = 0.5, size = size$text),
-      plot.caption = element_text(
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5, size = size$text),
+      plot.caption = ggplot2::element_text(
         hjust = 0.5, size = size$text,
         color = colors[1]
       )
