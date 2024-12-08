@@ -549,6 +549,8 @@ geogg.add_labels = function(
       min.segment.length = 0,
       max.overlaps = 50
     )
+
+  return(this)
 }
 
 #' Add Boundary Layer to Geographical Plot
