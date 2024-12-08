@@ -1,8 +1,3 @@
-# library(ggplot2)
-# library(dplyr)
-# library(scales)
-# library(tibble)
-
 # Functions
 #
 #

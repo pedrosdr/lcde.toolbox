@@ -1,6 +1,3 @@
-library(tools)
-library(stringr)
-
 # class inep
 
 #' Abbreviate School Names
@@ -42,7 +39,7 @@ inep.abbreviate_school_names = function(
 
   abbreviated = c()
   for(school_name in school_names) {
-    school_name_full <- str_split(tolower(school_name), " ")[[1]]
+    school_name_full <- stringr::str_split(tolower(school_name), " ")[[1]]
 
     meaningful_words <- school_name_full[!(
       school_name_full %in% ignored_words |

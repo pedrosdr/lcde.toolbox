@@ -1,5 +1,3 @@
-library(officer)
-
 # class ppt
 
 # constructors
@@ -426,8 +424,8 @@ ppt.add_text = function(
 
   this = this %>%
     officer::ph_with(
-      fpar(
-        ftext(
+      officer::fpar(
+        officer::ftext(
           text,
           officer::fp_text(
             color = '#333333', font.family = font, font.size = size, bold = bold

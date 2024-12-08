@@ -754,7 +754,7 @@ geogg.add_title = function(
   type.check_character(title, 'title')
 
   this = this +
-    labs(
+    ggplot2::labs(
       title = title
     )
 

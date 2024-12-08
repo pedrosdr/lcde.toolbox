@@ -1,5 +1,3 @@
-library(flextable)
-
 # class table
 
 # constructors
@@ -187,7 +185,7 @@ table.set_theme_dark = function(
 ) {
   .table.check_class(this)
 
-  std_border <- fp_border(width = 1, color = "#000000")
+  std_border <- officer::fp_border(width = 1, color = "#000000")
 
   this = this %>%
     flextable::bg(bg = colors.grayscale()[5], part = "header") %>%
@@ -196,9 +194,9 @@ table.set_theme_dark = function(
     flextable::align(align = 'center', part='all') %>%
     flextable::fontsize(size = 10, part='header') %>%
     flextable::fontsize(size = 10, part='body') %>%
-    border_outer(part="all", border = std_border) %>%
-    border_inner_h(border = std_border, part="all") %>%
-    border_inner_v(border = std_border, part="all")
+    flextable::border_outer(part="all", border = std_border) %>%
+    flextable::border_inner_h(border = std_border, part="all") %>%
+    flextable::border_inner_v(border = std_border, part="all")
 
   return(this)
 }
