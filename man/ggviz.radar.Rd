@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggviz.R
 \name{ggviz.radar}
 \alias{ggviz.radar}
-\title{Construtor de gráfico de radar ggviz}
+\title{ggviz Radar Chart Constructor}
 \usage{
 ggviz.radar(
   data,
@@ -11,34 +11,37 @@ ggviz.radar(
   title = NULL,
   show_score = FALSE,
   axes_to_invert = NULL,
+  opacity = 0.3,
   size = vizsize()
 )
 }
 \arguments{
-\item{data}{Um `data.frame` contendo os dados para o gráfico de radar.}
+\item{data}{A `data.frame` containing the data for the radar chart.}
 
-\item{colors}{Vetor de caracteres que define as cores dos grupos.}
+\item{colors}{A character vector defining the colors of the groups.}
 
-\item{labels}{Vetor com os rótulos a serem usados para os grupos. Se `NULL`, será gerado automaticamente.}
+\item{labels}{A vector with labels for the groups. If `NULL`, labels are generated automatically.}
 
-\item{title}{Título do gráfico. Se `NULL`, nenhum título será exibido.}
+\item{title}{The title of the chart. If `NULL`, no title is displayed.}
 
-\item{show_score}{Lógico. Se `TRUE`, exibe a pontuação relativa para o primeiro grupo.}
+\item{show_score}{Logical. If `TRUE`, displays the relative score for the first group.}
 
-\item{axes_to_invert}{Vetor com os nomes dos eixos que devem ser invertidos (opcional).}
+\item{axes_to_invert}{A vector with the names of the axes to be inverted (optional).}
 
-\item{size}{Objeto `vizsize` ou valores numéricos para definir os tamanhos do texto e linhas do gráfico.}
+\item{opacity}{A numeric value between 0 and 1 defining the opacity of the group fill (default is 0.3).}
+
+\item{size}{A `vizsize` object or numeric values to define the text and line sizes of the chart.}
 }
 \value{
-Um objeto da classe `ggviz` contendo o gráfico de radar.
+A `ggviz` object containing the radar chart.
 }
 \description{
-Gera um gráfico de radar usando um data frame, com opções de personalização
-de cores, títulos, rótulos e exibição de pontuação.
+Generates a radar chart using a data frame, with options for customizing
+colors, titles, labels, and score display.
 }
 \examples{
 \dontrun{
 data <- data.frame(Group1 = c(70, 80, 90), Group2 = c(50, 60, 80))
-ggviz.radar(data, colors = c("#FF0000", "#00FF00"))
+ggviz.radar(data, colors = c("#FF0000", "#00FF00"), opacity = 0.7)
 }
 }

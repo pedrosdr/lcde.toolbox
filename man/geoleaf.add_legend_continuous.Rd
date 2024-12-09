@@ -9,7 +9,7 @@ geoleaf.add_legend_continuous(
   data,
   title,
   position,
-  palette = colors.nighty()
+  palette = colors.purples()
 )
 }
 \arguments{

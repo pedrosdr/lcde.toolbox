@@ -2,16 +2,16 @@
 % Please edit documentation in R/ggviz.R
 \name{ggviz.from_ggplot}
 \alias{ggviz.from_ggplot}
-\title{Construtor de ggviz a partir de um objeto ggplot}
+\title{ggviz Constructor from a ggplot Object}
 \usage{
 ggviz.from_ggplot(ggplot_obj)
 }
 \arguments{
-\item{ggplot_obj}{Objeto `ggplot` a ser convertido.}
+\item{ggplot_obj}{A `ggplot` object to be converted.}
 }
 \value{
-Um objeto da classe `ggviz`.
+An object of class `ggviz`.
 }
 \description{
-Cria um objeto da classe `ggviz` a partir de um gráfico `ggplot`.
+Creates an object of class `ggviz` from a `ggplot` chart.
 }
