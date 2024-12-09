@@ -2,13 +2,13 @@
 
 # constructors
 
-#' Construtor de ggviz a partir de um objeto ggplot
+#' ggviz Constructor from a ggplot Object
 #'
-#' Cria um objeto da classe `ggviz` a partir de um gráfico `ggplot`.
+#' Creates an object of class `ggviz` from a `ggplot` chart.
 #'
-#' @param ggplot_obj Objeto `ggplot` a ser convertido.
+#' @param ggplot_obj A `ggplot` object to be converted.
 #'
-#' @return Um objeto da classe `ggviz`.
+#' @return An object of class `ggviz`.
 #' @export
 ggviz.from_ggplot = function(
   ggplot_obj #: ggplot
@@ -21,26 +21,27 @@ ggviz.from_ggplot = function(
   return(obj)
 }
 
-#' Construtor de gráfico de radar ggviz
+#' ggviz Radar Chart Constructor
 #'
-#' Gera um gráfico de radar usando um data frame, com opções de personalização
-#' de cores, títulos, rótulos e exibição de pontuação.
+#' Generates a radar chart using a data frame, with options for customizing
+#' colors, titles, labels, and score display.
 #'
-#' @param data Um `data.frame` contendo os dados para o gráfico de radar.
-#' @param colors Vetor de caracteres que define as cores dos grupos.
-#' @param labels Vetor com os rótulos a serem usados para os grupos. Se `NULL`, será gerado automaticamente.
-#' @param title Título do gráfico. Se `NULL`, nenhum título será exibido.
-#' @param show_score Lógico. Se `TRUE`, exibe a pontuação relativa para o primeiro grupo.
-#' @param axes_to_invert Vetor com os nomes dos eixos que devem ser invertidos (opcional).
-#' @param size Objeto `vizsize` ou valores numéricos para definir os tamanhos do texto e linhas do gráfico.
+#' @param data A `data.frame` containing the data for the radar chart.
+#' @param colors A character vector defining the colors of the groups.
+#' @param labels A vector with labels for the groups. If `NULL`, labels are generated automatically.
+#' @param title The title of the chart. If `NULL`, no title is displayed.
+#' @param show_score Logical. If `TRUE`, displays the relative score for the first group.
+#' @param axes_to_invert A vector with the names of the axes to be inverted (optional).
+#' @param opacity A numeric value between 0 and 1 defining the opacity of the group fill (default is 0.3).
+#' @param size A `vizsize` object or numeric values to define the text and line sizes of the chart.
 #'
-#' @return Um objeto da classe `ggviz` contendo o gráfico de radar.
+#' @return A `ggviz` object containing the radar chart.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' data <- data.frame(Group1 = c(70, 80, 90), Group2 = c(50, 60, 80))
-#' ggviz.radar(data, colors = c("#FF0000", "#00FF00"))
+#' ggviz.radar(data, colors = c("#FF0000", "#00FF00"), opacity = 0.7)
 #' }
 ggviz.radar = function(
     data, #:data.frame
@@ -49,6 +50,7 @@ ggviz.radar = function(
     title = NULL, #: character
     show_score = FALSE, #: logical
     axes_to_invert = NULL,
+    opacity = 0.3, # numeric
     size = vizsize() #: vizsize | text | numeric
 ) {
   size = vizsize.parse(size)
@@ -56,6 +58,7 @@ ggviz.radar = function(
   type.check_dataframe(data, 'data')
   type.check_character(colors, 'colors')
   type.check_logical(show_score, 'show_score')
+  type.check_numeric(opacity, 'opacity')
   .vizsize.check_class(size)
 
   if(show_score && nrow(data) > 1) {
@@ -85,6 +88,7 @@ ggviz.radar = function(
     grid.min = 0,
     group.colours = colors,
     fill = TRUE,
+    fill.alpha = opacity,
     grid.label.size = size$text/3,
     axis.label.size = size$text/3,
     group.line.width = size$linewidth * 1.2,
