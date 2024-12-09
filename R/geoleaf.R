@@ -585,7 +585,7 @@ geoleaf.add_legend_continuous = function(
   data, #: numeric vector
   title, #: character
   position, #: character ('bottomleft', 'bottomright', 'topleft', 'topright')
-  palette=colors.nighty() #: character
+  palette=colors.purples() #: character
 ) {
   .geoleaf.check_class(this)
   type.check_character(palette, 'palette')
@@ -593,18 +593,22 @@ geoleaf.add_legend_continuous = function(
   type.check_character(title, 'title')
   type.check_character(position, 'position')
 
-  breaks <- seq(min(data)-0.01, max(data), length.out = 5)
-  breaks = as.numeric(sprintf('%.2f', breaks))
+  print(min(data))
+  print(max(data))
+  breaks <- seq(min(data), max(data), length.out = 5)
+  breaks = sprintf('%.1f', breaks)
+
   this = this %>%
     leaflet::addLegend(
       pal = leaflet::colorNumeric(
-        palette=palette,
+        palette=rev(palette),
         domain=data,
         na.color='transparent'
       ),
       position = position,
       title = title,
-      values = breaks
+      values = data,
+      labFormat = function(type, cuts, p) rev(breaks)
     )
 
   return(this)
