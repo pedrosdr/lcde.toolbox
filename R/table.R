@@ -113,6 +113,118 @@ table.pca_variation = function(
   return(tbl)
 }
 
+#' @name table.linear_model
+#' @title Create a Flextable Summary of a Linear Regression Model
+#' @description
+#' This function takes a fitted linear model object (`model`) as input and returns a formatted Flextable summarizing the regression results.
+#'
+#' @param model A fitted linear model object created using `lm`.
+#'
+#' @return A Flextable object containing a formatted summary of the regression model.
+#'
+#' @examples
+#' ## Example usage
+#' library(lm)
+#' library(flextable)
+#'
+#' # Simulate some data
+#' set.seed(123)
+#' data <- data.frame(x1 = rnorm(100), x2 = rnorm(100), y = 2*x1 + 3*x2 + rnorm(100))
+#'
+#' # Fit a linear model
+#' model <- lm(y ~ x1 + x2, data = data)
+#'
+#' # Generate the summary table
+#' summary_table <- table.linear_model(model)
+#'
+#' print(summary_table)
+#'
+#' # You can further customize the Flextable using its functionalities.
+#'
+#' @import flextable
+#'
+#' @export
+table.linear_model = function(
+  model #: lm
+) {
+  smodel = summary(model)
+
+  ci = confint(model)
+
+  smodel$coefficients[2, 2]
+  dfreg = as.data.frame(smodel$coefficients)
+  colnames(dfreg) = c("Estimativa", "Erro Padrão", "Valor de t", "P(>|t|)")
+  dfreg[,"Estimativa"] = round(dfreg[,"Estimativa"], 5)
+  dfreg[,"Erro Padrão"] = round(dfreg[,"Erro Padrão"], 5)
+  dfreg[,"Valor de t"] = round(dfreg[,"Valor de t"], 3)
+  dfreg[,"P(>|t|)"] = ifelse(
+    dfreg[,"P(>|t|)"] < 0.001,
+    "<0.001",
+    paste0(round(dfreg[,"P(>|t|)"], 5))
+  )
+  dfreg[,"CI (95%)"] = sprintf("%.4f — %.4f", ci[,1], ci[,2])
+  dfreg[,"Significância"] = ifelse(
+    dfreg[,"P(>|t|)"] < 0.001, "***", ifelse(
+      dfreg[,"P(>|t|)"] < 0.01, "**", ifelse(
+        dfreg[,"P(>|t|)"] < 0.05, ".", " "
+      )
+    )
+  )
+  dfreg[,"Variável"] = ifelse(
+    rownames(smodel$coefficients) == "(Intercept)",
+    "(Intercepto)", rownames(smodel$coefficients)
+  )
+  dfreg = dfreg[,c(ncol(dfreg), (1:ncol(dfreg)-1))]
+
+  pf_value = pf(
+    smodel$fstatistic[1],
+    smodel$fstatistic[2],
+    smodel$fstatistic[3],
+    lower.tail = FALSE
+  )
+
+  pf_value = if(pf_value < 0.001) "<0.001" else sprintf("%.4f", pf_value)
+
+  obj = table(dfreg) %>%
+    flextable::add_footer_row(
+      values = sprintf(
+        "Estatística F: %.1f com %.0f e %.0f GL\t—\tValor p: %s",
+        smodel$fstatistic[1],
+        smodel$fstatistic[2],
+        smodel$fstatistic[3],
+        pf_value
+      ),
+      colwidths = c(7)
+    ) %>%
+    flextable::add_footer_row(
+      values = c(
+        sprintf(
+          "Erro padrão residual: %.4f com %.0f graus de liberdade",
+          smodel$sigma, smodel$df[2]
+        )
+      ),
+      colwidths = c(7)
+    ) %>%
+    flextable::add_footer_row(
+      values = sprintf(
+        "R²: %.4f\t\tR² Ajustado: %.4f",
+        smodel$r.squared, smodel$adj.r.squared
+      ),
+      colwidths = c(7)
+    ) %>%
+    flextable::add_footer_row(
+      values = paste0(
+        "Códigos de Significância: 0 [***] 0.001 [**] 0.01 [.] 0.1 [ ] 1"
+      ),
+      colwidths = c(7)
+    ) %>%
+    table.set_theme_dark()
+  obj = obj %>% table.text_size(9.5, part="all")
+  obj = obj %>% table.padding(3, part="all")
+
+  return(obj)
+}
+
 # methods
 
 #' Check Table Class
@@ -189,6 +301,7 @@ table.set_theme_dark = function(
 
   this = this %>%
     flextable::bg(bg = colors.grayscale()[5], part = "header") %>%
+    flextable::bg(bg = "#dfdfdf", part = "footer") %>%
     flextable::color(color = "#ffffff", part = "header") %>%
     flextable::valign(valign = "center", part = 'all') %>%
     flextable::align(align = 'center', part='all') %>%
@@ -244,6 +357,80 @@ table.fit_to_page = function(
       part = 'body'
     )
   }
+
+  return(this)
+}
+
+#' Set Font Size for a Table
+#'
+#' Adjusts the font size of various parts of a `table` object.
+#'
+#' @param this A `table` object.
+#' @param size The desired font size in points.
+#' @param part The part of the table to modify the font size. Options include:
+#'   - `"all"`: Apply the font size to the entire table.
+#'   - `"body"`: Apply the font size to the table body.
+#'   - `"title"`: Apply the font size to the table title.
+#'   - `"footer"`: Apply the font size to the table footer.
+#'
+#' @return The modified `table` object.
+#'
+#' @examples
+#' library(flextable)
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data)
+#' tbl <- table.text_size(tbl, size = 14, part = "body")
+#'
+#' @export
+table.text_size = function(
+  this, #: table
+  size, #: numeric
+  part = c("all", "body", "header", "footer")
+) {
+  .table.check_class(this)
+  type.check_numeric(size)
+
+  this = this %>% flextable::fontsize(
+    size = size,
+    part = part[1]
+  )
+
+  return(this)
+}
+
+#' Set Padding for a Table
+#'
+#' Adjusts the padding of various parts of a `table` object.
+#'
+#' @param this A `table` object.
+#' @param padding The desired padding in points.
+#' @param part The part of the table to modify the padding. Options include:
+#'   - `"all"`: Apply the padding to the entire table.
+#'   - `"body"`: Apply the padding to the table body.
+#'   - `"header"`: Apply the padding to the table header.
+#'   - `"footer"`: Apply the padding to the table footer.
+#'
+#' @return The modified `table` object.
+#'
+#' @examples
+#' library(flextable)
+#' data <- data.frame(A = 1:3, B = 4:6)
+#' tbl <- table(data)
+#' tbl <- table.padding(tbl, padding = 5, part = "all")
+#'
+#' @export
+table.padding = function(
+    this, #: table
+    padding, #: numeric
+    part = c("all", "body", "header", "footer")
+) {
+  .table.check_class(this)
+  type.check_numeric(padding)
+
+  this = this %>% flextable::padding(
+    padding = padding,
+    part = part[1]
+  )
 
   return(this)
 }
