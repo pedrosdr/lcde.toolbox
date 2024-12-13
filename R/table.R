@@ -149,9 +149,6 @@ table.linear_model = function(
 ) {
   smodel = summary(model)
 
-  reg_formula = paste0(formula(model))
-  reg_formula = paste0(reg_formula[c(2,1,3)], collapse = " ")
-
   ci = confint(model)
 
   smodel$coefficients[2, 2]
@@ -221,14 +218,11 @@ table.linear_model = function(
       ),
       colwidths = c(7)
     ) %>%
-    table.add_header_row(
-      sprintf("Relatório de Regressão: %s", reg_formula),
-      c(7)
-    ) %>%
-    table.padding(padding = 3, part = 'all') %>%
     table.set_theme_dark()
   obj = obj %>% table.text_size(9.5, part="all")
-  obj
+  obj = obj %>% table.padding(3, part="all")
+
+  return(obj)
 }
 
 # methods
