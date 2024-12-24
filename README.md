@@ -10,10 +10,10 @@
 
   
 
-1. [Overview](#overview)
-2. [Installation](#installation)
-3. [Workflow Example](#workflow-example)
-4. [Classes and Methods](#classes-and-methods)  
+1. [Overview](#1-overview)
+2. [Installation](#2-installation)
+3. [Workflow Example](#3-workflow-example)
+4. [Classes and Methods](#4-classes-and-methods)  
    4.1 [colors](#41-colors)  
    4.2 [geogg](#42-geogg)  
    4.3 [geoleaf](#43-geoleaf)  
