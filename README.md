@@ -11,40 +11,23 @@
   
 
 1. [Overview](#overview)
-
 2. [Installation](#installation)
-
 3. [Workflow Example](#workflow-example)
-
-4. [Classes and Methods](#classes-and-methods)
-
-4.1 [colors](#colors)
-
-4.2 [geogg](#geogg)
-
-4.3 [geoleaf](#geoleaf)
-
-4.4 [georef](#georef)
-
-4.5 [ggviz](#ggviz)
-
-4.6 [inep](#inep)
-
-4.7 [pca](#pca)
-
-4.8 [pcaviz](#pcaviz)
-
-4.9 [ppt](#ppt)
-
-4.10 [pptpos](#pptpos)
-
-4.11 [stats](#stats)
-
-4.12 [table](#table)
-
-4.13 [type](#type)
-
-4.14 [vizsize](#vizsize)
+4. [Classes and Methods](#classes-and-methods)  
+   4.1 [colors](#41-colors)  
+   4.2 [geogg](#42-geogg)  
+   4.3 [geoleaf](#43-geoleaf)  
+   4.4 [georef](#44-georef)  
+   4.5 [ggviz](#45-ggviz)  
+   4.6 [inep](#46-inep)  
+   4.7 [pca](#47-pca)  
+   4.8 [pcaviz](#48-pcaviz)  
+   4.9 [ppt](#49-ppt)  
+   4.10 [pptpos](#410-pptpos)  
+   4.11 [stats](#411-stats)  
+   4.12 [table](#412-table)  
+   4.13 [type](#413-type)  
+   4.14 [vizsize](#414-vizsize)
 
   
 
