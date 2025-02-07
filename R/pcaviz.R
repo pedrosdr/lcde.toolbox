@@ -250,6 +250,12 @@ pcaviz.scatter = function(
     ggplot2::coord_cartesian(
       xlim = c(-lim, lim),
       ylim = c(-lim, lim)
+    ) +
+    scale_x_continuous(
+      n.breaks = 5
+    ) +
+    scale_y_continuous(
+      n.breaks = 5
     )
 
   return(this)
