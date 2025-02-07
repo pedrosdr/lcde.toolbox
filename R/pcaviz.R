@@ -237,12 +237,25 @@ pcaviz.scatter = function(
 
   this = this %>% pcaviz.set_theme_scatter()
 
-  xlim = max(abs(pca_obj$principal_components$CP1))
-  ylim = max(abs(pca_obj$principal_components$CP2))
+  lim = max(
+    abs(
+      c(
+        pca_obj$principal_components$CP1,
+        pca_obj$principal_components$CP2
+      )
+    )
+  )
+
   this = this +
     ggplot2::coord_cartesian(
-      xlim = c(-xlim, xlim),
-      ylim = c(-ylim, ylim)
+      xlim = c(-lim, lim),
+      ylim = c(-lim, lim)
+    ) +
+    scale_x_continuous(
+      n.breaks = 5
+    ) +
+    scale_y_continuous(
+      n.breaks = 5
     )
 
   return(this)
