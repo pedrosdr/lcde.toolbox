@@ -428,7 +428,7 @@ geogg.add_points = function(
   }
 
   if(is.null(labels)) {
-    labels = levels(groups)
+    labels = names(color_map)
   }
 
   mask = !(is.na(longitude) | is.na(latitude))
@@ -453,12 +453,44 @@ geogg.add_points = function(
     )
   }
 
+  # Ensuring all groups are represented in the legend, even if absent in the data
+  first_point = data.frame(
+    latitude = latitude[1],
+    longitude = longitude[1]
+  )
+
+  virtual_groups = names(color_map)[
+    which(
+      !(names(color_map) %in% unique(as.vector(groups)))
+    )
+  ]
+  virtual_latitude = rep(first_point$latitude, length(virtual_groups))
+  virtual_longitude = rep(first_point$longitude, length(virtual_groups))
+
+  virtual_groups = factor(virtual_groups, levels=unique(virtual_groups))
+  # END Ensuring all groups are represented in the legend, even if absent in the data
+
   georef_obj = georef.from_points(latitude, longitude)
+
+  if(length(virtual_groups) > 0) {
+    virtual_georef_obj = georef.from_points(virtual_latitude, virtual_longitude)
+  }
 
   if(add_new_scale) {
     this = this +
       ggnewscale::new_scale_fill()
   }
+
+  if(length(virtual_groups) > 0) {
+    this = this +
+      ggplot2::geom_sf(
+        ggplot2::aes(fill=virtual_groups),
+        data=virtual_georef_obj$sf_obj,
+        size=this$size$point_size * 0.6 * point_size,
+        shape=21
+      )
+  }
+
   this = this +
     ggplot2::geom_sf(
       ggplot2::aes(fill=groups),
@@ -469,6 +501,8 @@ geogg.add_points = function(
     ggplot2::scale_fill_manual(
       name = legend_title,
       values = color_map,
+      limits = names(color_map),
+      drop=FALSE,
       labels = labels
     )
 
