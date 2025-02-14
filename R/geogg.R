@@ -48,7 +48,7 @@ geogg = function(
 #' @param point_size A numeric describing the size of the points to be added into the plot.
 #' @param boundary_width A numeric describing the width of the boundaries in the plot, if any.
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
-#' @param groups An optional factor vector for grouping the points, default is NULL.
+#' @param groups An optional vector for grouping the points, default is NULL.
 #' @param color_map A named character vector for color mapping groups, default is NULL.
 #'
 #' @return A geogg object with the PCA map added.
@@ -76,17 +76,15 @@ geogg.pca_map = function(
     point_size = 1, #: numeric
     boundary_width = 1, #: numeric
     zoom = NULL, #: integer
-    groups = NULL, #: factor
+    groups = NULL, #: vector
     color_map = NULL
 ) {
   .pca.check_class(pca_obj)
 
   if(!is.null(groups)) {
     if(length(groups) != nrow(pca_obj$data)) {
-      stop("'groups' must be a factor of the same length as data")
+      stop("'groups' must be a vector of the same length as data")
     }
-
-    type.check_factor(groups, 'groups')
   }
 
 
@@ -139,11 +137,10 @@ geogg.pca_map = function(
   groups = if(!is.null(groups)) {
     groups
   } else {
-    factor(ifelse(
-        data < quantile(data, 0.25), '0% |- 25%', ifelse(
-          data < quantile(data, 0.50), '25% |- 50%', ifelse(
-            data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
-          )
+    ifelse(
+      data < quantile(data, 0.25), '0% |- 25%', ifelse(
+        data < quantile(data, 0.50), '25% |- 50%', ifelse(
+          data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
         )
       )
     )
@@ -216,9 +213,9 @@ geogg.percentage_of_proficiency_map = function(
   subject = c('mathematics', 'portuguese language'), #: character
   latitude, #: numeric vector
   longitude, #: numeric vector,
-  labels=NULL,
-  add_boundary=FALSE,
-  add_surface=FALSE,
+  labels=NULL, #: vector
+  add_boundary=FALSE, #: logical
+  add_surface=FALSE, #: logical
   georef_obj=NULL, #: georef
   surface_data=NULL, #: numeric vector
   surface_latitude=NULL, #: numeric vector
@@ -282,13 +279,12 @@ geogg.percentage_of_proficiency_map = function(
   obj = obj %>% geogg.add_points(
       latitude=latitude,
       longitude=longitude,
-      groups=factor(ifelse(
+      groups=ifelse(
         data < 25, '0% |- 25%', ifelse(
           data < 50, '25% |- 50%', ifelse(
             data < 70, '50% |- 70%', '70% |-| 100%'
           )
         )
-      )
       ),
       color_map = c(
         '0% |- 25%' = colors.red_to_green()[1],
@@ -380,7 +376,7 @@ geogg.add_tiles = function(
 #' @param this An object of class 'geogg'.
 #' @param latitude A numeric vector of latitudes for the points.
 #' @param longitude A numeric vector of longitudes for the points.
-#' @param groups An optional factor vector for grouping the points, default is NULL.
+#' @param groups An optional vector for grouping the points, default is NULL.
 #' @param color_map A named character vector for color mapping groups, default is NULL.
 #' @param labels An optional vector of labels for each group, default is NULL.
 #' @param legend_title A character string for the legend title, default is 'Legend Title'.
@@ -388,13 +384,13 @@ geogg.add_tiles = function(
 #' @param point_size The size of the points to be added into the plot.
 #' @return The updated geogg object with points added.
 #' @examples
-#' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = factor(c("A", "B")), color_map = c("A" = "red", "B" = "blue"))
+#' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = c("A", "B"), color_map = c("A" = "red", "B" = "blue"))
 #' @export
 geogg.add_points = function(
   this, #: geogg
   latitude, #: numeric
   longitude, #: numeric
-  groups=NULL, #: factor
+  groups=NULL, #: vector
   color_map=NULL, #: key-value character vector
   labels=NULL, #: vector
   legend_title = 'Legend Title', #: character
@@ -413,14 +409,13 @@ geogg.add_points = function(
   }
 
   if(is.null(groups)) {
-    groups = factor(rep('Group 1', length(latitude)), levels = 'Group 1')
+    groups = rep('Group 1', length(latitude))
     color_map = c('Group 1' = colors.mixed()[1])
 
     warning(paste("Since 'groups' is NULL, 'colors' was ignored.",
                   "Defaulting to a single group."))
   }
 
-  type.check_factor(groups, 'groups')
   type.check_character(color_map, 'color_map')
 
   if(length(groups) != length(latitude)) {
@@ -461,13 +456,11 @@ geogg.add_points = function(
 
   virtual_groups = names(color_map)[
     which(
-      !(names(color_map) %in% unique(as.vector(groups)))
+      !(names(color_map) %in% unique(groups))
     )
   ]
   virtual_latitude = rep(first_point$latitude, length(virtual_groups))
   virtual_longitude = rep(first_point$longitude, length(virtual_groups))
-
-  virtual_groups = factor(virtual_groups, levels=unique(virtual_groups))
   # END Ensuring all groups are represented in the legend, even if absent in the data
 
   georef_obj = georef.from_points(latitude, longitude)
