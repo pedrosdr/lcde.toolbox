@@ -488,7 +488,7 @@ Creates a georeferenced map displaying PCA-based relative performance (using CP1
 
 -  **zoom** (*numeric|NULL*): Zoom level for tiles.
 
--  **groups** (*factor|NULL*): Optional factor to group points by categories.
+-  **groups** (*vector|NULL*): Optional vector to group points by categories.
 
 -  **color_map** (*named character vector|NULL*): If groups are provided, map group levels to colors.
 
@@ -660,7 +660,7 @@ Adds points to a `geogg` object, optionally grouping them.
 
 -  **longitude** (*numeric vector*): Longitudes.
 
--  **groups** (*factor|NULL*): Grouping factor.
+-  **groups** (*vector|NULL*): Vector used to group the points.
 
 -  **color_map** (*named character vector|NULL*): Maps group levels to colors.
 
@@ -692,7 +692,7 @@ latitude = c(-10, -12),
 
 longitude = c(-47, -49),
 
-groups = factor(c("Group1","Group2")),
+groups = c("Group1","Group2"),
 
 color_map = c("Group1"="blue","Group2"="red")
 
