@@ -2,24 +2,36 @@
 % Please edit documentation in R/pca.R
 \name{pca.get_categories}
 \alias{pca.get_categories}
-\title{pca.get_categories}
+\title{Categorize Principal Component Values into Quartiles}
 \usage{
-pca.get_categories(this)
+pca.get_categories(this, component = 1, values = NULL)
 }
 \arguments{
 \item{this}{A \code{pca} object containing principal components.}
+
+\item{component}{An integer specifying which principal component to use (default is 1, corresponding to CP1).}
+
+\item{values}{An optional numeric vector of values to categorize. If not provided, the function uses the values
+from the specified principal component.}
 }
 \value{
-A factor indicating the category for each observation based on CP1.
+A factor with levels 'A', 'B', 'C', and 'D', indicating the category for each observation based on
+        the quartile thresholds.
 }
 \description{
-Categorizes principal components into quartiles.
+This function assigns letter categories ('A', 'B', 'C', 'D') to values based on the quartile
+thresholds of a selected principal component from a \code{pca} object. By default, it uses the first
+principal component (CP1), but a different component can be specified using the \code{component} argument.
 }
 \details{
-This function assigns categories (A, B, C, D) to the first principal component (CP1)
-based on its quartile. Values are categorized as follows:
-- D: below the 25th percentile
-- C: between the 25th and 50th percentiles
-- B: between the 50th and 75th percentiles
-- A: above the 75th percentile
+The categorization is determined as follows:
+\itemize{
+  \item \strong{'D'}: Values below the 25th percentile of the selected principal component.
+  \item \strong{'C'}: Values between the 25th and 50th percentiles.
+  \item \strong{'B'}: Values between the 50th and 75th percentiles.
+  \item \strong{'A'}: Values above the 75th percentile.
+}
+
+If an alternative set of \code{values} is provided, the function categorizes these values using the quartile
+thresholds computed from the selected principal component.
 }

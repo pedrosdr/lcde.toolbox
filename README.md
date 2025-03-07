@@ -2269,75 +2269,69 @@ variation = "positive"
 ---
 
   
-
-#### **pca.get_categories(this)**
-
-  
+#### **pca.get_categories(this, component = 1, values = NULL)**
 
 **Description**
 
-Categorizes CP1 scores into quartiles (A, B, C, D).
+Categorizes the values of a selected principal component into quartiles and assigns letter categories:
+- **'D'**: Values below the 25th percentile.
+- **'C'**: Values between the 25th and 50th percentiles.
+- **'B'**: Values between the 50th and 75th percentiles.
+- **'A'**: Values above the 75th percentile.
 
-  
+By default, the function uses the first principal component (CP1). You can specify a different principal component using the **component** parameter. Alternatively, if a numeric vector is provided via **values**, the function will categorize those values using the quartile thresholds computed from the selected principal component.
 
 **Parameters**
 
--  **this** (*pca*): The PCA object.
-
-  
+- **this** (*pca*): The PCA object containing principal components.
+- **component** (*integer*): The index of the principal component to use (default is 1, corresponding to CP1).
+- **values** (*numeric vector, optional*): A vector of values to be categorized. If not provided, the function uses the values from the specified principal component.
 
 **Return Value**
 
--  **factor**: 'A', 'B', 'C', 'D'.
-
-  
+- **factor**: A factor with levels 'A', 'B', 'C', and 'D' representing the category for each observation.
 
 **Example**
 
 ```r
-
 quartiles <- pca.get_categories(pca_result)
-
+# Using a different principal component:
+quartiles <- pca.get_categories(pca_result, component = 2)
 ```
 
-  
 
 ---
 
-  
-
-#### **pca.get_category_colors(this, palette = colors.red_to_green())**
-
-  
+#### **pca.get_category_colors(this, component = 1, values = NULL, palette = colors.red_to_green())**
 
 **Description**
 
-Retrieves colors for PCA categories (A, B, C, D).
+Maps PCA categories to colors based on a specified color palette. The function first categorizes the scores of a selected principal component (default CP1) into quartiles and then assigns colors as follows:
+- **'D'**: Mapped to the first color in the palette.
+- **'C'**: Mapped to the second color.
+- **'B'**: Mapped to the third color.
+- **'A'**: Mapped to the fourth color.
 
-  
+The provided **palette** must be a character vector containing at least four colors.
 
 **Parameters**
 
--  **this** (*pca*): PCA object.
-
--  **palette** (*character vector*): Must have 4 colors.
-
-  
+- **this** (*pca*): The PCA object containing principal components.
+- **component** (*integer*): The index of the principal component to use for categorization (default is 1).
+- **values** (*numeric vector, optional*): A vector of values to be categorized. If not provided, the function uses the values from the selected principal component.
+- **palette** (*character vector*): A color palette with at least four colors (default is \code{colors.red_to_green()}).
 
 **Return Value**
 
--  **character vector**: Colors mapped to categories.
-
-  
+- **character vector**: Colors corresponding to the PCA categories for each observation.
 
 **Example**
 
 ```r
-
 cat_colors <- pca.get_category_colors(pca_result)
-
+# Using a different principal component and a custom palette:
+cat_colors <- pca.get_category_colors(pca_result, component = 2, palette = my_palette)
 ```
-
   
 
 ---
