@@ -2,25 +2,40 @@
 % Please edit documentation in R/pca.R
 \name{pca.get_category_colors}
 \alias{pca.get_category_colors}
-\title{pca.get_category_colors}
+\title{Retrieve Colors for PCA Categories Using a Specified Color Palette}
 \usage{
-pca.get_category_colors(this, palette = colors.red_to_green())
+pca.get_category_colors(
+  this,
+  component = 1,
+  values = NULL,
+  palette = colors.red_to_green()
+)
 }
 \arguments{
 \item{this}{A \code{pca} object containing PCA results.}
 
-\item{palette}{A character vector representing a color palette.
-Must have at least four colors.}
+\item{component}{An integer specifying which principal component to use for categorization (default is 1, corresponding to CP1).}
+
+\item{values}{An optional numeric vector of values to be categorized. If not provided, the function uses values from the specified principal component.}
+
+\item{palette}{A character vector representing a color palette. It must contain at least four colors. The default is \code{colors.red_to_green()}.}
 }
 \value{
-A character vector of colors corresponding to the PCA categories.
-
-throws Error if the palette has less than four colors or is not of type character.
+A character vector of colors corresponding to the PCA categories for each observation.
 }
 \description{
-Retrieves colors for PCA categories based on a specified color palette.
+This function maps PCA categories (A, B, C, D) to colors by utilizing a specified color palette.
+The function first categorizes the values of a selected principal component using quartile thresholds
+(via \code{pca.get_categories}) and then assigns colors according to the following scheme:
+\itemize{
+  \item \strong{'D'}: Mapped to the first color in the palette.
+  \item \strong{'C'}: Mapped to the second color.
+  \item \strong{'B'}: Mapped to the third color.
+  \item \strong{'A'}: Mapped to the fourth color.
+}
 }
 \details{
-This function assigns colors to PCA categories (A, B, C, D) using the provided
-color palette. The palette must contain at least four colors.
+The function first verifies that the \code{pca} object is valid and that the input types are correct.
+It then computes the quartile thresholds of the selected principal component and categorizes the values accordingly.
+If the provided \code{palette} contains fewer than four colors, an error is thrown.
 }

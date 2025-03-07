@@ -64,7 +64,7 @@ geogg.pca_map(
 
 \item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 
-\item{groups}{An optional factor vector for grouping the points, default is NULL.}
+\item{groups}{An optional vector for grouping the points, default is NULL.}
 
 \item{color_map}{A named character vector for color mapping groups, default is NULL.}
 }

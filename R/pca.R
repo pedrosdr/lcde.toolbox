@@ -333,20 +333,30 @@ pca.get_largest_variations = function(
   return(df_largest_variations)
 }
 
-#' pca.get_categories
+#' Categorize Principal Component Values into Quartiles
 #'
-#' Categorizes principal components into quartiles.
+#' This function assigns letter categories ('A', 'B', 'C', 'D') to values based on the quartile
+#' thresholds of a selected principal component from a \code{pca} object. By default, it uses the first
+#' principal component (CP1), but a different component can be specified using the \code{component} argument.
 #'
-#' This function assigns categories (A, B, C, D) to the first principal component (CP1)
-#' based on its quartile. Values are categorized as follows:
-#' - D: below the 25th percentile
-#' - C: between the 25th and 50th percentiles
-#' - B: between the 50th and 75th percentiles
-#' - A: above the 75th percentile
+#' The categorization is determined as follows:
+#' \itemize{
+#'   \item \strong{'D'}: Values below the 25th percentile of the selected principal component.
+#'   \item \strong{'C'}: Values between the 25th and 50th percentiles.
+#'   \item \strong{'B'}: Values between the 50th and 75th percentiles.
+#'   \item \strong{'A'}: Values above the 75th percentile.
+#' }
+#'
+#' If an alternative set of \code{values} is provided, the function categorizes these values using the quartile
+#' thresholds computed from the selected principal component.
 #'
 #' @param this A \code{pca} object containing principal components.
+#' @param component An integer specifying which principal component to use (default is 1, corresponding to CP1).
+#' @param values An optional numeric vector of values to categorize. If not provided, the function uses the values
+#'               from the specified principal component.
 #'
-#' @return A factor indicating the category for each observation based on CP1.
+#' @return A factor with levels 'A', 'B', 'C', and 'D', indicating the category for each observation based on
+#'         the quartile thresholds.
 #'
 #' @export
 pca.get_categories = function(
@@ -380,20 +390,28 @@ pca.get_categories = function(
   return(categories)
 }
 
-#' pca.get_category_colors
+#' Retrieve Colors for PCA Categories Using a Specified Color Palette
 #'
-#' Retrieves colors for PCA categories based on a specified color palette.
-#'
-#' This function assigns colors to PCA categories (A, B, C, D) using the provided
-#' color palette. The palette must contain at least four colors.
+#' This function maps PCA categories (A, B, C, D) to colors by utilizing a specified color palette.
+#' The function first categorizes the values of a selected principal component using quartile thresholds
+#' (via \code{pca.get_categories}) and then assigns colors according to the following scheme:
+#' \itemize{
+#'   \item \strong{'D'}: Mapped to the first color in the palette.
+#'   \item \strong{'C'}: Mapped to the second color.
+#'   \item \strong{'B'}: Mapped to the third color.
+#'   \item \strong{'A'}: Mapped to the fourth color.
+#' }
 #'
 #' @param this A \code{pca} object containing PCA results.
-#' @param palette A character vector representing a color palette.
-#'                Must have at least four colors.
+#' @param component An integer specifying which principal component to use for categorization (default is 1, corresponding to CP1).
+#' @param values An optional numeric vector of values to be categorized. If not provided, the function uses values from the specified principal component.
+#' @param palette A character vector representing a color palette. It must contain at least four colors. The default is \code{colors.red_to_green()}.
 #'
-#' @return A character vector of colors corresponding to the PCA categories.
+#' @return A character vector of colors corresponding to the PCA categories for each observation.
 #'
-#' throws Error if the palette has less than four colors or is not of type character.
+#' @details The function first verifies that the \code{pca} object is valid and that the input types are correct.
+#' It then computes the quartile thresholds of the selected principal component and categorizes the values accordingly.
+#' If the provided \code{palette} contains fewer than four colors, an error is thrown.
 #'
 #' @export
 pca.get_category_colors = function(

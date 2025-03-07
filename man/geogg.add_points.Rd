@@ -23,7 +23,7 @@ geogg.add_points(
 
 \item{longitude}{A numeric vector of longitudes for the points.}
 
-\item{groups}{An optional factor vector for grouping the points, default is NULL.}
+\item{groups}{An optional vector for grouping the points, default is NULL.}
 
 \item{color_map}{A named character vector for color mapping groups, default is NULL.}
 
@@ -42,5 +42,5 @@ The updated geogg object with points added.
 This function adds points to a geographical ggplot object, with options for grouping and color mapping.
 }
 \examples{
-geogg_obj <- geogg() \%>\% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = factor(c("A", "B")), color_map = c("A" = "red", "B" = "blue"))
+geogg_obj <- geogg() \%>\% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = c("A", "B"), color_map = c("A" = "red", "B" = "blue"))
 }
