@@ -350,15 +350,27 @@ pca.get_largest_variations = function(
 #'
 #' @export
 pca.get_categories = function(
-  this #: pca
+  this, #: pca
+  component = 1, #: integer
+  values = NULL #: numeric vector
 ) {
   .pca.check_class(this)
-  cp1 = this$principal_components$CP1
+  type.check_integer(component, 'component')
+
+  if(!is.null(values)) {
+    type.check_numeric(values, 'values')
+  }
+
+  cp = this$principal_components[, paste0("CP", component)]
+
+  if (is.null(values)) {
+    values = cp
+  }
 
   categories = ifelse(
-    cp1 < quantile(cp1, 0.25), 'D', ifelse(
-      cp1 < quantile(cp1, 0.5), 'C', ifelse(
-        cp1 < quantile(cp1, 0.75), 'B', 'A'
+    values < quantile(cp, 0.25), 'D', ifelse(
+      values < quantile(cp, 0.5), 'C', ifelse(
+        values < quantile(cp, 0.75), 'B', 'A'
       )
     )
   )
@@ -386,15 +398,28 @@ pca.get_categories = function(
 #' @export
 pca.get_category_colors = function(
   this, #: pca
+  component = 1, # integer
+  values = NULL, # numeric vector
   palette = colors.red_to_green() #: character vector
 ) {
   .pca.check_class(this)
+  type.check_integer(component, 'component')
+
+  if(!is.null(values)) {
+    type.check_numeric(values, 'values')
+  }
+
   type.check_character(palette, 'palette')
+
   if(length(palette) < 4) {
     stop("'palette' must have at least 4 colors")
   }
 
-  categories = this %>% pca.get_categories()
+  categories = this %>% pca.get_categories(
+    component = component,
+    values = values
+  )
+
   colors = ifelse(
     categories == 'D', palette[1], ifelse(
       categories == 'C', palette[2], ifelse(
