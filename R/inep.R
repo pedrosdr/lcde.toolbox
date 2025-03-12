@@ -31,7 +31,7 @@ inep.abbreviate_school_names = function(
     '-', 'colegio', 'doutor', "1Âº", "grau", "dep", "deputado", "unidade",
     "desembargador", "creche", "prefeito", "fund", "governador", "senador",
     "b", "sra", "alm", "emefm", "professor", "estadual", "federal", "privada",
-    "prof", "r")
+    "prof", "r", "profª", "esc", "indigena", "indígena")
 
   ignored_regex = c(
     "\\d+"
