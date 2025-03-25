@@ -166,7 +166,9 @@ table.linear_model = function(
   dfreg[,"Significância"] = ifelse(
     dfreg[,"P(>|t|)"] < 0.001, "***", ifelse(
       dfreg[,"P(>|t|)"] < 0.01, "**", ifelse(
-        dfreg[,"P(>|t|)"] < 0.05, ".", " "
+        dfreg[,"P(>|t|)"] < 0.05, "*", ifelse(
+          dfreg[,"P(>|t|)"] < 0.1, ".", " "
+        )
       )
     )
   )
@@ -214,7 +216,7 @@ table.linear_model = function(
     ) %>%
     flextable::add_footer_row(
       values = paste0(
-        "Códigos de Significância: 0 [***] 0.001 [**] 0.01 [.] 0.1 [ ] 1"
+        "Códigos de Significância: 0 [***] 0.001 [**] 0.01 [*] 0.05 [.] 0.1 [ ] 1"
       ),
       colwidths = c(7)
     ) %>%
