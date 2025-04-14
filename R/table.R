@@ -239,7 +239,7 @@ table.linear_model = function(
 .table.check_class = function(
   obj
 ) {
-  if(!("table" %in% class(obj))) {
+  if(!inherits(obj, "table")) {
     stop("'obj' must be of type 'table'")
   }
 }

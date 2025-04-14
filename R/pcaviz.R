@@ -88,7 +88,7 @@ pcaviz.set_pca_obj = function(
 .pcaviz.check_class = function(
     obj
 ) {
-  if(!('pcaviz' %in% class(obj))) {
+  if(!inherits(obj, "pcaviz")) {
     stop("'obj' must be of type 'pcaviz'")
   }
 }
@@ -251,10 +251,10 @@ pcaviz.scatter = function(
       xlim = c(-lim, lim),
       ylim = c(-lim, lim)
     ) +
-    scale_x_continuous(
+    ggplot2::scale_x_continuous(
       n.breaks = 5
     ) +
-    scale_y_continuous(
+    ggplot2::scale_y_continuous(
       n.breaks = 5
     )
 

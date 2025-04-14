@@ -36,7 +36,7 @@ ppt.from_template = function(
 .ppt.check_class = function(
   obj
 ) {
-  if(!('ppt' %in% class(obj))) {
+  if(!inherits(obj, "ppt")) {
     stop("'obj' must be of type 'ppt")
   }
 }

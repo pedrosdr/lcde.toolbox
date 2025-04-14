@@ -327,7 +327,7 @@ pptpos.parse = function(
 .pptpos.check_class = function(
   obj
 ) {
-  if(!('pptpos' %in% class(obj))) {
+  if(!inherits(obj, "pptpos")) {
     stop("'obj' must be of type 'pptpos'")
   }
 }

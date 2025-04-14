@@ -17,7 +17,7 @@ type.check_character = function(
     property = 'property'
   }
 
-  if(!('character' %in% class(obj))) {
+  if(!inherits(obj, "character")) {
     stop(paste0("'",property,"' must be of type 'character'"))
   }
 }
@@ -92,7 +92,7 @@ type.check_sf = function(
     property = 'property'
   }
 
-  if(!('sf' %in% class(obj))) {
+  if(!inherits(obj, "sf")) {
     stop(paste0("'",property,"' must be of type 'sf'"))
   }
 }
@@ -116,7 +116,7 @@ type.check_logical = function(
     property = 'property'
   }
 
-  if(!('logical' %in% class(obj))) {
+  if(!is.logical(obj)) {
     stop(paste0("'",property,"' must be of type 'logical'"))
   }
 }
@@ -188,7 +188,7 @@ type.check_ggplot = function(
     property = 'property'
   }
 
-  if(!('ggplot' %in% class(obj))) {
+  if(!inherits(obj, "ggplot")) {
     stop(paste0("'",property,"' must be of type 'ggplot'"))
   }
 }
@@ -212,7 +212,7 @@ type.check_table = function(
     property = 'property'
   }
 
-  if(!('table' %in% class(obj))) {
+  if(!inherits(obj, "table")) {
     stop(paste0("'",property,"' must be of type 'table'"))
   }
 }

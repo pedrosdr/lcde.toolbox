@@ -96,7 +96,7 @@ pca.get_ID = function(
 .pca.check_class = function(
   obj
 ) {
-  if(class(obj) != 'pca') {
+  if(!inherits(obj, "pca")) {
     stop("'obj' must be of type 'pca'")
   }
 }

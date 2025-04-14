@@ -226,7 +226,7 @@ geoleaf.pca_map = function(
 .geoleaf.check_class = function(
     obj
 ) {
-  if(!('geoleaf' %in% class(obj))) {
+  if(!inherits(obj, "geoleaf")) {
     stop("'obj' must be of type 'geoleaf'")
   }
 }

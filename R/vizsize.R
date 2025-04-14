@@ -98,16 +98,16 @@ vizsize.parse = function(
 #'
 #' This function checks if the provided object is of class 'vizsize'.
 #'
-#' @param this An object to be checked.
+#' @param obj An object to be checked.
 #'
 #' @return NULL if the object is of class 'vizsize'; otherwise, an error is raised.
 #'
 #' @keywords internal
 .vizsize.check_class = function(
-    this #; vizsize
+    obj #; vizsize
 ) {
-  if(!('vizsize' %in% class(this))) {
-    stop("'this' must be of type 'vizsize'")
+  if(!inherits(obj, "vizsize")) {
+    stop("'obj' must be of type 'vizsize'")
   }
 }
 

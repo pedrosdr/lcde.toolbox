@@ -121,7 +121,7 @@ georef.set_sf = function(
 .georef.check_class = function(
     obj
 ) {
-  if(!('georef' %in% class(obj))) {
+  if(!inherits(obj, "georef")) {
     stop("'obj' must be of type 'georef'")
   }
 }
