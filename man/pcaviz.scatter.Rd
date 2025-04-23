@@ -13,7 +13,8 @@ pcaviz.scatter(
   shape_map = NULL,
   include_ID = FALSE,
   size = vizsize(),
-  single_shape = FALSE
+  single_shape = FALSE,
+  max.overlaps = 20
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ pcaviz.scatter(
 \item{size}{A \code{vizsize} object or a numeric/text size parameter for customizing plot dimensions. Defaults to \code{vizsize()}.}
 
 \item{single_shape}{A logical flag; if \code{TRUE}, all points use a single shape (\code{shape = 19}) and only \code{color_map} is applied. If \code{FALSE}, both color and shape mappings are used. Defaults to \code{FALSE}.}
+
+\item{max.overlaps}{An integer specifying the maximum number of overlapping labels allowed when labels are added to the plot. Defaults to \code{20}.}
 }
 \value{
 A \code{pcaviz} object representing the fully customized scatter plot.

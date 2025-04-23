@@ -138,6 +138,7 @@ pcaviz.set_pca_obj = function(
 #' @param include_ID A logical value indicating whether to include the inequality indicator in the plot caption. Defaults to \code{FALSE}.
 #' @param size A \code{vizsize} object or a numeric/text size parameter for customizing plot dimensions. Defaults to \code{vizsize()}.
 #' @param single_shape A logical flag; if \code{TRUE}, all points use a single shape (\code{shape = 19}) and only \code{color_map} is applied. If \code{FALSE}, both color and shape mappings are used. Defaults to \code{FALSE}.
+#' @param max.overlaps An integer specifying the maximum number of overlapping labels allowed when labels are added to the plot. Defaults to \code{20}.
 #'
 #' @return A \code{pcaviz} object representing the fully customized scatter plot.
 #'
@@ -154,7 +155,8 @@ pcaviz.scatter = function(
   shape_map = NULL,
   include_ID = FALSE, #: logical
   size = vizsize(), #: vizsize | text | numeric
-  single_shape = FALSE
+  single_shape = FALSE,
+  max.overlaps = 20
 ) {
   .pca.check_class(pca_obj)
   if(class(include_ID) != 'logical') {
@@ -219,7 +221,10 @@ pcaviz.scatter = function(
                color=colors.grayscale()[5])
 
   if(!is.null(labels)) {
-    this = this %>% pcaviz.add_labels(labels)
+    this = this %>% pcaviz.add_labels(
+      labels,
+      max.overlaps=max.overlaps
+    )
   }
 
   if(!is.null(groups) & is.null(color_map)) {
@@ -599,24 +604,20 @@ pcaviz.add_multi_group_points = function(
 #' This function enhances a PCA scatter plot by adding text labels to the points,
 #' allowing for easier identification and interpretation of the plotted data.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A \code{pcaviz} object representing the PCA visualization.
 #' @param labels A character vector of labels corresponding to each point in the plot.
-#' @param x (Optional) A numeric vector specifying the x-coordinates of the points.
-#'           If NULL, defaults to the first principal component (CP1).
-#' @param y (Optional) A numeric vector specifying the y-coordinates of the points.
-#'           If NULL, defaults to the second principal component (CP2).
+#' @param x An optional numeric vector specifying the x-coordinates of the points.
+#'   If \code{NULL}, defaults to the first principal component (CP1).
+#' @param y An optional numeric vector specifying the y-coordinates of the points.
+#'   If \code{NULL}, defaults to the second principal component (CP2).
+#' @param type A character string specifying the labeling style: \code{"text"} or \code{"label"}.
+#' @param max.overlaps An integer setting the maximum number of overlapping labels allowed. Defaults to \code{20}.
 #'
-#' @return A modified PCA visualization object with added labels.
+#' @return A modified \code{pcaviz} object with added labels.
 #'
 #' @details
-#' The function checks that the length of `labels` matches the number of points
-#' in the PCA plot. If `x` and `y` are not provided, it will automatically use
-#' the first two principal components from the PCA object.
-#'
-#' @examples
-#' # Assuming pca_obj is a valid PCA object
-#' pca_viz <- pcaviz.scatter(pca_obj)
-#' pca_viz <- pcaviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
+#' The function validates that the length of \code{labels} matches the number of points
+#' in the PCA plot. If \code{x} or \code{y} are \code{NULL}, they default to the PCA components.
 #'
 #' @export
 pcaviz.add_labels = function(
@@ -624,7 +625,8 @@ pcaviz.add_labels = function(
   labels, #: vector
   x = NULL, #: vector
   y = NULL, #: vector
-  type = c('text', 'label') #: character
+  type = c('text', 'label'), #: character
+  max.overlaps = 20
 ) {
   .pcaviz.check_class(this)
   type.check_character(type, 'type')
@@ -668,7 +670,7 @@ pcaviz.add_labels = function(
         label = labels
       ),
       min.segment.length = 0,
-      max.overlaps = 20,
+      max.overlaps = max.overlaps,
       box.padding = this$size$point_size/2,
       size=this$size$text/4
     )
