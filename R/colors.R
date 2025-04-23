@@ -21,7 +21,13 @@ colors.mixed = function() {
     '#f4895f',
     '#95cf92',
     '#de324c',
-    '#6c584c'
+    '#6c584c',
+    "#2b5f7f",
+    "#7a3c74",
+    "#d1c05a",
+    "#d14f47",
+    "#7bb086",
+    "#b72030"
   )
   return(palette)
 }

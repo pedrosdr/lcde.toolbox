@@ -4,7 +4,7 @@
 \alias{pcaviz.add_single_group_points}
 \title{Add Single Group Points to PCA Scatter Plot}
 \usage{
-pcaviz.add_single_group_points(this)
+pcaviz.add_single_group_points(this, color = colors.mixes()[1])
 }
 \arguments{
 \item{this}{A PCA visualization object of class 'pcaviz'.}

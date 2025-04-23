@@ -6,49 +6,45 @@
 \usage{
 pcaviz.scatter(
   pca_obj,
+  color = colors.mixed()[1],
   labels = NULL,
   groups = NULL,
+  color_map = NULL,
+  shape_map = NULL,
   include_ID = FALSE,
-  size = vizsize()
+  size = vizsize(),
+  single_shape = FALSE,
+  max.overlaps = 20
 )
 }
 \arguments{
-\item{pca_obj}{A `pca` object containing the PCA results.}
+\item{pca_obj}{A \code{pca} object containing the PCA results.}
 
-\item{labels}{An optional vector of labels for the data points. Defaults to `NULL`.}
+\item{color}{A single hex color code (as a string) to use when \code{groups} is \code{NULL}. Defaults to \code{colors.mixed()[1]}.}
 
-\item{groups}{An optional factor for grouping the data points. Defaults to `NULL`.}
+\item{labels}{An optional character vector of labels for the data points. Defaults to \code{NULL}.}
 
-\item{include_ID}{Logical, indicating whether to include the inequality indicator in the plot caption. Defaults to `FALSE`.}
+\item{groups}{An optional factor indicating group membership for each data point. Defaults to \code{NULL}.}
 
-\item{size}{A `vizsize` object or a numeric/text size parameter for customizing plot dimensions. Defaults to `vizsize()`.}
+\item{color_map}{An optional named or unnamed character vector of hex color codes to map each level of \code{groups}. Defaults to \code{NULL}.}
+
+\item{shape_map}{An optional named or unnamed numeric vector of shape codes to map each level of \code{groups}. Only used when \code{single_shape = FALSE}. Defaults to \code{NULL}.}
+
+\item{include_ID}{A logical value indicating whether to include the inequality indicator in the plot caption. Defaults to \code{FALSE}.}
+
+\item{size}{A \code{vizsize} object or a numeric/text size parameter for customizing plot dimensions. Defaults to \code{vizsize()}.}
+
+\item{single_shape}{A logical flag; if \code{TRUE}, all points use a single shape (\code{shape = 19}) and only \code{color_map} is applied. If \code{FALSE}, both color and shape mappings are used. Defaults to \code{FALSE}.}
+
+\item{max.overlaps}{An integer specifying the maximum number of overlapping labels allowed when labels are added to the plot. Defaults to \code{20}.}
 }
 \value{
-A `pcaviz` object representing the scatter plot.
+A \code{pcaviz} object representing the fully customized scatter plot.
 }
 \description{
 Generates a scatter plot for visualizing the results of a Principal Component Analysis (PCA),
-including options for grouping and labeling data points.
+including options for grouping, labeling, coloring, and shaping data points.
 }
 \details{
-The scatter plot visualizes the first two principal components (CP1 and CP2) from the PCA analysis.
-The function provides options to:
-- Include data point labels.
-- Group data points using distinct colors.
-- Add the inequality indicator to the plot caption.
-
-The axes are labeled with the percentage of variance explained by each principal component, and
-the caption includes the equations for CP1 and CP2. Dashed horizontal and vertical lines are drawn at
-the origin for reference.
-}
-\examples{
-# Example usage:
-pca_results <- perform_pca(data)
-scatter_plot <- pcaviz.scatter(
-  pca_obj = pca_results,
-  labels = c("A", "B", "C"),
-  groups = factor(c("Group1", "Group2", "Group1")),
-  include_ID = TRUE
-)
-
+Plots the first two principal components (CP1 and CP2) with optional labels, group coloring, custom palettes, and shape mappings. Axes display explained variance and include dashed reference lines.
 }

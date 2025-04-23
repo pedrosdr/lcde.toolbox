@@ -122,53 +122,41 @@ pcaviz.set_pca_obj = function(
   if(length(groups) != nrow(this$pca_obj$principal_components)) {
     stop("'groups' must be a vector of the same length as the data")
   }
-
-  if(length(unique(groups)) > 7) {
-    stop("'groups' can have a maximum of 7 levels.")
-  }
 }
 
 #' Scatter Plot for PCA Visualization
 #'
 #' Generates a scatter plot for visualizing the results of a Principal Component Analysis (PCA),
-#' including options for grouping and labeling data points.
+#' including options for grouping, labeling, coloring, and shaping data points.
 #'
-#' @param pca_obj A `pca` object containing the PCA results.
-#' @param labels An optional vector of labels for the data points. Defaults to `NULL`.
-#' @param groups An optional factor for grouping the data points. Defaults to `NULL`.
-#' @param include_ID Logical, indicating whether to include the inequality indicator in the plot caption. Defaults to `FALSE`.
-#' @param size A `vizsize` object or a numeric/text size parameter for customizing plot dimensions. Defaults to `vizsize()`.
+#' @param pca_obj A \code{pca} object containing the PCA results.
+#' @param labels An optional character vector of labels for the data points. Defaults to \code{NULL}.
+#' @param groups An optional factor indicating group membership for each data point. Defaults to \code{NULL}.
+#' @param color A single hex color code (as a string) to use when \code{groups} is \code{NULL}. Defaults to \code{colors.mixed()[1]}.
+#' @param color_map An optional named or unnamed character vector of hex color codes to map each level of \code{groups}. Defaults to \code{NULL}.
+#' @param shape_map An optional named or unnamed numeric vector of shape codes to map each level of \code{groups}. Only used when \code{single_shape = FALSE}. Defaults to \code{NULL}.
+#' @param include_ID A logical value indicating whether to include the inequality indicator in the plot caption. Defaults to \code{FALSE}.
+#' @param size A \code{vizsize} object or a numeric/text size parameter for customizing plot dimensions. Defaults to \code{vizsize()}.
+#' @param single_shape A logical flag; if \code{TRUE}, all points use a single shape (\code{shape = 19}) and only \code{color_map} is applied. If \code{FALSE}, both color and shape mappings are used. Defaults to \code{FALSE}.
+#' @param max.overlaps An integer specifying the maximum number of overlapping labels allowed when labels are added to the plot. Defaults to \code{20}.
 #'
-#' @return A `pcaviz` object representing the scatter plot.
+#' @return A \code{pcaviz} object representing the fully customized scatter plot.
 #'
 #' @details
-#' The scatter plot visualizes the first two principal components (CP1 and CP2) from the PCA analysis.
-#' The function provides options to:
-#' - Include data point labels.
-#' - Group data points using distinct colors.
-#' - Add the inequality indicator to the plot caption.
-#'
-#' The axes are labeled with the percentage of variance explained by each principal component, and
-#' the caption includes the equations for CP1 and CP2. Dashed horizontal and vertical lines are drawn at
-#' the origin for reference.
-#'
-#' @examples
-#' # Example usage:
-#' pca_results <- perform_pca(data)
-#' scatter_plot <- pcaviz.scatter(
-#'   pca_obj = pca_results,
-#'   labels = c("A", "B", "C"),
-#'   groups = factor(c("Group1", "Group2", "Group1")),
-#'   include_ID = TRUE
-#' )
+#' Plots the first two principal components (CP1 and CP2) with optional labels, group coloring, custom palettes, and shape mappings. Axes display explained variance and include dashed reference lines.
 #'
 #' @export
 pcaviz.scatter = function(
   pca_obj, #: pca
+  color = colors.mixed()[1],
   labels = NULL, #: vector
   groups = NULL, #: factor
+  color_map = NULL,
+  shape_map = NULL,
   include_ID = FALSE, #: logical
-  size = vizsize() #: vizsize | text | numeric
+  size = vizsize(), #: vizsize | text | numeric
+  single_shape = FALSE,
+  max.overlaps = 20
 ) {
   .pca.check_class(pca_obj)
   if(class(include_ID) != 'logical') {
@@ -185,9 +173,14 @@ pcaviz.scatter = function(
   this = this + ggplot2::theme_minimal()
 
   if(is.null(groups)) {
-    this = this %>% pcaviz.add_single_group_points()
+    this = this %>% pcaviz.add_single_group_points(color = color)
   } else {
-    this = this %>% pcaviz.add_multi_group_points(groups)
+    this = this %>% pcaviz.add_multi_group_points(
+      groups = groups,
+      color_map = color_map,
+      shape_map = shape_map,
+      single_shape = single_shape
+    )
   }
 
   caption = paste0(
@@ -228,10 +221,13 @@ pcaviz.scatter = function(
                color=colors.grayscale()[5])
 
   if(!is.null(labels)) {
-    this = this %>% pcaviz.add_labels(labels)
+    this = this %>% pcaviz.add_labels(
+      labels,
+      max.overlaps=max.overlaps
+    )
   }
 
-  if(!is.null(groups)) {
+  if(!is.null(groups) & is.null(color_map)) {
     this = this %>% pcaviz.set_scale_scatter(groups)
   }
 
@@ -516,7 +512,8 @@ pcaviz.add_ID = function(
 #'
 #' @export
 pcaviz.add_single_group_points = function(
-  this #: pcaviz
+  this, #: pcaviz
+  color = colors.mixes()[1]
 ) {
   .pcaviz.check_class(this)
 
@@ -527,7 +524,7 @@ pcaviz.add_single_group_points = function(
         x=CP1,
         y=CP2
       ),
-      color=colors.mixed()[1],
+      color=color,
       size=this$size$point_size
     )
 
@@ -536,17 +533,23 @@ pcaviz.add_single_group_points = function(
 
 #' Add Multi-Group Points to PCA Scatter Plot
 #'
-#' This function adds points representing multiple groups to the PCA scatter plot.
+#' Adds points representing multiple groups to the PCA scatter plot.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
-#' @param groups A factor indicating group membership for each point.
+#' @param this A \code{pcaviz} object representing the PCA visualization.
+#' @param groups A factor indicating group membership for each data point; length must match the number of rows in \code{this$pca_obj$principal_components}.
+#' @param color_map An optional named or unnamed character vector of hexadecimal color codes. If provided, colors will be mapped to the levels of \code{groups}. Defaults to \code{NULL}.
+#' @param shape_map An optional named or unnamed numeric vector of plotting symbol codes. Used only when \code{single_shape = FALSE}. If provided, shapes will be mapped to the levels of \code{groups}. Defaults to \code{NULL}.
+#' @param single_shape Logical; if \code{TRUE}, all points use a single fixed shape (\code{shape = 19}) and only \code{color_map} is applied. Defaults to \code{FALSE}.
 #'
-#' @return The modified PCA visualization object with added group points.
+#' @return A \code{pcaviz} object with the multi-group points layer added.
 #'
 #' @export
 pcaviz.add_multi_group_points = function(
   this, #: pcaviz
-  groups #: factor
+  groups, #: factor
+  color_map = NULL,
+  shape_map = NULL,
+  single_shape = FALSE
 ) {
   .pcaviz.check_class(this)
   this %>% .pcaviz.check_groups(groups)
@@ -554,17 +557,44 @@ pcaviz.add_multi_group_points = function(
   data = this$pca_obj$principal_components
   data$groups = groups
 
-  this = this +
-    ggplot2::geom_point(
-      data = data,
-      ggplot2::aes(
-        x=CP1,
-        y=CP2,
-        color=groups,
-        shape=groups
-      ),
-      size=this$size$point_size
-    )
+  if(single_shape) {
+    this = this +
+      ggplot2::geom_point(
+        data = data,
+        ggplot2::aes(
+          x=CP1,
+          y=CP2,
+          color=groups
+        ),
+        size=this$size$point_size
+      )
+  } else {
+    this = this +
+      ggplot2::geom_point(
+        data = data,
+        ggplot2::aes(
+          x=CP1,
+          y=CP2,
+          color=groups,
+          shape=groups
+        ),
+        size=this$size$point_size
+      )
+  }
+
+  if(!is.null(color_map)) {
+    this = this +
+      ggplot2::scale_color_manual(
+        values = color_map
+      )
+  }
+
+  if(!is.null(shape_map) && !single_shape) {
+    this = this +
+      ggplot2::scale_shape_manual(
+        values = shape_map
+      )
+  }
 
   return(this)
 }
@@ -574,24 +604,20 @@ pcaviz.add_multi_group_points = function(
 #' This function enhances a PCA scatter plot by adding text labels to the points,
 #' allowing for easier identification and interpretation of the plotted data.
 #'
-#' @param this A PCA visualization object of class 'pcaviz'.
+#' @param this A \code{pcaviz} object representing the PCA visualization.
 #' @param labels A character vector of labels corresponding to each point in the plot.
-#' @param x (Optional) A numeric vector specifying the x-coordinates of the points.
-#'           If NULL, defaults to the first principal component (CP1).
-#' @param y (Optional) A numeric vector specifying the y-coordinates of the points.
-#'           If NULL, defaults to the second principal component (CP2).
+#' @param x An optional numeric vector specifying the x-coordinates of the points.
+#'   If \code{NULL}, defaults to the first principal component (CP1).
+#' @param y An optional numeric vector specifying the y-coordinates of the points.
+#'   If \code{NULL}, defaults to the second principal component (CP2).
+#' @param type A character string specifying the labeling style: \code{"text"} or \code{"label"}.
+#' @param max.overlaps An integer setting the maximum number of overlapping labels allowed. Defaults to \code{20}.
 #'
-#' @return A modified PCA visualization object with added labels.
+#' @return A modified \code{pcaviz} object with added labels.
 #'
 #' @details
-#' The function checks that the length of `labels` matches the number of points
-#' in the PCA plot. If `x` and `y` are not provided, it will automatically use
-#' the first two principal components from the PCA object.
-#'
-#' @examples
-#' # Assuming pca_obj is a valid PCA object
-#' pca_viz <- pcaviz.scatter(pca_obj)
-#' pca_viz <- pcaviz.add_labels(pca_viz, labels = c("Label1", "Label2", "Label3"))
+#' The function validates that the length of \code{labels} matches the number of points
+#' in the PCA plot. If \code{x} or \code{y} are \code{NULL}, they default to the PCA components.
 #'
 #' @export
 pcaviz.add_labels = function(
@@ -599,7 +625,8 @@ pcaviz.add_labels = function(
   labels, #: vector
   x = NULL, #: vector
   y = NULL, #: vector
-  type = c('text', 'label') #: character
+  type = c('text', 'label'), #: character
+  max.overlaps = 20
 ) {
   .pcaviz.check_class(this)
   type.check_character(type, 'type')
@@ -643,7 +670,7 @@ pcaviz.add_labels = function(
         label = labels
       ),
       min.segment.length = 0,
-      max.overlaps = 20,
+      max.overlaps = max.overlaps,
       box.padding = this$size$point_size/2,
       size=this$size$text/4
     )
