@@ -4,16 +4,28 @@
 \alias{pcaviz.add_multi_group_points}
 \title{Add Multi-Group Points to PCA Scatter Plot}
 \usage{
-pcaviz.add_multi_group_points(this, groups)
+pcaviz.add_multi_group_points(
+  this,
+  groups,
+  color_map = NULL,
+  shape_map = NULL,
+  single_shape = FALSE
+)
 }
 \arguments{
-\item{this}{A PCA visualization object of class 'pcaviz'.}
+\item{this}{A \code{pcaviz} object representing the PCA visualization.}
 
-\item{groups}{A factor indicating group membership for each point.}
+\item{groups}{A factor indicating group membership for each data point; length must match the number of rows in \code{this$pca_obj$principal_components}.}
+
+\item{color_map}{An optional named or unnamed character vector of hexadecimal color codes. If provided, colors will be mapped to the levels of \code{groups}. Defaults to \code{NULL}.}
+
+\item{shape_map}{An optional named or unnamed numeric vector of plotting symbol codes. Used only when \code{single_shape = FALSE}. If provided, shapes will be mapped to the levels of \code{groups}. Defaults to \code{NULL}.}
+
+\item{single_shape}{Logical; if \code{TRUE}, all points use a single fixed shape (\code{shape = 19}) and only \code{color_map} is applied. Defaults to \code{FALSE}.}
 }
 \value{
-The modified PCA visualization object with added group points.
+A \code{pcaviz} object with the multi-group points layer added.
 }
 \description{
-This function adds points representing multiple groups to the PCA scatter plot.
+Adds points representing multiple groups to the PCA scatter plot.
 }
