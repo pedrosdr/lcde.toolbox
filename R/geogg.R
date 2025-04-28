@@ -50,6 +50,7 @@ geogg = function(
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #' @param groups An optional vector for grouping the points, default is NULL.
 #' @param color_map A named character vector for color mapping groups, default is NULL.
+#' @param add_tiles A logical value to include the map tiles, default is TRUE.
 #'
 #' @return A geogg object with the PCA map added.
 #'
@@ -77,7 +78,8 @@ geogg.pca_map = function(
     boundary_width = 1, #: numeric
     zoom = NULL, #: integer
     groups = NULL, #: vector
-    color_map = NULL
+    color_map = NULL,
+    add_tiles = TRUE
 ) {
   .pca.check_class(pca_obj)
 
@@ -111,8 +113,11 @@ geogg.pca_map = function(
     stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
   }
 
-  obj = geogg(size = size) %>%
-    geogg.add_tiles(zoom = zoom)
+  obj = geogg(size = size)
+
+  if(add_tiles) {
+    obj = obj %>% geogg.add_tiles(zoom = zoom)
+  }
 
   if(add_surface) {
     obj = obj %>%
@@ -200,7 +205,7 @@ geogg.pca_map = function(
 #' @param size An object defining size specifications, default is 'large'.
 #' @param point_size A numeric describing the size of the points to be added.
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
-#'
+#' @param add_tiles A logical value to include the map tiles, default is TRUE.
 #'
 #' @return A geogg object with the proficiency map added.
 #'
@@ -227,7 +232,8 @@ geogg.percentage_of_proficiency_map = function(
   size = vizsize.parse('large'),
   point_size = 1, #: numeric
   boundary_width = 1,
-  zoom = NULL #: integer
+  zoom = NULL, #: integer
+  add_tiles = TRUE
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -249,8 +255,11 @@ geogg.percentage_of_proficiency_map = function(
     stop("'add_surface' is set to TRUE but no 'surface_latitude' was given")
   }
 
-  obj = geogg(size = size) %>%
-    geogg.add_tiles(zoom = zoom)
+  obj = geogg(size = size)
+
+  if(add_tiles) {
+    obj = obj %>% geogg.add_tiles(zoom = zoom)
+  }
 
   if(add_surface) {
     obj = obj %>%
