@@ -24,7 +24,8 @@ geogg.pca_map(
   boundary_width = 1,
   zoom = NULL,
   groups = NULL,
-  color_map = NULL
+  color_map = NULL,
+  add_tiles = TRUE
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ geogg.pca_map(
 \item{groups}{An optional vector for grouping the points, default is NULL.}
 
 \item{color_map}{A named character vector for color mapping groups, default is NULL.}
+
+\item{add_tiles}{A logical value to include the map tiles, default is TRUE.}
 }
 \value{
 A geogg object with the PCA map added.
