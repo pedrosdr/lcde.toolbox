@@ -31,8 +31,7 @@ RoxygenNote: 7.3.2
 Collate:
     'type.R'
     'colors.R'
-    'stats.R'
-    'inep.R'
+    'utils.R'
     'vizsize.R'
     'ggradar.R'
     'pca.R'

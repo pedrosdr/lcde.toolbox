@@ -19,12 +19,11 @@
    4.3 [geoleaf](#43-geoleaf)  
    4.4 [georef](#44-georef)  
    4.5 [ggviz](#45-ggviz)  
-   4.6 [inep](#46-inep)  
+   4.6 [utils](#46-utils)  
    4.7 [pca](#47-pca)  
    4.8 [pcaviz](#48-pcaviz)  
    4.9 [ppt](#49-ppt)  
    4.10 [pptpos](#410-pptpos)  
-   4.11 [stats](#411-stats)  
    4.12 [table](#412-table)  
    4.13 [type](#413-type)  
    4.14 [vizsize](#414-vizsize)
@@ -1988,11 +1987,11 @@ print(radar_plot)
 
   
 
-### 4.6 **inep**
+### 4.6 **utils**
 
-  
 
-Specific functions for **educational data** manipulation.
+
+Provides utility functions for common data-processing tasks.
 
   
 
@@ -2000,7 +1999,125 @@ Specific functions for **educational data** manipulation.
 
   
 
-#### **inep.abbreviate_school_names(school_names, size = 2)**
+#### **utils.inequality_indicator(data)**
+
+  
+
+**Description**
+
+Calculates the average distance of each observation from the centroid.
+
+  
+
+**Parameters**
+
+-  **data** (*numeric matrix|data.frame*): Each row is an observation.
+
+  
+
+**Return Value**
+
+-  **numeric**: The computed inequality indicator.
+
+  
+
+**Example**
+
+```r
+
+mat <- matrix(c(1,2,3,4,5,6), nrow=2)
+
+ineq <- utils.inequality_indicator(mat)
+
+```
+
+  
+
+---
+
+  
+
+#### **utils.magnitude(data)**
+
+  
+
+**Description**
+
+Computes the Euclidean norm (magnitude) of each row (observation).
+
+  
+
+**Parameters**
+
+-  **data** (*numeric matrix|data.frame*): One observation per row.
+
+  
+
+**Return Value**
+
+-  **numeric vector**: Magnitude for each row.
+
+  
+
+**Example**
+
+```r
+
+mat <- matrix(c(3,4, 0,12), nrow=2)
+
+mag <- utils.magnitude(mat)
+
+# [1] 5 12
+
+```
+
+  
+
+---
+
+  
+
+#### **utils.relative_magnitude(data, target = 100)**
+
+  
+
+**Description**
+
+Computes the ratio of each observation’s magnitude to a target magnitude.
+
+  
+
+**Parameters**
+
+-  **data** (*numeric matrix|data.frame*): Observations per row.
+
+-  **target** (*numeric|vector*): If single, repeated for each column; otherwise must match ncol(data).
+
+  
+
+**Return Value**
+
+-  **numeric vector**: Relative magnitude for each row.
+
+  
+
+**Example**
+
+```r
+
+mat <- matrix(c(10,20,30,40), nrow=2)
+
+rel_mag <- utils.relative_magnitude(mat, target=50)
+
+```
+
+  
+
+---
+
+  
+
+#### **utils.abbreviate_school_names(school_names, size = 2)**
 
   
 
@@ -2028,7 +2145,7 @@ Abbreviates school names by retaining the most meaningful words.
 
 ```r
 
-short_names <- inep.abbreviate_school_names(
+short_names <- utils.abbreviate_school_names(
 
 c("Escola Municipal de Ensino Fundamental", "Colégio Dr. João da Silva"),
 
@@ -2044,7 +2161,7 @@ size = 2
 
   
 
-#### **inep.get_percentage_of_proficiency_categories(values)**
+#### **utils.get_percentage_of_proficiency_categories(values)**
 
   
 
@@ -2070,7 +2187,7 @@ Categorizes numeric proficiency values into 'D', 'C', 'B', 'A' based on ranges.
 
 ```r
 
-cats <- inep.get_percentage_of_proficiency_categories(c(10, 30, 55, 80))
+cats <- utils.get_percentage_of_proficiency_categories(c(10, 30, 55, 80))
 
 # e.g. "D", "C", "B", "A"
 
@@ -2082,7 +2199,7 @@ cats <- inep.get_percentage_of_proficiency_categories(c(10, 30, 55, 80))
 
   
 
-#### **inep.get_percentage_of_proficiency_category_colors(values, palette = colors.red_to_green())**
+#### **utils.get_percentage_of_proficiency_category_colors(values, palette = colors.red_to_green())**
 
   
 
@@ -2110,7 +2227,7 @@ Assigns colors to proficiency categories (D, C, B, A).
 
 ```r
 
-prof_colors <- inep.get_percentage_of_proficiency_category_colors(c(10, 30, 55, 80))
+prof_colors <- utils.get_percentage_of_proficiency_category_colors(c(10, 30, 55, 80))
 
 ```
 
@@ -3620,135 +3737,6 @@ pos <- pptpos.parse("wide-right")
 
 ---
 
-  
-
-### 4.11 **stats**
-
-  
-
-Auxiliary **statistical** functions.
-
-  
-
----
-
-  
-
-#### **stats.inequality_indicator(data)**
-
-  
-
-**Description**
-
-Calculates the average distance of each observation from the centroid.
-
-  
-
-**Parameters**
-
--  **data** (*numeric matrix|data.frame*): Each row is an observation.
-
-  
-
-**Return Value**
-
--  **numeric**: The computed inequality indicator.
-
-  
-
-**Example**
-
-```r
-
-mat <- matrix(c(1,2,3,4,5,6), nrow=2)
-
-ineq <- stats.inequality_indicator(mat)
-
-```
-
-  
-
----
-
-  
-
-#### **stats.magnitude(data)**
-
-  
-
-**Description**
-
-Computes the Euclidean norm (magnitude) of each row (observation).
-
-  
-
-**Parameters**
-
--  **data** (*numeric matrix|data.frame*): One observation per row.
-
-  
-
-**Return Value**
-
--  **numeric vector**: Magnitude for each row.
-
-  
-
-**Example**
-
-```r
-
-mat <- matrix(c(3,4, 0,12), nrow=2)
-
-mag <- stats.magnitude(mat)
-
-# [1] 5 12
-
-```
-
-  
-
----
-
-  
-
-#### **stats.relative_magnitude(data, target = 100)**
-
-  
-
-**Description**
-
-Computes the ratio of each observation’s magnitude to a target magnitude.
-
-  
-
-**Parameters**
-
--  **data** (*numeric matrix|data.frame*): Observations per row.
-
--  **target** (*numeric|vector*): If single, repeated for each column; otherwise must match ncol(data).
-
-  
-
-**Return Value**
-
--  **numeric vector**: Relative magnitude for each row.
-
-  
-
-**Example**
-
-```r
-
-mat <- matrix(c(10,20,30,40), nrow=2)
-
-rel_mag <- stats.relative_magnitude(mat, target=50)
-
-```
-
-  
-
----
 
   
 

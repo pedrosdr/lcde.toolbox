@@ -108,7 +108,7 @@ ggviz.radar = function(
         }
     }
 
-    score = stats.relative_magnitude(data_score)
+    score = utils.relative_magnitude(data_score)
 
     obj = obj +
       ggplot2::labs(
