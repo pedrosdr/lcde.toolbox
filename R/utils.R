@@ -1,4 +1,88 @@
-# class inep
+# class utils
+
+# methods
+
+#' Inequality Indicator
+#'
+#' Calculates the inequality indicator for a given dataset, measuring the average distance
+#' of each observation from the centroid in the data.
+#'
+#' @param data A numeric data frame or matrix with each row representing an observation.
+#'
+#' @return A numeric value representing the inequality indicator.
+#'
+#' @examples
+#' data <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2)
+#' inequality <- utils.inequality_indicator(data)
+#'
+#' @export
+utils.inequality_indicator = function(
+    data #: numeric data.frame | matrix
+) {
+  centroid = as.numeric(apply(data, 2, mean))
+  id = mean(apply(data, 1, function(x) sqrt(sum((x-centroid)^2))))
+
+  return(id)
+}
+
+#' Magnitude of Observations
+#'
+#' Calculates the magnitude (Euclidean norm) of each observation in the dataset.
+#'
+#' @param data A numeric data frame or matrix with each row representing an observation.
+#'
+#' @return A numeric vector where each element corresponds to the magnitude of each observation.
+#'
+#' @examples
+#' data <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2)
+#' magnitudes <- utils.magnitude(data)
+#'
+#' @export
+utils.magnitude = function(
+    data # numeric data.frame | matrix
+) {
+  magnitude = apply(data, 1, function(x) sqrt(sum(x^2)))
+
+  return(magnitude)
+}
+
+#' Relative Magnitude
+#'
+#' Calculates the relative magnitude of each observation in comparison to a target value.
+#'
+#' @param data A numeric data frame or matrix with each row representing an observation.
+#' @param target A numeric value or vector representing the target for comparison. Defaults to 100.
+#'   If a single numeric value is provided, it is repeated for each column; if a vector, its length
+#'   must match the number of columns in `data`.
+#'
+#' @return A numeric vector where each element represents the relative magnitude of an observation.
+#'
+#' @examples
+#' data <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 2)
+#' relative_magnitudes <- utils.relative_magnitude(data, target = 50)
+#'
+#' @export
+utils.relative_magnitude = function(
+    data, # numeric data.frame | matrix
+    target = 100 # numeric
+) {
+  type.check_numeric(target, 'target')
+
+  if(length(target) == 1) {
+    target = rep(target, ncol(data))
+  } else if(length(target) != ncol(data)) {
+    stop("'target' must either have a length of 1 or match the number of
+         columns in 'data'")
+  }
+
+  magnitude = utils.magnitude(data)
+  magnitude_target = utils.magnitude(
+    as.data.frame(matrix(target, nrow = 1))
+  )
+  relative_magnitude = magnitude / magnitude_target
+
+  return(relative_magnitude)
+}
 
 #' Abbreviate School Names
 #'
@@ -14,10 +98,10 @@
 #'
 #' @examples
 #' school_names <- c("Escola Municipal de Ensino Fundamental", "Colégio Dr. João da Silva")
-#' abbreviated_names <- inep.abbreviate_school_names(school_names, size = 2)
+#' abbreviated_names <- utils.abbreviate_school_names(school_names, size = 2)
 #'
 #' @export
-inep.abbreviate_school_names = function(
+utils.abbreviate_school_names = function(
   school_names, #: character vector
   size = 2 #: integer
 ) {
@@ -73,10 +157,10 @@ inep.abbreviate_school_names = function(
 #'
 #' @examples
 #' proficiency_values <- c(10, 30, 55, 80)
-#' categories <- inep.get_percentage_of_proficiency_categories(proficiency_values)
+#' categories <- utils.get_percentage_of_proficiency_categories(proficiency_values)
 #'
 #' @export
-inep.get_percentage_of_proficiency_categories = function(
+utils.get_percentage_of_proficiency_categories = function(
   values #: numeric vector
 ) {
   type.check_numeric(values, 'values')
@@ -104,7 +188,7 @@ inep.get_percentage_of_proficiency_categories = function(
 #' @return A character vector of colors corresponding to the proficiency categories.
 #'
 #' @details
-#' The function first categorizes the input values using `inep.get_percentage_of_proficiency_categories`. It then assigns a color to each category based on the provided palette, where:
+#' The function first categorizes the input values using `utils.get_percentage_of_proficiency_categories`. It then assigns a color to each category based on the provided palette, where:
 #' - 'D' corresponds to the first color in the palette
 #' - 'C' corresponds to the second color
 #' - 'B' corresponds to the third color
@@ -112,17 +196,17 @@ inep.get_percentage_of_proficiency_categories = function(
 #'
 #' @examples
 #' proficiency_values <- c(10, 30, 55, 80)
-#' colors <- inep.get_percentage_of_proficiency_category_colors(proficiency_values)
+#' colors <- utils.get_percentage_of_proficiency_category_colors(proficiency_values)
 #'
 #' @export
-inep.get_percentage_of_proficiency_category_colors = function(
+utils.get_percentage_of_proficiency_category_colors = function(
     values, #: numeric vector
     palette = colors.red_to_green() #: character vector
 ) {
   type.check_character(palette, 'palette')
   type.check_numeric(values, 'values')
 
-  categories = inep.get_percentage_of_proficiency_categories(values)
+  categories = utils.get_percentage_of_proficiency_categories(values)
   colors = ifelse(
     categories == 'D', palette[1], ifelse(
       categories == 'C', palette[2], ifelse(

@@ -77,7 +77,7 @@ pca.get_ID = function(
 ) {
   .pca.check_class(this)
 
-  id = stats.inequality_indicator(this$data)
+  id = utils.inequality_indicator(this$data)
 
   return(id)
 }
