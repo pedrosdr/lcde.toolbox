@@ -10,7 +10,7 @@
 #' @return An object of class 'geogg' initialized with a clean theme for geographical data.
 #' @export
 geogg = function(
-  size = vizsize.parse('normal')
+    size = vizsize.parse('normal')
 ) {
   size = vizsize.parse(size)
 
@@ -91,8 +91,8 @@ geogg.pca_map = function(
 
 
   if(
-      (is.null(groups) && !is.null(color_map)) ||
-      (!is.null(groups) && is.null(color_map))
+    (is.null(groups) && !is.null(color_map)) ||
+    (!is.null(groups) && is.null(color_map))
   ) {
     stop("'color_map' and 'groups' must be both specified or null")
   }
@@ -214,26 +214,26 @@ geogg.pca_map = function(
 #'
 #' @export
 geogg.percentage_of_proficiency_map = function(
-  data, #: numeric vector
-  subject = c('mathematics', 'portuguese language'), #: character
-  latitude, #: numeric vector
-  longitude, #: numeric vector,
-  labels=NULL, #: vector
-  add_boundary=FALSE, #: logical
-  add_surface=FALSE, #: logical
-  georef_obj=NULL, #: georef
-  surface_data=NULL, #: numeric vector
-  surface_latitude=NULL, #: numeric vector
-  surface_longitude=NULL, #: numeric vector
-  surface_legend_title='Legend Title', #: character
-  surface_palette=colors.purples(), #: character vector
-  surface_width=100, #: numeric
-  surface_height=100, #: numeric
-  size = vizsize.parse('large'),
-  point_size = 1, #: numeric
-  boundary_width = 1,
-  zoom = NULL, #: integer
-  add_tiles = TRUE
+    data, #: numeric vector
+    subject = c('mathematics', 'portuguese language'), #: character
+    latitude, #: numeric vector
+    longitude, #: numeric vector,
+    labels=NULL, #: vector
+    add_boundary=FALSE, #: logical
+    add_surface=FALSE, #: logical
+    georef_obj=NULL, #: georef
+    surface_data=NULL, #: numeric vector
+    surface_latitude=NULL, #: numeric vector
+    surface_longitude=NULL, #: numeric vector
+    surface_legend_title='Legend Title', #: character
+    surface_palette=colors.purples(), #: character vector
+    surface_width=100, #: numeric
+    surface_height=100, #: numeric
+    size = vizsize.parse('large'),
+    point_size = 1, #: numeric
+    boundary_width = 1,
+    zoom = NULL, #: integer
+    add_tiles = TRUE
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -286,24 +286,24 @@ geogg.percentage_of_proficiency_map = function(
   }
 
   obj = obj %>% geogg.add_points(
-      latitude=latitude,
-      longitude=longitude,
-      groups=ifelse(
-        data < 25, '0% |- 25%', ifelse(
-          data < 50, '25% |- 50%', ifelse(
-            data < 70, '50% |- 70%', '70% |-| 100%'
-          )
+    latitude=latitude,
+    longitude=longitude,
+    groups=ifelse(
+      data < 25, '0% |- 25%', ifelse(
+        data < 50, '25% |- 50%', ifelse(
+          data < 70, '50% |- 70%', '70% |-| 100%'
         )
-      ),
-      color_map = c(
-        '0% |- 25%' = colors.red_to_green()[1],
-        '25% |- 50%' = colors.red_to_green()[2],
-        '50% |- 70%' = colors.red_to_green()[3],
-        '70% |-| 100%' = colors.red_to_green()[4]
-      ),
-      legend_title = legend_title,
-      add_new_scale = if(add_surface) TRUE else FALSE,
-      point_size = point_size
+      )
+    ),
+    color_map = c(
+      '0% |- 25%' = colors.red_to_green()[1],
+      '25% |- 50%' = colors.red_to_green()[2],
+      '50% |- 70%' = colors.red_to_green()[3],
+      '70% |-| 100%' = colors.red_to_green()[4]
+    ),
+    legend_title = legend_title,
+    add_new_scale = if(add_surface) TRUE else FALSE,
+    point_size = point_size
   )
 
   if(!is.null(labels)) {
@@ -337,7 +337,7 @@ geogg.percentage_of_proficiency_map = function(
 #' .geogg.check_class(my_geogg_obj)
 #' }
 .geogg.check_class = function(
-  obj
+    obj
 ) {
   if(!("geogg" %in% class(obj))) {
     stop("'obj' must be of type 'geogg'")
@@ -382,29 +382,35 @@ geogg.add_tiles = function(
 #'
 #' This function adds points to a geographical ggplot object, with options for grouping and color mapping.
 #'
-#' @param this An object of class 'geogg'.
+#' @param this An object of class \code{geogg}.
 #' @param latitude A numeric vector of latitudes for the points.
 #' @param longitude A numeric vector of longitudes for the points.
-#' @param groups An optional vector for grouping the points, default is NULL.
-#' @param color_map A named character vector for color mapping groups, default is NULL.
-#' @param labels An optional vector of labels for each group, default is NULL.
-#' @param legend_title A character string for the legend title, default is 'Legend Title'.
-#' @param add_new_scale A logical value indicating if a new color scale should be added, default is FALSE.
-#' @param point_size The size of the points to be added into the plot.
+#' @param groups An optional vector for grouping the points (fill), default is \code{NULL}.
+#' @param groups_shape An optional vector for grouping the points shapes, default is \code{NULL}.
+#' @param color_map A named character vector for color mapping of \code{groups}, default is \code{NULL}.
+#' @param shape_map A named numeric vector for shape mapping of \code{groups_shape}, default is \code{NULL}.
+#' @param labels An optional vector of labels for each fill group, default is \code{NULL}.
+#' @param labels_shape An optional vector of labels for each shape group, default is \code{NULL}.
+#' @param legend_title A character string for the legend title, default is \code{'Legend Title'}.
+#' @param add_new_scale A logical value indicating if a new color scale should be added (useful after a surface layer), default is \code{FALSE}.
+#' @param point_size A numeric value specifying the overall size of the points, default is \code{1}.
 #' @return The updated geogg object with points added.
 #' @examples
 #' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = c("A", "B"), color_map = c("A" = "red", "B" = "blue"))
 #' @export
 geogg.add_points = function(
-  this, #: geogg
-  latitude, #: numeric
-  longitude, #: numeric
-  groups=NULL, #: vector
-  color_map=NULL, #: key-value character vector
-  labels=NULL, #: vector
-  legend_title = 'Legend Title', #: character
-  add_new_scale = FALSE, #: logical
-  point_size = 1 #: numeric
+    this, #: geogg
+    latitude, #: numeric
+    longitude, #: numeric
+    groups=NULL, #: vector
+    groups_shape=NULL, #: vector
+    color_map=NULL, #: key-value character vector
+    shape_map=NULL, #: key-value numeric vector
+    labels=NULL, #: vector
+    labels_shape=NULL, #: vector
+    legend_title = 'Legend Title', #: character
+    add_new_scale = FALSE, #: logical
+    point_size = 1 #: numeric
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
@@ -413,6 +419,9 @@ geogg.add_points = function(
   type.check_logical(add_new_scale, 'add_new_scale')
   type.check_numeric(point_size, 'point_size')
 
+  has_fill = !is.null(groups)
+  has_shape = !is.null(groups_shape)
+
   if(length(longitude) != length(latitude)) {
     stop("'latitude' and 'longitude' must be vectors of the same length")
   }
@@ -420,26 +429,35 @@ geogg.add_points = function(
   if(is.null(groups)) {
     groups = rep('Group 1', length(latitude))
     color_map = c('Group 1' = colors.mixed()[1])
-
-    warning(paste("Since 'groups' is NULL, 'colors' was ignored.",
-                  "Defaulting to a single group."))
   }
 
-  type.check_character(color_map, 'color_map')
+  if(is.null(groups_shape)) {
+    groups_shape = rep('Group 1', length(latitude))
+    shape_map = c('Group 1' = 21)
+  }
 
   if(length(groups) != length(latitude)) {
     stop("'groups' and 'latitude' must be vectors of the same length")
+  }
+
+  if(length(groups_shape) != length(latitude)) {
+    stop("'groups_shape' and 'latitude' must be vectors of the same length")
   }
 
   if(is.null(labels)) {
     labels = names(color_map)
   }
 
+  if(is.null(labels_shape)) {
+    labels_shape = names(shape_map)
+  }
+
   mask = !(is.na(longitude) | is.na(latitude))
   df_filter = data.frame(
     latitude = latitude,
     longitude = longitude,
-    groups = groups
+    groups = groups,
+    groups_shape = groups_shape
   )
 
   df_filter = df_filter[mask,]
@@ -447,6 +465,7 @@ geogg.add_points = function(
   latitude = df_filter$latitude
   longitude = df_filter$longitude
   groups = df_filter$groups
+  groups_shape = df_filter$groups_shape
 
   ommited_length = length(mask[mask == FALSE])
   if(ommited_length != 0) {
@@ -493,20 +512,59 @@ geogg.add_points = function(
       )
   }
 
-  this = this +
-    ggplot2::geom_sf(
-      ggplot2::aes(fill=groups),
-      data=georef_obj$sf_obj,
-      size=this$size$point_size * 0.6 * point_size,
-      shape=21
-    ) +
-    ggplot2::scale_fill_manual(
-      name = legend_title,
-      values = color_map,
-      limits = names(color_map),
-      drop=FALSE,
-      labels = labels
+  # injeta colunas no sf_data
+  sf_data <- georef.from_points(latitude, longitude)$sf_obj
+  sf_data$groups       <- groups
+  sf_data$groups_shape <- groups_shape
+
+  # monta aes dinamicamente
+  aes_list <- list()
+  if (has_fill)  aes_list$fill  <- rlang::sym("groups")
+  if (has_shape) aes_list$shape <- rlang::sym("groups_shape")
+  mapping <- ggplot2::aes(!!!aes_list)
+
+  # monta lista de argumentos “fixos” fora do aes
+  fixed_args <- list()
+  if (!has_shape) fixed_args$shape <- 21
+  if (!has_fill)  fixed_args$fill  <- colors.mixed()[1]   # ou outro color default
+
+  # junte tudo e invoque via do.call()
+  geom_args <- c(
+    list(
+      mapping = mapping,
+      data    = sf_data,
+      size    = this$size$point_size * 0.6 * point_size
+    ),
+    fixed_args
+  )
+  this <- this + do.call(ggplot2::geom_sf, geom_args)
+
+  # agora adicione as escalas **só** se mapeou aquela estética:
+  if (has_fill) {
+    this <- this +
+      scale_fill_manual(
+        name   = legend_title,
+        values = color_map,
+        limits = names(color_map),
+        drop   = FALSE,
+        labels = labels,
+        guide = guide_legend(
+          override.aes = list(
+            shape  = 21,          # mesmo shape dos pontos
+            fill   = color_map    # preenchimento colorido
+          )
+        )
+      )
+  }
+  if (has_shape) {
+    this <- this + ggplot2::scale_shape_manual(
+      name   = legend_title,
+      values = shape_map,
+      limits = names(shape_map),
+      drop   = FALSE,
+      labels = labels_shape
     )
+  }
 
   this = this %>%
     geogg.theme_base()
@@ -527,10 +585,10 @@ geogg.add_points = function(
 #' geogg_obj <- geogg() %>% geogg.add_labels(labels = c("A", "B"), latitude = c(0, 10), longitude = c(0, 10))
 #' @export
 geogg.add_labels = function(
-  this, #: geogg
-  labels, #: vector
-  latitude, #: numeric
-  longitude #: numeric
+    this, #: geogg
+    labels, #: vector
+    latitude, #: numeric
+    longitude #: numeric
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
@@ -601,9 +659,9 @@ geogg.add_labels = function(
 #' geogg_obj <- geogg() %>% geogg.add_boundary(georef_obj)
 #' @export
 geogg.add_boundary = function(
-  this, #: geogg
-  georef_obj, #: georef
-  boundary_width = 1 #: numeric
+    this, #: geogg
+    georef_obj, #: georef
+    boundary_width = 1 #: numeric
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
@@ -640,17 +698,17 @@ geogg.add_boundary = function(
 #' geogg_obj <- geogg() %>% geogg.add_surface(georef_obj, data = c(1, 2), latitude = c(0, 1), longitude = c(0, 1))
 #' @export
 geogg.add_surface = function(
-  this,
-  georef_obj, #: georef
-  data, #: numeric vector
-  latitude, #: numeric vector
-  longitude, #: numeric vector
-  width = 100, #: integer
-  height = 100, #: integer
-  legend_title = 'Surface Title', #: character
-  palette = colors.purples(), #: character
-  opacity = 'BB', #: character (00-FF)
-  add_new_scale = FALSE #: logical
+    this,
+    georef_obj, #: georef
+    data, #: numeric vector
+    latitude, #: numeric vector
+    longitude, #: numeric vector
+    width = 100, #: integer
+    height = 100, #: integer
+    legend_title = 'Surface Title', #: character
+    palette = colors.purples(), #: character
+    opacity = 'BB', #: character (00-FF)
+    add_new_scale = FALSE #: logical
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
@@ -660,23 +718,6 @@ geogg.add_surface = function(
   type.check_logical(add_new_scale, 'add_new_scale')
 
   palette = paste0(palette, opacity)
-
-  sf_filtered = data.frame(
-    data = data,
-    latitude = latitude,
-    longitude = longitude
-  ) %>% sf::st_as_sf(
-    coords=c("longitude", "latitude"),
-    crs=sf::st_crs(georef_obj$sf)
-  ) %>% sf::st_filter(georef_obj$sf)
-
-  new_palette = colors.rescale_palette(
-    palette = palette,
-    min_old = min(data),
-    max_old = max(data),
-    min_new = min(sf_filtered$data),
-    max_new = max(sf_filtered$data)
-  )
 
   surface = georef_obj %>%
     georef.get_raster(
@@ -696,7 +737,7 @@ geogg.add_surface = function(
       data = surface
     ) +
     ggplot2::scale_fill_gradientn(
-      colors = new_palette,
+      colors = palette,
       na.value=NA,
       name=legend_title
     )
@@ -714,7 +755,7 @@ geogg.add_surface = function(
 #' geogg_obj <- geogg() %>% geogg.theme_clean()
 #' @export
 geogg.theme_clean = function(
-  this #: geogg
+    this #: geogg
 ) {
   .geogg.check_class(this)
 

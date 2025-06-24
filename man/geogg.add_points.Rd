@@ -9,31 +9,40 @@ geogg.add_points(
   latitude,
   longitude,
   groups = NULL,
+  groups_shape = NULL,
   color_map = NULL,
+  shape_map = NULL,
   labels = NULL,
+  labels_shape = NULL,
   legend_title = "Legend Title",
   add_new_scale = FALSE,
   point_size = 1
 )
 }
 \arguments{
-\item{this}{An object of class 'geogg'.}
+\item{this}{An object of class \code{geogg}.}
 
 \item{latitude}{A numeric vector of latitudes for the points.}
 
 \item{longitude}{A numeric vector of longitudes for the points.}
 
-\item{groups}{An optional vector for grouping the points, default is NULL.}
+\item{groups}{An optional vector for grouping the points (fill), default is \code{NULL}.}
 
-\item{color_map}{A named character vector for color mapping groups, default is NULL.}
+\item{groups_shape}{An optional vector for grouping the points shapes, default is \code{NULL}.}
 
-\item{labels}{An optional vector of labels for each group, default is NULL.}
+\item{color_map}{A named character vector for color mapping of \code{groups}, default is \code{NULL}.}
 
-\item{legend_title}{A character string for the legend title, default is 'Legend Title'.}
+\item{shape_map}{A named numeric vector for shape mapping of \code{groups_shape}, default is \code{NULL}.}
 
-\item{add_new_scale}{A logical value indicating if a new color scale should be added, default is FALSE.}
+\item{labels}{An optional vector of labels for each fill group, default is \code{NULL}.}
 
-\item{point_size}{The size of the points to be added into the plot.}
+\item{labels_shape}{An optional vector of labels for each shape group, default is \code{NULL}.}
+
+\item{legend_title}{A character string for the legend title, default is \code{'Legend Title'}.}
+
+\item{add_new_scale}{A logical value indicating if a new color scale should be added (useful after a surface layer), default is \code{FALSE}.}
+
+\item{point_size}{A numeric value specifying the overall size of the points, default is \code{1}.}
 }
 \value{
 The updated geogg object with points added.
