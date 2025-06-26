@@ -542,13 +542,13 @@ geogg.add_points = function(
   # agora adicione as escalas **só** se mapeou aquela estética:
   if (has_fill) {
     this <- this +
-      scale_fill_manual(
+      ggplot2::scale_fill_manual(
         name   = legend_title,
         values = color_map,
         limits = names(color_map),
         drop   = FALSE,
         labels = labels,
-        guide = guide_legend(
+        guide = ggplot2::guide_legend(
           override.aes = list(
             shape  = 21,          # mesmo shape dos pontos
             fill   = color_map    # preenchimento colorido
@@ -557,12 +557,13 @@ geogg.add_points = function(
       )
   }
   if (has_shape) {
-    this <- this + ggplot2::scale_shape_manual(
-      name   = legend_title,
-      values = shape_map,
-      limits = names(shape_map),
-      drop   = FALSE,
-      labels = labels_shape
+    this <- this +
+      ggplot2::scale_shape_manual(
+        name   = legend_title,
+        values = shape_map,
+        limits = names(shape_map),
+        drop   = FALSE,
+        labels = labels_shape
     )
   }
 
