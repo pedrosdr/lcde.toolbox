@@ -487,14 +487,32 @@ geogg.add_points = function(
       !(names(color_map) %in% unique(groups))
     )
   ]
+
   virtual_latitude = rep(first_point$latitude, length(virtual_groups))
   virtual_longitude = rep(first_point$longitude, length(virtual_groups))
+
+  print(names(shape_map))
+  print(unique(groups_shape))
+  virtual_groups_shape = names(shape_map)[
+    which(
+      !(names(shape_map) %in% unique(groups_shape))
+    )
+  ]
+
+  virtual_latitude_shape = rep(first_point$latitude, length(virtual_groups_shape))
+  virtual_longitude_shape = rep(first_point$longitude, length(virtual_groups_shape))
+
   # END Ensuring all groups are represented in the legend, even if absent in the data
 
   georef_obj = georef.from_points(latitude, longitude)
 
   if(length(virtual_groups) > 0) {
     virtual_georef_obj = georef.from_points(virtual_latitude, virtual_longitude)
+  }
+
+  if(length(virtual_groups_shape) > 0) {
+    virtual_georef_obj_shape = georef.from_points(
+      virtual_latitude_shape, virtual_longitude_shape)
   }
 
   if(add_new_scale) {
@@ -512,36 +530,46 @@ geogg.add_points = function(
       )
   }
 
+  print(virtual_groups_shape)
+  if(length(virtual_groups_shape) > 0) {
+    this = this +
+      ggplot2::geom_sf(
+        ggplot2::aes(shape=virtual_groups_shape),
+        data=virtual_georef_obj_shape$sf_obj,
+        size=this$size$point_size * 0.35 * point_size
+      )
+  }
+
   # injeta colunas no sf_data
-  sf_data <- georef.from_points(latitude, longitude)$sf_obj
-  sf_data$groups       <- groups
-  sf_data$groups_shape <- groups_shape
+  sf_data = georef.from_points(latitude, longitude)$sf_obj
+  sf_data$groups = groups
+  sf_data$groups_shape = groups_shape
 
   # monta aes dinamicamente
-  aes_list <- list()
-  if (has_fill)  aes_list$fill  <- rlang::sym("groups")
-  if (has_shape) aes_list$shape <- rlang::sym("groups_shape")
-  mapping <- ggplot2::aes(!!!aes_list)
+  aes_list = list()
+  if (has_fill) aes_list$fill = rlang::sym("groups")
+  if (has_shape) aes_list$shape = rlang::sym("groups_shape")
+  mapping = ggplot2::aes(!!!aes_list)
 
   # monta lista de argumentos “fixos” fora do aes
-  fixed_args <- list()
-  if (!has_shape) fixed_args$shape <- 21
-  if (!has_fill)  fixed_args$fill  <- colors.mixed()[1]   # ou outro color default
+  fixed_args = list()
+  if (!has_shape) fixed_args$shape = 21
+  if (!has_fill) fixed_args$fill = colors.mixed()[1]   # ou outro color default
 
   # junte tudo e invoque via do.call()
-  geom_args <- c(
+  geom_args = c(
     list(
       mapping = mapping,
-      data    = sf_data,
-      size    = this$size$point_size * 0.6 * point_size
+      data = sf_data,
+      size = this$size$point_size * 0.6 * point_size
     ),
     fixed_args
   )
-  this <- this + do.call(ggplot2::geom_sf, geom_args)
+  this = this + do.call(ggplot2::geom_sf, geom_args)
 
   # agora adicione as escalas **só** se mapeou aquela estética:
   if (has_fill) {
-    this <- this +
+    this = this +
       ggplot2::scale_fill_manual(
         name   = legend_title,
         values = color_map,
@@ -557,7 +585,7 @@ geogg.add_points = function(
       )
   }
   if (has_shape) {
-    this <- this +
+    this = this +
       ggplot2::scale_shape_manual(
         name   = legend_title,
         values = shape_map,
