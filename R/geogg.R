@@ -491,8 +491,6 @@ geogg.add_points = function(
   virtual_latitude = rep(first_point$latitude, length(virtual_groups))
   virtual_longitude = rep(first_point$longitude, length(virtual_groups))
 
-  print(names(shape_map))
-  print(unique(groups_shape))
   virtual_groups_shape = names(shape_map)[
     which(
       !(names(shape_map) %in% unique(groups_shape))
@@ -530,7 +528,6 @@ geogg.add_points = function(
       )
   }
 
-  print(virtual_groups_shape)
   if(length(virtual_groups_shape) > 0) {
     this = this +
       ggplot2::geom_sf(
