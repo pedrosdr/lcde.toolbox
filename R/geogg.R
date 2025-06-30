@@ -409,6 +409,7 @@ geogg.add_points = function(
     labels=NULL, #: vector
     labels_shape=NULL, #: vector
     legend_title = 'Legend Title', #: character
+    legend_title_shape = 'Legend Title Shape', #: character
     add_new_scale = FALSE, #: logical
     point_size = 1 #: numeric
 ) {
@@ -416,6 +417,7 @@ geogg.add_points = function(
   type.check_numeric(latitude, 'latitude')
   type.check_numeric(latitude, 'longitude')
   type.check_character(legend_title, 'legend_title')
+  type.check_character(legend_title_shape, 'legend_title_shape')
   type.check_logical(add_new_scale, 'add_new_scale')
   type.check_numeric(point_size, 'point_size')
 
@@ -584,7 +586,7 @@ geogg.add_points = function(
   if (has_shape) {
     this = this +
       ggplot2::scale_shape_manual(
-        name   = legend_title,
+        name   = legend_title_shape,
         values = shape_map,
         limits = names(shape_map),
         drop   = FALSE,
