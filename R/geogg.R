@@ -747,6 +747,23 @@ geogg.add_surface = function(
 
   palette = paste0(palette, opacity)
 
+  sf_filtered = data.frame(
+    data = data,
+    latitude = latitude,
+    longitude = longitude
+  ) %>% sf::st_as_sf(
+    coords=c("longitude", "latitude"),
+    crs=sf::st_crs(georef_obj$sf)
+  ) %>% sf::st_filter(georef_obj$sf)
+
+  new_palette = colors.rescale_palette(
+    palette = palette,
+    min_old = min(data),
+    max_old = max(data),
+    min_new = min(sf_filtered$data),
+    max_new = max(sf_filtered$data)
+  )
+
   surface = georef_obj %>%
     georef.get_raster(
       data = data,
@@ -765,7 +782,7 @@ geogg.add_surface = function(
       data = surface
     ) +
     ggplot2::scale_fill_gradientn(
-      colors = palette,
+      colors = new_palette,
       na.value=NA,
       name=legend_title
     )
