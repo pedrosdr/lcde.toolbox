@@ -690,17 +690,19 @@ geogg.add_labels = function(
 geogg.add_boundary = function(
     this, #: geogg
     georef_obj, #: georef
-    boundary_width = 1 #: numeric
+    boundary_width = 1, #: numeric
+    boundary_color = colors.grayscale()[5] #: character
 ) {
   .geogg.check_class(this)
   .georef.check_class(georef_obj)
   type.check_numeric(boundary_width, 'boundary_width')
+  type.check_character(boundary_color, 'boundary_color')
 
   this = this +
     ggplot2::geom_sf(
       data = georef_obj$sf,
       linewidth = this$size$linewidth * 1.0 * boundary_width,
-      color = colors.grayscale()[4],
+      color = boundary_color,
       fill = 'transparent'
     )
 
