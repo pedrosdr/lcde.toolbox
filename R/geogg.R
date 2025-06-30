@@ -392,6 +392,7 @@ geogg.add_tiles = function(
 #' @param labels An optional vector of labels for each fill group, default is \code{NULL}.
 #' @param labels_shape An optional vector of labels for each shape group, default is \code{NULL}.
 #' @param legend_title A character string for the legend title, default is \code{'Legend Title'}.
+#' @param legend_title_shape A character string for the shape's legend title, default is \code{'Legend Title Shape'}.
 #' @param add_new_scale A logical value indicating if a new color scale should be added (useful after a surface layer), default is \code{FALSE}.
 #' @param point_size A numeric value specifying the overall size of the points, default is \code{1}.
 #' @return The updated geogg object with points added.

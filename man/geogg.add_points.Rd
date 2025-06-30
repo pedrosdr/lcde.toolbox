@@ -15,6 +15,7 @@ geogg.add_points(
   labels = NULL,
   labels_shape = NULL,
   legend_title = "Legend Title",
+  legend_title_shape = "Legend Title Shape",
   add_new_scale = FALSE,
   point_size = 1
 )
@@ -39,6 +40,8 @@ geogg.add_points(
 \item{labels_shape}{An optional vector of labels for each shape group, default is \code{NULL}.}
 
 \item{legend_title}{A character string for the legend title, default is \code{'Legend Title'}.}
+
+\item{legend_title_shape}{A character string for the shape's legend title, default is \code{'Legend Title Shape'}.}
 
 \item{add_new_scale}{A logical value indicating if a new color scale should be added (useful after a surface layer), default is \code{FALSE}.}
 
