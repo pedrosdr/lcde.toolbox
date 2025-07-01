@@ -748,8 +748,6 @@ geogg.add_surface = function(
   type.check_character(opacity, 'opacity')
   type.check_logical(add_new_scale, 'add_new_scale')
 
-  palette = paste0(palette, opacity)
-
   sf_filtered = data.frame(
     data = data,
     latitude = latitude,
@@ -766,6 +764,8 @@ geogg.add_surface = function(
     min_new = min(sf_filtered$data),
     max_new = max(sf_filtered$data)
   )
+
+  new_palette = paste0(new_palette, opacity)
 
   surface = georef_obj %>%
     georef.get_raster(
