@@ -20,8 +20,3 @@ This function adds a title to a PCA visualization object, enhancing interpretabi
 \details{
 This function appends a specified title to an existing PCA plot, allowing for better context and understanding of the visualization. The title is typically displayed at the top of the plot.
 }
-\examples{
-pca_viz <- pcaviz(pca_obj)
-pca_viz <- pcaviz.add_title(pca_viz, title = "Principal Component Analysis of School Performance")
-
-}

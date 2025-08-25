@@ -7,7 +7,7 @@
 geoleaf.add_legend_discrete(this, title, colors, labels, position)
 }
 \arguments{
-\item{this}{A `geoleaf` map object.}
+\item{this}{A \code{geoleaf} map object.}
 
 \item{title}{A character string specifying the title of the legend.}
 
@@ -18,24 +18,11 @@ geoleaf.add_legend_discrete(this, title, colors, labels, position)
 \item{position}{A character string specifying the position of the legend on the map. Options are 'bottomleft', 'bottomright', 'topleft', or 'topright'.}
 }
 \value{
-The modified `geoleaf` map object with the added legend.
+The modified \code{geoleaf} map object with the added legend.
 }
 \description{
-This function adds a discrete legend to a `geoleaf` map, specifying a title, a set of colors, labels, and a position for the legend.
+This function adds a discrete legend to a \code{geoleaf} map, specifying a title, a set of colors, labels, and a position for the legend.
 }
 \details{
-This function checks if the `title`, `colors`, and `position` parameters are character strings, and ensures that the length of `labels` matches the length of `colors`. If the lengths don't match, an error is raised. The legend is added to the map with the specified title, color set, labels, and position.
-}
-\examples{
-geoleaf.map <- geoleaf() \%>\%
-  geoleaf.add_legend_discrete(
-    title = 'Category Legend',
-    colors = c('#FF0000', '#00FF00', '#0000FF'),
-    labels = c('Low', 'Medium', 'High'),
-    position = 'bottomright'
-  )
-
-}
-\seealso{
-\code{\link{addLegend}}, \code{\link{geoleaf}}
+This function checks if the \code{title}, \code{colors}, and \code{position} parameters are character strings, and ensures that the length of \code{labels} matches the length of \code{colors}. If the lengths don't match, an error is raised. The legend is added to the map with the specified title, color set, labels, and position.
 }

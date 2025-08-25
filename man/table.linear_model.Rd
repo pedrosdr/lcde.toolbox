@@ -7,31 +7,11 @@
 table.linear_model(model)
 }
 \arguments{
-\item{model}{A fitted linear model object created using `lm`.}
+\item{model}{A fitted linear model object created using \code{lm}.}
 }
 \value{
 A Flextable object containing a formatted summary of the regression model.
 }
 \description{
-This function takes a fitted linear model object (`model`) as input and returns a formatted Flextable summarizing the regression results.
-}
-\examples{
-## Example usage
-library(lm)
-library(flextable)
-
-# Simulate some data
-set.seed(123)
-data <- data.frame(x1 = rnorm(100), x2 = rnorm(100), y = 2*x1 + 3*x2 + rnorm(100))
-
-# Fit a linear model
-model <- lm(y ~ x1 + x2, data = data)
-
-# Generate the summary table
-summary_table <- table.linear_model(model)
-
-print(summary_table)
-
-# You can further customize the Flextable using its functionalities.
-
+This function takes a fitted linear model object (\code{model}) as input and returns a formatted Flextable summarizing the regression results.
 }

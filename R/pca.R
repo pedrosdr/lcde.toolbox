@@ -38,11 +38,11 @@ pca.from_data_frame = function(
     stop("'scale' must be of type 'logical'")
   }
 
-  data = na.omit(data)
+  data = stats::na.omit(data)
   this = list()
   class(this) = 'pca'
 
-  temp = prcomp(data, center = center, scale. = scale)
+  temp = stats::prcomp(data, center = center, scale. = scale)
 
   this$data = data
   this$standard_deviation = temp$sdev
@@ -210,17 +210,6 @@ pca.get_ID = function(
 #' specified number of largest variations. If there are fewer variations than requested,
 #' it will handle errors based on the specified `errors` parameter.
 #'
-#' @examples
-#' # Assuming pca_obj is a valid PCA object
-#' largest_variations <- pca.get_largest_variations(
-#'   this = pca_obj,
-#'   number = 5,
-#'   keys = c("Variable1", "Variable2", "Variable3"),
-#'   years = c(2020, 2021, 2022),
-#'   labels = c("Label1", "Label2", "Label3"),
-#'   variation = 'positive'
-#' )
-#'
 #' @export
 pca.get_largest_variations = function(
     this, #: pca
@@ -309,7 +298,7 @@ pca.get_largest_variations = function(
   }
 
   initial_length = nrow(df_largest_variations)
-  df_largest_variations = na.omit(df_largest_variations)
+  df_largest_variations = stats::na.omit(df_largest_variations)
   omitted_length =  initial_length - nrow(df_largest_variations)
 
   if(omitted_length != 0) {
@@ -491,9 +480,6 @@ pca.filter = function(
 #' @param descending A logical value indicating whether the sorting should be in descending order (default is `FALSE`).
 #'
 #' @return The modified PCA object with sorted principal components and data.
-#'
-#' @examples
-#' pca_object <- pca.sort(pca_object, by = some_vector, descending = TRUE)
 #'
 #' @export
 pca.sort = function(

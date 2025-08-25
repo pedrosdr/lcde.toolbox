@@ -7,17 +7,11 @@
 table.set_theme_dark(this)
 }
 \arguments{
-\item{this}{A `table` object.}
+\item{this}{A \code{table} object.}
 }
 \value{
-The styled `table` object with a dark theme applied.
+The styled \code{table} object with a dark theme applied.
 }
 \description{
-Applies a dark theme to a `table` object.
-}
-\examples{
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data, column_names = c("Col A", "Col B"))
-tbl <- table.set_theme_dark(tbl)
-
+Applies a dark theme to a \code{table} object.
 }

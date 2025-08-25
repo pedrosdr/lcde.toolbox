@@ -7,12 +7,12 @@
 ppt.add_document_title(this, title)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{title}{A character string for the document title.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds a large title to the current slide.

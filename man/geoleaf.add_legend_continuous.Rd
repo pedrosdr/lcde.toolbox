@@ -13,7 +13,7 @@ geoleaf.add_legend_continuous(
 )
 }
 \arguments{
-\item{this}{A `geoleaf` object to which the legend will be added.}
+\item{this}{A \code{geoleaf} object to which the legend will be added.}
 
 \item{data}{A numeric vector used to determine the values for the legend.}
 
@@ -23,32 +23,20 @@ geoleaf.add_legend_continuous(
 'bottomleft', 'bottomright', 'topleft', or 'topright'.}
 
 \item{palette}{A character vector or function defining the color palette to be used in the legend.
-Defaults to `colors.nighty()`.}
+Defaults to \code{colors.nighty()}.}
 }
 \value{
-The updated `geoleaf` object with the added continuous legend.
+The updated \code{geoleaf} object with the added continuous legend.
 }
 \description{
-Adds a continuous legend to a `geoleaf` map based on a numeric vector.
+Adds a continuous legend to a \code{geoleaf} map based on a numeric vector.
 }
 \details{
-This function adds a continuous color legend to a `geoleaf` map using the provided numeric data.
-The legend will display a color gradient based on the values in `data`. The `palette` argument
-defines the color scheme, while the `position` argument controls where the legend is placed on the map.
+This function adds a continuous color legend to a \code{geoleaf} map using the provided numeric data.
+The legend will display a color gradient based on the values in \code{data}. The \code{palette} argument
+defines the color scheme, while the \code{position} argument controls where the legend is placed on the map.
 
-The legend's breaks are calculated based on the minimum and maximum values of the `data` vector,
+The legend's breaks are calculated based on the minimum and maximum values of the \code{data} vector,
 with five evenly spaced intervals. The function ensures that no missing data values (NA) are shown
 by setting their color to transparent.
-}
-\examples{
-# Example usage:
-geo_map <- geoleaf$new() # Assuming geoleaf is a map object
-data_values <- c(1.5, 2.3, 4.6, 5.8)
-geo_map <- geoleaf.add_legend_continuous(
-  geo_map,
-  data = data_values,
-  title = "Legend Title",
-  position = 'bottomright'
-)
-
 }

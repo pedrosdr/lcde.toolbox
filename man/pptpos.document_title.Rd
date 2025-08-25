@@ -7,7 +7,7 @@
 pptpos.document_title()
 }
 \value{
-A `pptpos` object with coordinates for positioning a document title.
+A \code{pptpos} object with coordinates for positioning a document title.
 }
 \description{
 Defines the position for a document title in the slide, occupying the top section with increased padding.

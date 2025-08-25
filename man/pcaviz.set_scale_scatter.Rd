@@ -19,12 +19,7 @@ This function sets a manual color scale for the scatter plot in a PCA visualizat
 allowing different groups to be visually distinguished.
 }
 \details{
-The function utilizes `scale_color_manual()` to assign colors to different
+The function utilizes \code{scale_color_manual()} to assign colors to different
 levels of the provided factor. The number of colors used corresponds to the number of
-unique groups in the `groups` parameter.
-}
-\examples{
-# Assuming 'pca_viz' is an existing pcaviz object and 'group_factor' is a factor
-pca_viz <- pcaviz.set_scale_scatter(pca_viz, group_factor)
-
+unique groups in the \code{groups} parameter.
 }

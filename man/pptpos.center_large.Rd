@@ -7,7 +7,7 @@
 pptpos.center_large()
 }
 \value{
-A `pptpos` object with coordinates for a centered large element.
+A \code{pptpos} object with coordinates for a centered large element.
 }
 \description{
 Defines the position for a large element in the center of the slide.

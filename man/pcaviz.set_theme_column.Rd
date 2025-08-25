@@ -18,8 +18,3 @@ Applies a standardized theme to a PCA column plot, enhancing visual consistency 
 \details{
 This function is designed to streamline the appearance of PCA column plots, setting specific sizes for axis titles, text, plot title, subtitle, and caption. It also adjusts margins for axis labels and removes unnecessary elements like minor grid lines and legends, providing a cleaner, more focused visualization.
 }
-\examples{
-pca_viz <- pcaviz(pca_obj)
-pca_viz <- pcaviz.set_theme_column(pca_viz)
-
-}

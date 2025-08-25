@@ -38,19 +38,8 @@ across the specified time frame, either positively or negatively.
 }
 \details{
 The function first checks that the input object is valid. It then retrieves
-the largest variations using the `pca.get_largest_variations` helper function.
+the largest variations using the \code{pca.get_largest_variations} helper function.
 The results are printed and subsequently visualized by adding segments and labels
 to the PCA plot. The segments are colored based on whether they represent positive
 or negative variations.
-}
-\examples{
-# Assuming pca_viz is a valid PCA visualization object
-pca_viz <- pcaviz.add_largest_variations(
-  pca_viz,
-  number = 5,
-  keys = c("Variable1", "Variable2"),
-  years = c(2020, 2021, 2022),
-  variation = 'positive'
-)
-
 }

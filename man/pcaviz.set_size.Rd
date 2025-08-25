@@ -9,7 +9,7 @@ pcaviz.set_size(this, size_obj = vizsize())
 \arguments{
 \item{this}{A PCA visualization object of class 'pcaviz'.}
 
-\item{size_obj}{An object containing size properties (default is `vizsize()`).}
+\item{size_obj}{An object containing size properties (default is \code{vizsize()}).}
 }
 \value{
 The modified PCA visualization object with updated size properties.

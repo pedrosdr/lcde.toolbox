@@ -7,19 +7,16 @@
 geogg.add_tiles(this, zoom = NULL)
 }
 \arguments{
-\item{this}{A `geogg` object to which the tile layer will be added.}
+\item{this}{A \code{geogg} object to which the tile layer will be added.}
 
 \item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 }
 \value{
-A `geogg` object with an added tile background layer.
+A \code{geogg} object with an added tile background layer.
 }
 \description{
-This function adds a tile layer as a background to a `geogg` object, enhancing the map visualization with a predefined cartographic style.
+This function adds a tile layer as a background to a \code{geogg} object, enhancing the map visualization with a predefined cartographic style.
 }
 \details{
-This function utilizes `annotation_map_tile` with a "cartolight" tile style, adding a light cartographic background to the map. The function is typically used to enhance readability and provide geographic context to overlaid data.
-}
-\examples{
-my_geogg <- geogg() \%>\% geogg.add_tiles()
+This function utilizes \code{annotation_map_tile} with a "cartolight" tile style, adding a light cartographic background to the map. The function is typically used to enhance readability and provide geographic context to overlaid data.
 }

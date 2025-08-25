@@ -7,7 +7,7 @@
 ppt.get_master(this)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 }
 \value{
 A character string representing the master name.

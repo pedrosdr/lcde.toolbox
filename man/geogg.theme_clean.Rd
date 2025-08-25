@@ -15,6 +15,3 @@ The updated geogg object with a clean theme applied.
 \description{
 Removes default ggplot elements to create a clean canvas for geographical data.
 }
-\examples{
-geogg_obj <- geogg() \%>\% geogg.theme_clean()
-}

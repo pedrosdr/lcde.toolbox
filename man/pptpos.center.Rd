@@ -7,7 +7,7 @@
 pptpos.center()
 }
 \value{
-A `pptpos` object with coordinates for a centered element.
+A \code{pptpos} object with coordinates for a centered element.
 }
 \description{
 Defines the position for a centered element in the slide with additional side margins.

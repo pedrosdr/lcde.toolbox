@@ -111,11 +111,11 @@ utils.abbreviate_school_names = function(
   ignored_words = c(
     "escola", "municipal", "educacao", "basica", "fundamental", "ensino", "emef",
     "em", "da", "de", "do", "dos", "a", "o", "dr", "frei", 'vereador', "professora",
-    "e", "m", "mul", "educ", "emeif", "profÂº", "profÂª", "profa", "emefi", 'emeb', 'di',
-    '-', 'colegio', 'doutor', "1Âº", "grau", "dep", "deputado", "unidade",
+    "e", "m", "mul", "educ", "emeif", "prof\u00ba", "prof\u00aa", "profa", "emefi", 'emeb', 'di',
+    '-', 'colegio', 'doutor', "1\u00ba", "grau", "dep", "deputado", "unidade",
     "desembargador", "creche", "prefeito", "fund", "governador", "senador",
     "b", "sra", "alm", "emefm", "professor", "estadual", "federal", "privada",
-    "prof", "r", "profª", "esc", "indigena", "indígena")
+    "prof", "r", "esc", "indigena", "ind\u00edgena")
 
   ignored_regex = c(
     "\\d+"

@@ -28,10 +28,10 @@ This function maps PCA categories (A, B, C, D) to colors by utilizing a specifie
 The function first categorizes the values of a selected principal component using quartile thresholds
 (via \code{pca.get_categories}) and then assigns colors according to the following scheme:
 \itemize{
-  \item \strong{'D'}: Mapped to the first color in the palette.
-  \item \strong{'C'}: Mapped to the second color.
-  \item \strong{'B'}: Mapped to the third color.
-  \item \strong{'A'}: Mapped to the fourth color.
+\item \strong{'D'}: Mapped to the first color in the palette.
+\item \strong{'C'}: Mapped to the second color.
+\item \strong{'B'}: Mapped to the third color.
+\item \strong{'A'}: Mapped to the fourth color.
 }
 }
 \details{

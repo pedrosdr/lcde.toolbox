@@ -15,6 +15,3 @@ The updated geogg object with base theme formatting applied.
 \description{
 Adds a base theme with formatted legend text to the geographical ggplot.
 }
-\examples{
-geogg_obj <- geogg() \%>\% geogg.theme_base()
-}

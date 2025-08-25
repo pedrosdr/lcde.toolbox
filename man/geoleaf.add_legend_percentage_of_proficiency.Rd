@@ -10,33 +10,25 @@ geoleaf.add_legend_percentage_of_proficiency(
 )
 }
 \arguments{
-\item{this}{A `geoleaf` map object.}
+\item{this}{A \code{geoleaf} map object.}
 
 \item{subject}{A character string indicating the subject for which the legend should be displayed. Must be either 'mathematics' or 'portuguese language'. Defaults to 'mathematics'.}
 }
 \value{
-The modified `geoleaf` map object with the added legend.
+The modified \code{geoleaf} map object with the added legend.
 }
 \description{
-This function adds a discrete legend to a `geoleaf` map, representing the percentage of adequate learning in either Mathematics or Portuguese Language.
-The legend ranges from 0% to 100% proficiency with corresponding color gradients.
+This function adds a discrete legend to a \code{geoleaf} map, representing the percentage of adequate learning in either Mathematics or Portuguese Language.
+The legend ranges from 0\% to 100\% proficiency with corresponding color gradients.
 }
 \details{
-This function checks if the `subject` is either 'mathematics' or 'portuguese language'.
+This function checks if the \code{subject} is either 'mathematics' or 'portuguese language'.
 It then adds a legend at the bottom-right corner of the map with four discrete ranges:
 \itemize{
-  \item '0% |- 25%'
-  \item '25% |- 50%'
-  \item '50% |- 70%'
-  \item '70% |-| 100%'
+\item '0\% |- 25\%'
+\item '25\% |- 50\%'
+\item '50\% |- 70\%'
+\item '70\% |-| 100\%'
 }
 The legend title will be either 'Aprendizado Adequado em Matemática' or 'Aprendizado Adequado em Língua Portuguesa', based on the selected subject.
-}
-\examples{
-geoleaf.map <- geoleaf() \%>\%
-  geoleaf.add_legend_percentage_of_proficiency(subject = 'mathematics')
-
-}
-\seealso{
-\code{\link{geoleaf.add_legend_discrete}}, \code{\link{colors.red_to_green}}
 }

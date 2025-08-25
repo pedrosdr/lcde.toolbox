@@ -7,12 +7,12 @@
 ppt.add_transition(this, text)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{text}{A character string for the transition text.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds a transition slide with specified text in a predefined position.

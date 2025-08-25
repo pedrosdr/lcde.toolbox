@@ -7,20 +7,20 @@
 pcaviz.component_loads(pca_obj, component, size = vizsize())
 }
 \arguments{
-\item{pca_obj}{An object of class `pca`, which contains the PCA results and loadings.
+\item{pca_obj}{An object of class \code{pca}, which contains the PCA results and loadings.
 The object must have a valid structure as expected by the pcaviz package.}
 
 \item{component}{A numeric integer specifying which PCA component to visualize.
-It must be within the range of available components in `pca_obj`.}
+It must be within the range of available components in \code{pca_obj}.}
 
 \item{size}{(Optional) A vizsize, character or numeric value that determines the size of the plot elements.
-Defaults to the value returned by `vizsize()`.}
+Defaults to the value returned by \code{vizsize()}.}
 }
 \value{
 A ggplot2 object representing the bar plot of PCA component loads.
-        The plot includes:
-        - Bars colored based on whether the load is positive or negative.
-        - Labels displaying the loading values formatted to two decimal places.
+The plot includes:
+- Bars colored based on whether the load is positive or negative.
+- Labels displaying the loading values formatted to two decimal places.
 }
 \description{
 Generates a bar plot of PCA component loads using ggplot2.
@@ -30,20 +30,14 @@ This function visualizes the loadings of indicators on a specified PCA component
 It creates a bar plot where the height of the bars represents the loadings,
 with colors indicating whether the load is positive or negative.
 
-
-The function checks if the provided `component` is valid for the given `pca_obj`.
+The function checks if the provided \code{component} is valid for the given \code{pca_obj}.
 If it is not valid, an error is raised. The colors for the bars are determined
 by whether the load is positive (green) or negative (red).
 
 The function uses:
-- `geom_col()` to create bar plots.
-- `theme_light()` for a clean background theme.
-- `scale_fill_manual()` to customize bar colors based on loading signs.
+\itemize{
+\item \code{geom_col()} to create bar plots.
+\item \code{theme_light()} for a clean background theme.
+\item \code{scale_fill_manual()} to customize bar colors based on loading signs.
 }
-\examples{
-# Assuming pca_obj is a valid PCA object created using prcomp or similar
-library(ggplot2)
-my_plot <- pcaviz.component_loads(pca_obj, component = 1)
-print(my_plot)
-
 }

@@ -7,11 +7,11 @@
 ppt.get_width(this)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 }
 \value{
 A numeric value representing the slide width.
 }
 \description{
-Retrieves the width of the slides in the `ppt` object.
+Retrieves the width of the slides in the \code{ppt} object.
 }

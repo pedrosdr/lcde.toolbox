@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^rosm\.cache$
+^\.DS_Store$
+^LICENSE$

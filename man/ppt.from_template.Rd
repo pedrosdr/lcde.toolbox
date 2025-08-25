@@ -10,8 +10,8 @@ ppt.from_template(template_path)
 \item{template_path}{A character string specifying the path to the template PowerPoint file.}
 }
 \value{
-A `ppt` object with the loaded template.
+A \code{ppt} object with the loaded template.
 }
 \description{
-Initializes a `ppt` object from a specified PowerPoint template file.
+Initializes a \code{ppt} object from a specified PowerPoint template file.
 }

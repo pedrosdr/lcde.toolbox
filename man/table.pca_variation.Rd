@@ -14,7 +14,7 @@ table.pca_variation(
 )
 }
 \arguments{
-\item{pca_obj}{A `pca` object containing PCA results.}
+\item{pca_obj}{A \code{pca} object containing PCA results.}
 
 \item{rank}{A positive integer indicating the variation rank to display.}
 
@@ -27,13 +27,8 @@ table.pca_variation(
 \item{variation}{A character string specifying the variation type. Must be either "positive" or "negative".}
 }
 \value{
-A `table` object displaying the PCA variation values for a specified rank.
+A \code{table} object displaying the PCA variation values for a specified rank.
 }
 \description{
 Generates a table showing the largest variations in PCA components for a specific rank.
-}
-\examples{
-pca_result <- pca(data) # Assuming `data` is a prepared dataset
-tbl_variation <- table.pca_variation(pca_result, rank = 1, keys, years, labels, "positive")
-
 }

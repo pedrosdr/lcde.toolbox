@@ -62,6 +62,8 @@ geogg.percentage_of_proficiency_map(
 
 \item{point_size}{A numeric describing the size of the points to be added.}
 
+\item{boundary_width}{A numeric describing the width of the boundaries.}
+
 \item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 
 \item{add_tiles}{A logical value to include the map tiles, default is TRUE.}
@@ -71,8 +73,4 @@ A geogg object with the proficiency map added.
 }
 \description{
 This function creates a geographical plot that visualizes proficiency levels in a specified subject by adding points for each location, optionally with boundary and surface data.
-}
-\examples{
-geogg_obj <- geogg.percentage_of_proficiency_map(data = c(20, 40, 60, 80), subject = 'mathematics', latitude = c(-15, -20), longitude = c(-47, -48))
-
 }

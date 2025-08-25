@@ -7,18 +7,18 @@
 pcaviz.explained_variance(pca_obj, size = vizsize())
 }
 \arguments{
-\item{pca_obj}{An object of class `pca`, which contains PCA results including
+\item{pca_obj}{An object of class \code{pca}, which contains PCA results including
 explained variance and component names. The object must have a valid
 structure as expected by the pcaviz package.}
 
 \item{size}{(Optional) A vizsize, character or numeric value that determines the size of the plot elements.
-Defaults to the value returned by `vizsize()`.}
+Defaults to the value returned by \code{vizsize()}.}
 }
 \value{
 A ggplot2 object representing the bar plot of explained variance for each PCA component.
-        The plot includes:
-        - Bars indicating the percentage of variance explained.
-        - Labels displaying the explained variance formatted to two decimal places.
+The plot includes:
+- Bars indicating the percentage of variance explained.
+- Labels displaying the explained variance formatted to two decimal places.
 }
 \description{
 Generates a bar plot showing the percentage of explained variance for each PCA component.
@@ -28,19 +28,13 @@ This function visualizes the proportion of variance explained by each principal 
 in a PCA analysis. It creates a bar plot where the height of each bar represents
 the percentage of variance explained by the corresponding component.
 
-
-The function checks if the provided `pca_obj` is valid. It then creates a bar plot using
-`geom_col()` to represent the explained variance for each principal component.
+The function checks if the provided \code{pca_obj} is valid. It then creates a bar plot using
+\code{geom_col()} to represent the explained variance for each principal component.
 The y-axis is formatted to show percentages.
 
 The function uses:
-- `theme_light()` for a clean background theme.
-- `scale_y_continuous()` to format y-axis labels as percentages.
+\itemize{
+\item \code{theme_light()} for a clean background theme.
+\item \code{scale_y_continuous()} to format y-axis labels as percentages.
 }
-\examples{
-# Assuming pca_obj is a valid PCA object created using prcomp or similar
-library(ggplot2)
-my_plot <- pcaviz.explained_variance(pca_obj)
-print(my_plot)
-
 }

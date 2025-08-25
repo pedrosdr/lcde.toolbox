@@ -334,19 +334,6 @@ geoleaf.add_pca_points = function(
 #' @details
 #' The function verifies that `latitude` and `longitude` are numeric vectors of the same length. If `labels` are not provided, they default to empty strings, and the marker radius is set to a smaller size. If `colors` are not provided, a default color is used for all markers. Popups, when provided, display additional information on each marker. The `point_size` parameter allows customization of the point size on the map. Points with missing coordinates are omitted with a warning indicating the number of points omitted.
 #'
-#' @seealso \code{\link{addCircleMarkers}}, \code{\link{geoleaf}}, \code{\link{leaflet}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_points(
-#'     latitude = c(-23.5505, -22.9068),
-#'     longitude = c(-46.6333, -43.1729),
-#'     colors = c('#FF0000', '#00FF00'),
-#'     labels = c('São Paulo', 'Rio de Janeiro'),
-#'     popups = c('Capital of SP', 'Capital of RJ'),
-#'     point_size = 2
-#'   )
-#'
 #' @export
 geoleaf.add_points = function(
   this, #: geoleaf
@@ -451,12 +438,6 @@ geoleaf.add_points = function(
 #'
 #' @details
 #' The function checks that the `this` parameter is a valid `geoleaf` map object and that `georef_obj` is a valid `georef` object. It then adds the boundary polygons to the map, using grayscale colors for the border and filling. The line weight and opacity can also be adjusted.
-#'
-#' @seealso \code{\link{addPolygons}}, \code{\link{georef}}, \code{\link{geoleaf}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_boundary(georef_obj)
 #'
 #' @export
 geoleaf.add_boundary = function(
@@ -568,17 +549,6 @@ geoleaf.add_surface = function(
 #'
 #' @return The updated `geoleaf` object with the added continuous legend.
 #'
-#' @examples
-#' # Example usage:
-#' geo_map <- geoleaf$new() # Assuming geoleaf is a map object
-#' data_values <- c(1.5, 2.3, 4.6, 5.8)
-#' geo_map <- geoleaf.add_legend_continuous(
-#'   geo_map,
-#'   data = data_values,
-#'   title = "Legend Title",
-#'   position = 'bottomright'
-#' )
-#'
 #' @export
 geoleaf.add_legend_continuous = function(
   this, #: geoleaf
@@ -629,17 +599,6 @@ geoleaf.add_legend_continuous = function(
 #' @details
 #' This function checks if the `title`, `colors`, and `position` parameters are character strings, and ensures that the length of `labels` matches the length of `colors`. If the lengths don't match, an error is raised. The legend is added to the map with the specified title, color set, labels, and position.
 #'
-#' @seealso \code{\link{addLegend}}, \code{\link{geoleaf}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_legend_discrete(
-#'     title = 'Category Legend',
-#'     colors = c('#FF0000', '#00FF00', '#0000FF'),
-#'     labels = c('Low', 'Medium', 'High'),
-#'     position = 'bottomright'
-#'   )
-#'
 #' @export
 geoleaf.add_legend_discrete = function(
   this, #: geoleaf
@@ -685,12 +644,6 @@ geoleaf.add_legend_discrete = function(
 #' }
 #' The color gradient goes from red (lower values of PC1) to green (higher values of PC1), indicating the performance relative to the first principal component.
 #'
-#' @seealso \code{\link{geoleaf.add_legend_discrete}}, \code{\link{colors.red_to_green}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_legend_pca()
-#'
 #' @export
 geoleaf.add_legend_pca = function(
   this #: geoleaf
@@ -701,10 +654,10 @@ geoleaf.add_legend_pca = function(
     title = 'Desempenho Relativo',
     colors = colors.red_to_green(),
     labels = c(
-      'Nível 1 (0%  |-  25%)',
-      'Nível 2 (25%  |-  50%)',
-      'Nível 3 (50%  |-  75%)',
-      'Nível 4 (75%  |-| 100%)'
+      'N\u00edvel 1 (0%  |-  25%)',
+      'N\u00edvel 2 (25%  |-  50%)',
+      'N\u00edvel 3 (50%  |-  75%)',
+      'N\u00edvel 4 (75%  |-| 100%)'
     ),
     position = 'bottomright'
   )
@@ -733,12 +686,6 @@ geoleaf.add_legend_pca = function(
 #' }
 #' The legend title will be either 'Aprendizado Adequado em Matemática' or 'Aprendizado Adequado em Língua Portuguesa', based on the selected subject.
 #'
-#' @seealso \code{\link{geoleaf.add_legend_discrete}}, \code{\link{colors.red_to_green}}
-#'
-#' @examples
-#' geoleaf.map <- geoleaf() %>%
-#'   geoleaf.add_legend_percentage_of_proficiency(subject = 'mathematics')
-#'
 #' @export
 geoleaf.add_legend_percentage_of_proficiency = function(
   this, #: geoleaf
@@ -752,9 +699,9 @@ geoleaf.add_legend_percentage_of_proficiency = function(
   }
 
   title = if(subject == 'mathematics') {
-    'Aprendizado Adequado<br>em Matemática'
+    'Aprendizado Adequado<br>em Matem\u00e1tica'
   } else {
-    'Aprendizado Adequado<br>em Língua Portuguesa'
+    'Aprendizado Adequado<br>em L\u00edngua Portuguesa'
   }
 
   this = this %>% geoleaf.add_legend_discrete(

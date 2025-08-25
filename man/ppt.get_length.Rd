@@ -7,11 +7,11 @@
 ppt.get_length(this)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 }
 \value{
 An integer representing the number of slides.
 }
 \description{
-Retrieves the total number of slides in the `ppt` object.
+Retrieves the total number of slides in the \code{ppt} object.
 }

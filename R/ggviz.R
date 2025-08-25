@@ -38,11 +38,6 @@ ggviz.from_ggplot = function(
 #' @return A `ggviz` object containing the radar chart.
 #' @export
 #'
-#' @examples
-#' \dontrun{
-#' data <- data.frame(Group1 = c(70, 80, 90), Group2 = c(50, 60, 80))
-#' ggviz.radar(data, colors = c("#FF0000", "#00FF00"), opacity = 0.7)
-#' }
 ggviz.radar = function(
     data, #:data.frame
     colors = colors.mixed(), #: character

@@ -7,14 +7,14 @@
 ppt.add_ggplot(this, ggplot_obj, position)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{ggplot_obj}{A ggplot object to add to the slide.}
 
-\item{position}{A `pptpos` object specifying the position.}
+\item{position}{A \code{pptpos} object specifying the position.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds a ggplot object to the current slide at a specified position.

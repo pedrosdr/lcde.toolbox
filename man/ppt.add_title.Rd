@@ -7,12 +7,12 @@
 ppt.add_title(this, title)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{title}{A character string for the slide title.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds a title to the current slide.

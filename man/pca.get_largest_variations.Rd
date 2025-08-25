@@ -32,7 +32,7 @@ pca.get_largest_variations(
 }
 \value{
 A data frame containing the largest variations, including keys, labels,
-        and the first two principal component coordinates for the specified number of largest variations.
+and the first two principal component coordinates for the specified number of largest variations.
 }
 \description{
 This function calculates the largest variations in principal component scores
@@ -45,17 +45,5 @@ The function performs several checks on the input parameters to ensure they meet
 the expected criteria. It calculates the difference in principal component scores
 between the minimum and maximum years provided and returns a data frame with the
 specified number of largest variations. If there are fewer variations than requested,
-it will handle errors based on the specified `errors` parameter.
-}
-\examples{
-# Assuming pca_obj is a valid PCA object
-largest_variations <- pca.get_largest_variations(
-  this = pca_obj,
-  number = 5,
-  keys = c("Variable1", "Variable2", "Variable3"),
-  years = c(2020, 2021, 2022),
-  labels = c("Label1", "Label2", "Label3"),
-  variation = 'positive'
-)
-
+it will handle errors based on the specified \code{errors} parameter.
 }

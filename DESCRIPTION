@@ -2,44 +2,54 @@ Package: lcde.toolbox
 Type: Package
 Title: LCDE Toolbox: Tools for Analyzing and Visualizing Educational Data
 Version: 1.0.0
-Authors@R: c(person("Pedro", "Sartori Dias dos Reis", email = "pedrosartdr@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0005-5819-7103")), person("Rafael", "Naime Ruggiero", email = "rafaruggiero@usp.br", role = c("ctb")), person("Mozart", "Neves Ramos", email = "mozartnramos@gmail.com", role = c("ctb")))
-Maintainer: Laboratório de Ciência de Dados em Educação (LCDE) - Sérgio Henrique Ferreira Chair, Institute of Advanced Studies - Ribeirão Preto, University of São Paulo (IEA-RP/USP) <catedraiearp@usp.br>
-Description: Provides tools for analyzing and visualizing educational data, including the creation of charts, georeferenced maps, principal component analyses (PCA), and automatic generation of presentations. Features a comprehensive set of functions for conducting detailed analyses, generating standardized reports, and creating interactive visualizations to support evidence-based decision-making in the education sector.
-License: What license is it under?
-Encoding: UTF-8
-LazyData: true
+Authors@R: 
+    c(
+      person(given = "Pedro", family = "Sartori Dias dos Reis",
+             role = c("aut", "cre"),
+             email = "pedrosartdr@gmail.com",
+             comment = c(ORCID = "0009-0005-5819-7103", affiliation = "Cátedra Sérgio Henrique Ferreira - IEA-RP/USP")),
+      person(given = "Rafael Naime", family = "Ruggiero",
+             role = "aut",
+             email = "rnruggiero@unifesp.br",
+             comment = c(ORCID = "0000-0002-4712-6853", affiliation = "UNIFESP; Cátedra Sérgio Henrique Ferreira - IEA-RP/USP")),
+      person(given = "Mozart", family = "Neves Ramos",
+             role = "aut",
+             email = "mozartnramos@gmail.com",
+             comment = c(ORCID = "0000-0002-6062-3897", affiliation = "Cátedra Sérgio Henrique Ferreira - IEA-RP/USP")),
+      person(given = "Laboratório de Ciência de Dados em Educação (LCDE)",
+             role = "cph",
+             comment = "IEA-RP/USP")
+    )
+Description: Provides tools for analyzing and visualizing educational data,
+    including the creation of charts, georeferenced maps, principal component
+    analyses (PCA), and automatic generation of presentations. Features a
+    comprehensive set of functions for conducting detailed analyses,
+    generating standardized reports, and creating interactive visualizations
+    to support evidence-based decision-making in the education sector.
+License: GPL-3
+URL: https://github.com/pedrosdr/lcde.toolbox
+BugReports: https://github.com/pedrosdr/lcde.toolbox/issues
+Depends: R (>= 4.0.0)
 Imports:
-  ggplot2,
-  dplyr,
-  stats,
-  ggrepel,
-  terra,
-  sf,
-  gstat,
-  tidyterra,
-  leaflet,
-  tools,
-  stringr,
-  tibble,
-  scales,
-  ggspatial,
-  prettymapr,
-  ggnewscale,
-  officer,
-  flextable
+    dplyr,
+    flextable,
+    ggnewscale,
+    ggplot2,
+    ggspatial,
+    ggrepel,
+    gstat,
+    leaflet,
+    magrittr,
+    officer,
+    sf,
+    stringr,
+    terra,
+    tidyterra,
+    forcats,
+    rlang
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(markdown = TRUE)
+LazyData: false
+Collate: 'utils-pipe.R' 'type.R' 'colors.R' 'utils.R' 'vizsize.R' 'ggradar.R' 'pca.R' 'table.R' 'ggviz.R' 'pcaviz.R' 'georef.R' 'geoleaf.R' 'geogg.R' 'pptpos.R' 'ppt.R'
 RoxygenNote: 7.3.2
-Collate:
-    'type.R'
-    'colors.R'
-    'utils.R'
-    'vizsize.R'
-    'ggradar.R'
-    'pca.R'
-    'table.R'
-    'ggviz.R'
-    'pcaviz.R'
-    'georef.R'
-    'geoleaf.R'
-    'geogg.R'
-    'pptpos.R'
-    'ppt.R'

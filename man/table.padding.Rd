@@ -7,26 +7,21 @@
 table.padding(this, padding, part = c("all", "body", "header", "footer"))
 }
 \arguments{
-\item{this}{A `table` object.}
+\item{this}{A \code{table} object.}
 
 \item{padding}{The desired padding in points.}
 
 \item{part}{The part of the table to modify the padding. Options include:
-- `"all"`: Apply the padding to the entire table.
-- `"body"`: Apply the padding to the table body.
-- `"header"`: Apply the padding to the table header.
-- `"footer"`: Apply the padding to the table footer.}
+\itemize{
+\item \code{"all"}: Apply the padding to the entire table.
+\item \code{"body"}: Apply the padding to the table body.
+\item \code{"header"}: Apply the padding to the table header.
+\item \code{"footer"}: Apply the padding to the table footer.
+}}
 }
 \value{
-The modified `table` object.
+The modified \code{table} object.
 }
 \description{
-Adjusts the padding of various parts of a `table` object.
-}
-\examples{
-library(flextable)
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data)
-tbl <- table.padding(tbl, padding = 5, part = "all")
-
+Adjusts the padding of various parts of a \code{table} object.
 }

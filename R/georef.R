@@ -202,7 +202,7 @@ georef.get_raster = function(
 
   model <- gstat::gstat(formula = data ~ 1, locations = data_sf, nmax = 3,
                  set = list(idp = 1))
-  resp <- predict(model, coop)
+  resp <- stats::predict(model, coop)
   pred <- terra::rasterize(resp, grid, field = "var1.pred", fun = "mean")
   return(pred)
 }

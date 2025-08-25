@@ -42,8 +42,8 @@ pptpos(
 \item{offset_left}{A numeric value for the offset from the left. Defaults to 0.}
 }
 \value{
-A `pptpos` object with computed top, left, width, and height properties.
+A \code{pptpos} object with computed top, left, width, and height properties.
 }
 \description{
-Initializes a `pptpos` object that defines the position and size of elements in a slide grid layout.
+Initializes a \code{pptpos} object that defines the position and size of elements in a slide grid layout.
 }

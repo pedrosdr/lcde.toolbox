@@ -7,26 +7,21 @@
 table.text_size(this, size, part = c("all", "body", "header", "footer"))
 }
 \arguments{
-\item{this}{A `table` object.}
+\item{this}{A \code{table} object.}
 
 \item{size}{The desired font size in points.}
 
 \item{part}{The part of the table to modify the font size. Options include:
-- `"all"`: Apply the font size to the entire table.
-- `"body"`: Apply the font size to the table body.
-- `"title"`: Apply the font size to the table title.
-- `"footer"`: Apply the font size to the table footer.}
+\itemize{
+\item \code{"all"}: Apply the font size to the entire table.
+\item \code{"body"}: Apply the font size to the table body.
+\item \code{"title"}: Apply the font size to the table title.
+\item \code{"footer"}: Apply the font size to the table footer.
+}}
 }
 \value{
-The modified `table` object.
+The modified \code{table} object.
 }
 \description{
-Adjusts the font size of various parts of a `table` object.
-}
-\examples{
-library(flextable)
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data)
-tbl <- table.text_size(tbl, size = 14, part = "body")
-
+Adjusts the font size of various parts of a \code{table} object.
 }

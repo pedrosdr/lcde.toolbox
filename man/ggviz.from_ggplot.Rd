@@ -7,11 +7,11 @@
 ggviz.from_ggplot(ggplot_obj)
 }
 \arguments{
-\item{ggplot_obj}{A `ggplot` object to be converted.}
+\item{ggplot_obj}{A \code{ggplot} object to be converted.}
 }
 \value{
-An object of class `ggviz`.
+An object of class \code{ggviz}.
 }
 \description{
-Creates an object of class `ggviz` from a `ggplot` chart.
+Creates an object of class \code{ggviz} from a \code{ggplot} chart.
 }

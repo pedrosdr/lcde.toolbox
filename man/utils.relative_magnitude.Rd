@@ -11,7 +11,7 @@ utils.relative_magnitude(data, target = 100)
 
 \item{target}{A numeric value or vector representing the target for comparison. Defaults to 100.
 If a single numeric value is provided, it is repeated for each column; if a vector, its length
-must match the number of columns in `data`.}
+must match the number of columns in \code{data}.}
 }
 \value{
 A numeric vector where each element represents the relative magnitude of an observation.

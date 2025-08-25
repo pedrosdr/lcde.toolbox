@@ -7,16 +7,16 @@
 ppt.add_table(this, table_obj, position, fit_height = FALSE)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{table_obj}{A table object to add to the slide.}
 
-\item{position}{A `pptpos` object specifying the position.}
+\item{position}{A \code{pptpos} object specifying the position.}
 
 \item{fit_height}{A logical indicating whether to fit the table height.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds a table to the slide at a specified position.

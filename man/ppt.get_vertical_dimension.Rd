@@ -7,7 +7,7 @@
 ppt.get_vertical_dimension(this, relative_dimension)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{relative_dimension}{A numeric value (0 - 1) specifying the relative dimension.}
 }

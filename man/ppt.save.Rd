@@ -7,10 +7,10 @@
 ppt.save(this, path)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{path}{A character string specifying the file path.}
 }
 \description{
-Saves the `ppt` object as a PowerPoint file at the specified path.
+Saves the \code{ppt} object as a PowerPoint file at the specified path.
 }

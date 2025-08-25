@@ -54,9 +54,6 @@ geogg = function(
 #'
 #' @return A geogg object with the PCA map added.
 #'
-#' @examples
-#' geogg_obj <- geogg.pca_map(pca_obj = my_pca, latitude = c(-15, -20), longitude = c(-47, -48), labels = c("School A", "School B"))
-#'
 #' @export
 geogg.pca_map = function(
     pca_obj, #: pca
@@ -143,9 +140,9 @@ geogg.pca_map = function(
     groups
   } else {
     ifelse(
-      data < quantile(data, 0.25), '0% |- 25%', ifelse(
-        data < quantile(data, 0.50), '25% |- 50%', ifelse(
-          data < quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
+      data < stats::quantile(data, 0.25), '0% |- 25%', ifelse(
+        data < stats::quantile(data, 0.50), '25% |- 50%', ifelse(
+          data < stats::quantile(data, 0.75), '50% |- 75%', '75% |-| 100%'
         )
       )
     )
@@ -206,11 +203,9 @@ geogg.pca_map = function(
 #' @param point_size A numeric describing the size of the points to be added.
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #' @param add_tiles A logical value to include the map tiles, default is TRUE.
+#' @param boundary_width A numeric describing the width of the boundaries.
 #'
 #' @return A geogg object with the proficiency map added.
-#'
-#' @examples
-#' geogg_obj <- geogg.percentage_of_proficiency_map(data = c(20, 40, 60, 80), subject = 'mathematics', latitude = c(-15, -20), longitude = c(-47, -48))
 #'
 #' @export
 geogg.percentage_of_proficiency_map = function(
@@ -280,9 +275,9 @@ geogg.percentage_of_proficiency_map = function(
   }
 
   legend_title = if(subject[1] == 'mathematics') {
-    'Apredizado Adequado\nem Matemática'
+    'Apredizado Adequado\nem Matem\u00e1tica'
   } else {
-    'Apredizado Adequado\nem Língua Portuguesa'
+    'Apredizado Adequado\nem L\u00edngua Portuguesa'
   }
 
   obj = obj %>% geogg.add_points(
@@ -332,10 +327,6 @@ geogg.percentage_of_proficiency_map = function(
 #'
 #' @keywords internal
 #'
-#' @examples
-#' \dontrun{
-#' .geogg.check_class(my_geogg_obj)
-#' }
 .geogg.check_class = function(
     obj
 ) {
@@ -358,8 +349,6 @@ geogg.percentage_of_proficiency_map = function(
 #'
 #' @export
 #'
-#' @examples
-#' my_geogg <- geogg() %>% geogg.add_tiles()
 geogg.add_tiles = function(
     this, #: geogg
     zoom = NULL #: integer
@@ -396,8 +385,6 @@ geogg.add_tiles = function(
 #' @param add_new_scale A logical value indicating if a new color scale should be added (useful after a surface layer), default is \code{FALSE}.
 #' @param point_size A numeric value specifying the overall size of the points, default is \code{1}.
 #' @return The updated geogg object with points added.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = c("A", "B"), color_map = c("A" = "red", "B" = "blue"))
 #' @export
 geogg.add_points = function(
     this, #: geogg
@@ -610,8 +597,6 @@ geogg.add_points = function(
 #' @param latitude A numeric vector for the latitudes of each point.
 #' @param longitude A numeric vector for the longitudes of each point.
 #' @return The updated geogg object with labels added.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.add_labels(labels = c("A", "B"), latitude = c(0, 10), longitude = c(0, 10))
 #' @export
 geogg.add_labels = function(
     this, #: geogg
@@ -683,9 +668,8 @@ geogg.add_labels = function(
 #' @param this An object of class 'geogg'.
 #' @param georef_obj A georef object containing the boundary data in an sf format.
 #' @param boundary_width A numeric describing the width of the boundaries.
+#' @param boundary_color A string describing the color of the boundaries.
 #' @return The updated geogg object with the boundary added.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.add_boundary(georef_obj)
 #' @export
 geogg.add_boundary = function(
     this, #: geogg
@@ -725,8 +709,6 @@ geogg.add_boundary = function(
 #' @param opacity A character specifying the opacity in hexadecimal (00-FF), default is 'BB'.
 #' @param add_new_scale A logical value indicating if a new color scale should be added, default is FALSE.
 #' @return The updated geogg object with the surface layer added.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.add_surface(georef_obj, data = c(1, 2), latitude = c(0, 1), longitude = c(0, 1))
 #' @export
 geogg.add_surface = function(
     this,
@@ -799,8 +781,6 @@ geogg.add_surface = function(
 #'
 #' @param this An object of class 'geogg'.
 #' @return The updated geogg object with a clean theme applied.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.theme_clean()
 #' @export
 geogg.theme_clean = function(
     this #: geogg
@@ -829,8 +809,6 @@ geogg.theme_clean = function(
 #'
 #' @param this An object of class 'geogg'.
 #' @return The updated geogg object with base theme formatting applied.
-#' @examples
-#' geogg_obj <- geogg() %>% geogg.theme_base()
 #' @export
 geogg.theme_base = function(
     this #: geogg
@@ -858,10 +836,6 @@ geogg.theme_base = function(
 #'
 #' @return The updated \code{geogg} object with the legend removed.
 #'
-#' @examples
-#' # Example usage:
-#' plot <- geogg() %>% geogg.without_legend()
-#'
 #' @export
 geogg.without_legend = function(
     this #: geogg
@@ -884,10 +858,6 @@ geogg.without_legend = function(
 #' @param title A character string specifying the title to be added to the plot.
 #'
 #' @return The modified `geogg` object with the specified title added.
-#'
-#' @examples
-#' my_plot <- geogg() %>%
-#'   geogg.add_title("Sample Plot Title")
 #'
 #' @export
 geogg.add_title = function(

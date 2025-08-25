@@ -13,5 +13,5 @@
 NULL if the object is valid; otherwise, an error is raised.
 }
 \description{
-Verifies if the provided object is of class `pptpos`.
+Verifies if the provided object is of class \code{pptpos}.
 }

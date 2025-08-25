@@ -7,13 +7,13 @@
 ppt.on_slide(this, index)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{index}{An integer specifying the slide index to set as current.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
-Sets the specified slide as the current slide in the `ppt` object.
+Sets the specified slide as the current slide in the \code{ppt} object.
 }

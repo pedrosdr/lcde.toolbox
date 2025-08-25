@@ -11,10 +11,6 @@
 #'
 #' @return A `table` object styled with a dark theme.
 #'
-#' @examples
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data, column_names = c("Col A", "Col B"))
-#'
 #' @export
 table = function(
   dataframe, #: data.frame
@@ -58,10 +54,6 @@ table = function(
 #' @param variation A character string specifying the variation type. Must be either "positive" or "negative".
 #'
 #' @return A `table` object displaying the PCA variation values for a specified rank.
-#'
-#' @examples
-#' pca_result <- pca(data) # Assuming `data` is a prepared dataset
-#' tbl_variation <- table.pca_variation(pca_result, rank = 1, keys, years, labels, "positive")
 #'
 #' @export
 table.pca_variation = function(
@@ -122,25 +114,6 @@ table.pca_variation = function(
 #'
 #' @return A Flextable object containing a formatted summary of the regression model.
 #'
-#' @examples
-#' ## Example usage
-#' library(lm)
-#' library(flextable)
-#'
-#' # Simulate some data
-#' set.seed(123)
-#' data <- data.frame(x1 = rnorm(100), x2 = rnorm(100), y = 2*x1 + 3*x2 + rnorm(100))
-#'
-#' # Fit a linear model
-#' model <- lm(y ~ x1 + x2, data = data)
-#'
-#' # Generate the summary table
-#' summary_table <- table.linear_model(model)
-#'
-#' print(summary_table)
-#'
-#' # You can further customize the Flextable using its functionalities.
-#'
 #' @import flextable
 #'
 #' @export
@@ -153,17 +126,17 @@ table.linear_model = function(
 
   smodel$coefficients[2, 2]
   dfreg = as.data.frame(smodel$coefficients)
-  colnames(dfreg) = c("Estimativa", "Erro Padrão", "Valor de t", "P(>|t|)")
+  colnames(dfreg) = c("Estimativa", "Erro Padr\u00e3o", "Valor de t", "P(>|t|)")
   dfreg[,"Estimativa"] = round(dfreg[,"Estimativa"], 5)
-  dfreg[,"Erro Padrão"] = round(dfreg[,"Erro Padrão"], 5)
+  dfreg[,"Erro Padr\u00e3o"] = round(dfreg[,"Erro Padr\u00e3o"], 5)
   dfreg[,"Valor de t"] = round(dfreg[,"Valor de t"], 3)
   dfreg[,"P(>|t|)"] = ifelse(
     dfreg[,"P(>|t|)"] < 0.001,
     "<0.001",
     paste0(round(dfreg[,"P(>|t|)"], 5))
   )
-  dfreg[,"CI (95%)"] = sprintf("%.4f — %.4f", ci[,1], ci[,2])
-  dfreg[,"Significância"] = ifelse(
+  dfreg[,"CI (95%)"] = sprintf("%.4f - %.4f", ci[,1], ci[,2])
+  dfreg[,"Signific\u00e2ncia"] = ifelse(
     dfreg[,"P(>|t|)"] < 0.001, "***", ifelse(
       dfreg[,"P(>|t|)"] < 0.01, "**", ifelse(
         dfreg[,"P(>|t|)"] < 0.05, "*", ifelse(
@@ -172,7 +145,7 @@ table.linear_model = function(
       )
     )
   )
-  dfreg[,"Variável"] = ifelse(
+  dfreg[,"Vari\u00e1vel"] = ifelse(
     rownames(smodel$coefficients) == "(Intercept)",
     "(Intercepto)", rownames(smodel$coefficients)
   )
@@ -190,7 +163,7 @@ table.linear_model = function(
   obj = table(dfreg) %>%
     flextable::add_footer_row(
       values = sprintf(
-        "Estatística F: %.1f com %.0f e %.0f GL\t—\tValor p: %s",
+        "Estat\u00edstica F: %.1f com %.0f e %.0f GL\t-\tValor p: %s",
         smodel$fstatistic[1],
         smodel$fstatistic[2],
         smodel$fstatistic[3],
@@ -201,7 +174,7 @@ table.linear_model = function(
     flextable::add_footer_row(
       values = c(
         sprintf(
-          "Erro padrão residual: %.4f com %.0f graus de liberdade",
+          "Erro Padr\u00e3o residual: %.4f com %.0f graus de liberdade",
           smodel$sigma, smodel$df[2]
         )
       ),
@@ -209,14 +182,14 @@ table.linear_model = function(
     ) %>%
     flextable::add_footer_row(
       values = sprintf(
-        "R²: %.4f\t\tR² Ajustado: %.4f",
+        "R2: %.4f\t\tR2 Ajustado: %.4f",
         smodel$r.squared, smodel$adj.r.squared
       ),
       colwidths = c(7)
     ) %>%
     flextable::add_footer_row(
       values = paste0(
-        "Códigos de Significância: 0 [***] 0.001 [**] 0.01 [*] 0.05 [.] 0.1 [ ] 1"
+        "C\u00f3digos de Signific\u00e2ncia: 0 [***] 0.001 [**] 0.01 [*] 0.05 [.] 0.1 [ ] 1"
       ),
       colwidths = c(7)
     ) %>%
@@ -254,11 +227,6 @@ table.linear_model = function(
 #'
 #' @return The modified `table` object with the new header row.
 #'
-#' @examples
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data, column_names = c("Col A", "Col B"))
-#' tbl <- table.add_header_row(tbl, column_names = c("Header 1"), column_widths = c(2))
-#'
 #' @export
 table.add_header_row = function(
   this, #: table
@@ -287,11 +255,6 @@ table.add_header_row = function(
 #' @param this A `table` object.
 #'
 #' @return The styled `table` object with a dark theme applied.
-#'
-#' @examples
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data, column_names = c("Col A", "Col B"))
-#' tbl <- table.set_theme_dark(tbl)
 #'
 #' @export
 table.set_theme_dark = function(
@@ -325,11 +288,6 @@ table.set_theme_dark = function(
 #' @param page_height An optional numeric value specifying the page height to fit the table within.
 #'
 #' @return The resized `table` object.
-#'
-#' @examples
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data, column_names = c("Col A", "Col B"))
-#' tbl <- table.fit_to_page(tbl, page_width = 6, page_height = 8)
 #'
 #' @export
 table.fit_to_page = function(
@@ -377,12 +335,6 @@ table.fit_to_page = function(
 #'
 #' @return The modified `table` object.
 #'
-#' @examples
-#' library(flextable)
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data)
-#' tbl <- table.text_size(tbl, size = 14, part = "body")
-#'
 #' @export
 table.text_size = function(
   this, #: table
@@ -413,12 +365,6 @@ table.text_size = function(
 #'   - `"footer"`: Apply the padding to the table footer.
 #'
 #' @return The modified `table` object.
-#'
-#' @examples
-#' library(flextable)
-#' data <- data.frame(A = 1:3, B = 4:6)
-#' tbl <- table(data)
-#' tbl <- table.padding(tbl, padding = 5, part = "all")
 #'
 #' @export
 table.padding = function(

@@ -7,11 +7,11 @@
 ppt.add_text(this, text, position, font = "Calibri", size = 18, bold = FALSE)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{text}{A character string for the text.}
 
-\item{position}{A `pptpos` object specifying the text position.}
+\item{position}{A \code{pptpos} object specifying the text position.}
 
 \item{font}{A character string specifying the font family.}
 
@@ -20,7 +20,7 @@ ppt.add_text(this, text, position, font = "Calibri", size = 18, bold = FALSE)
 \item{bold}{A logical value indicating whether the text is bold.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds text to the current slide at a specified position.

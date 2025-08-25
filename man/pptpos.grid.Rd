@@ -18,7 +18,7 @@ pptpos.grid(n_rows, n_columns, row, column, margin = 0.1)
 \item{margin}{A numeric value for the margin around the element. Defaults to 0.1.}
 }
 \value{
-A `pptpos` object with calculated positions for the specified grid cell.
+A \code{pptpos} object with calculated positions for the specified grid cell.
 }
 \description{
 Defines a custom grid-based position for an element within the slide layout.

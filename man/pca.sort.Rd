@@ -11,15 +11,11 @@ pca.sort(this, by, descending = FALSE)
 
 \item{by}{A numeric vector of the same length as the number of rows in the PCA data. It specifies the ordering criteria.}
 
-\item{descending}{A logical value indicating whether the sorting should be in descending order (default is `FALSE`).}
+\item{descending}{A logical value indicating whether the sorting should be in descending order (default is \code{FALSE}).}
 }
 \value{
 The modified PCA object with sorted principal components and data.
 }
 \description{
 Sorts the principal components and the data matrix of a PCA object based on a specified vector.
-}
-\examples{
-pca_object <- pca.sort(pca_object, by = some_vector, descending = TRUE)
-
 }

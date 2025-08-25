@@ -7,24 +7,16 @@
 geoleaf.add_boundary(this, georef_obj)
 }
 \arguments{
-\item{this}{A `geoleaf` map object.}
+\item{this}{A \code{geoleaf} map object.}
 
-\item{georef_obj}{A `georef` object containing the spatial data to be added as a boundary.}
+\item{georef_obj}{A \code{georef} object containing the spatial data to be added as a boundary.}
 }
 \value{
-The modified `geoleaf` map object with the added boundary layer.
+The modified \code{geoleaf} map object with the added boundary layer.
 }
 \description{
-This function adds a boundary layer to a `geoleaf` map using a spatial object provided in the `georef` format. The boundary is rendered as polygons with customizable color and opacity settings.
+This function adds a boundary layer to a \code{geoleaf} map using a spatial object provided in the \code{georef} format. The boundary is rendered as polygons with customizable color and opacity settings.
 }
 \details{
-The function checks that the `this` parameter is a valid `geoleaf` map object and that `georef_obj` is a valid `georef` object. It then adds the boundary polygons to the map, using grayscale colors for the border and filling. The line weight and opacity can also be adjusted.
-}
-\examples{
-geoleaf.map <- geoleaf() \%>\%
-  geoleaf.add_boundary(georef_obj)
-
-}
-\seealso{
-\code{\link{addPolygons}}, \code{\link{georef}}, \code{\link{geoleaf}}
+The function checks that the \code{this} parameter is a valid \code{geoleaf} map object and that \code{georef_obj} is a valid \code{georef} object. It then adds the boundary polygons to the map, using grayscale colors for the border and filling. The line weight and opacity can also be adjusted.
 }

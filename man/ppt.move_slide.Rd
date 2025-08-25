@@ -7,14 +7,14 @@
 ppt.move_slide(this, index = NULL, to)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{index}{An optional integer specifying the current slide index.}
 
 \item{to}{An integer specifying the target slide index.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Moves the current slide to a specified position within the slide order.

@@ -21,6 +21,3 @@ The updated geogg object with labels added.
 \description{
 This function adds labels to specified points on a geographical ggplot.
 }
-\examples{
-geogg_obj <- geogg() \%>\% geogg.add_labels(labels = c("A", "B"), latitude = c(0, 10), longitude = c(0, 10))
-}

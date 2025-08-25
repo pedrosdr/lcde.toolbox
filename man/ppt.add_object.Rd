@@ -7,14 +7,14 @@
 ppt.add_object(this, obj, position)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{obj}{The object to add to the slide.}
 
-\item{position}{A `pptpos` object specifying the position.}
+\item{position}{A \code{pptpos} object specifying the position.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
 Adds an object (e.g., table or ggplot) to the slide at a specified position.

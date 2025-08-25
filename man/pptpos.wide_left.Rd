@@ -7,7 +7,7 @@
 pptpos.wide_left()
 }
 \value{
-A `pptpos` object with coordinates for a wide left-aligned element.
+A \code{pptpos} object with coordinates for a wide left-aligned element.
 }
 \description{
 Defines the position for a wide element occupying the left side of the slide.

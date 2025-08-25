@@ -77,7 +77,3 @@ A geogg object with the PCA map added.
 \description{
 This function creates a geographical plot that visualizes relative performance using principal component analysis (PCA) scores, with optional boundaries, surfaces, and custom color scales.
 }
-\examples{
-geogg_obj <- geogg.pca_map(pca_obj = my_pca, latitude = c(-15, -20), longitude = c(-47, -48), labels = c("School A", "School B"))
-
-}

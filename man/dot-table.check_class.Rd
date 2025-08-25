@@ -13,5 +13,5 @@
 NULL if the check passes; otherwise, an error is raised.
 }
 \description{
-Verifies if an object is of class `table`.
+Verifies if an object is of class \code{table}.
 }

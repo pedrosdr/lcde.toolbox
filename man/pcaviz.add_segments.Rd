@@ -41,17 +41,6 @@ transitions between points in the PCA space.
 }
 \details{
 The function checks that all input vectors are numeric and have the same length.
-It creates segments using `geom_segment` from ggplot2, with arrows indicating
-direction. The linewidth and arrow size are adjustable via the `this` object.
-}
-\examples{
-# Assuming pca_viz is a valid PCA visualization object
-pca_viz <- pcaviz.add_segments(
-  pca_viz,
-  from.x = c(1, 2),
-  to.x = c(3, 4),
-  from.y = c(1, 2),
-  to.y = c(3, 4)
-)
-
+It creates segments using \code{geom_segment} from ggplot2, with arrows indicating
+direction. The linewidth and arrow size are adjustable via the \code{this} object.
 }

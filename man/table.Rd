@@ -9,16 +9,11 @@ table(dataframe, column_names = colnames(dataframe))
 \arguments{
 \item{dataframe}{A data frame containing the data for the table.}
 
-\item{column_names}{A vector of column names for the table headers. Defaults to the column names of the `dataframe`.}
+\item{column_names}{A vector of column names for the table headers. Defaults to the column names of the \code{dataframe}.}
 }
 \value{
-A `table` object styled with a dark theme.
+A \code{table} object styled with a dark theme.
 }
 \description{
-Creates a `table` object, extending the `flextable` class for formatted tables.
-}
-\examples{
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data, column_names = c("Col A", "Col B"))
-
+Creates a \code{table} object, extending the \code{flextable} class for formatted tables.
 }

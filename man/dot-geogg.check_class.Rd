@@ -13,15 +13,10 @@
 NULL. This function is called for its side effect of error-checking.
 }
 \description{
-This internal function verifies if the given object is of class `geogg`.
+This internal function verifies if the given object is of class \code{geogg}.
 It raises an error if the object is not of the correct class.
 }
 \details{
-The function ensures that the input `obj` is of type `geogg`. It is typically used within other `geogg` methods to validate input objects.
-}
-\examples{
-\dontrun{
-.geogg.check_class(my_geogg_obj)
-}
+The function ensures that the input \code{obj} is of type \code{geogg}. It is typically used within other \code{geogg} methods to validate input objects.
 }
 \keyword{internal}

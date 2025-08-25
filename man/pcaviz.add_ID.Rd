@@ -17,12 +17,7 @@ This function adds an annotation displaying the ID metric of a PCA object
 to a PCA visualization object.
 }
 \details{
-The ID metric is calculated using the `pca.get_ID()` function.
+The ID metric is calculated using the \code{pca.get_ID()} function.
 The annotation is placed near the top right corner of the plot based on
 the ranges of the first two principal components (CP1 and CP2).
-}
-\examples{
-# Assuming 'pca_viz' is an existing pcaviz object with a PCA analysis
-pca_viz <- pcaviz.add_ID(pca_viz)
-
 }

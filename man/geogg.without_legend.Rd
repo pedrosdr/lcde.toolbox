@@ -15,8 +15,3 @@ The updated \code{geogg} object with the legend removed.
 \description{
 This function removes the legend from a \code{geogg} plot, making it suitable for visualizations where the legend is not needed.
 }
-\examples{
-# Example usage:
-plot <- geogg() \%>\% geogg.without_legend()
-
-}

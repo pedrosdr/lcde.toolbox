@@ -7,7 +7,7 @@
 pptpos.left_half()
 }
 \value{
-A `pptpos` object with coordinates for positioning an element on the left half.
+A \code{pptpos} object with coordinates for positioning an element on the left half.
 }
 \description{
 Defines the position for an element occupying the left half of the slide.

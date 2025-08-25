@@ -19,12 +19,7 @@ This function converts a ggplot object into a PCA visualization object
 by associating it with a PCA analysis object.
 }
 \details{
-This function checks if the provided `pca_obj` is of class 'pca'
-and ensures that `ggplot_obj` is indeed a ggplot object. The resulting
+This function checks if the provided \code{pca_obj} is of class 'pca'
+and ensures that \code{ggplot_obj} is indeed a ggplot object. The resulting
 object can be used for further customization and visualization.
-}
-\examples{
-# Assuming 'ggplot_plot' is an existing ggplot object and 'pca_result' is a pca object
-pca_viz <- pcaviz.from_ggplot(ggplot_plot, pca_result)
-
 }

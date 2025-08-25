@@ -21,11 +21,13 @@ A character vector of colors corresponding to the proficiency categories.
 This function assigns colors to proficiency categories based on input numeric values and a specified color palette.
 }
 \details{
-The function first categorizes the input values using `utils.get_percentage_of_proficiency_categories`. It then assigns a color to each category based on the provided palette, where:
-- 'D' corresponds to the first color in the palette
-- 'C' corresponds to the second color
-- 'B' corresponds to the third color
-- 'A' corresponds to the fourth color
+The function first categorizes the input values using \code{utils.get_percentage_of_proficiency_categories}. It then assigns a color to each category based on the provided palette, where:
+\itemize{
+\item 'D' corresponds to the first color in the palette
+\item 'C' corresponds to the second color
+\item 'B' corresponds to the third color
+\item 'A' corresponds to the fourth color
+}
 }
 \examples{
 proficiency_values <- c(10, 30, 55, 80)

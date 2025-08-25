@@ -17,10 +17,12 @@ This function categorizes numeric proficiency values into discrete categories ba
 }
 \details{
 The function categorizes values as follows:
-- 'D' for values less than 25
-- 'C' for values between 25 and 49
-- 'B' for values between 50 and 69
-- 'A' for values 70 and above
+\itemize{
+\item 'D' for values less than 25
+\item 'C' for values between 25 and 49
+\item 'B' for values between 50 and 69
+\item 'A' for values 70 and above
+}
 }
 \examples{
 proficiency_values <- c(10, 30, 55, 80)

@@ -7,21 +7,15 @@
 table.fit_to_page(this, page_width, page_height = NULL)
 }
 \arguments{
-\item{this}{A `table` object.}
+\item{this}{A \code{table} object.}
 
 \item{page_width}{A numeric value specifying the page width to fit the table within.}
 
 \item{page_height}{An optional numeric value specifying the page height to fit the table within.}
 }
 \value{
-The resized `table` object.
+The resized \code{table} object.
 }
 \description{
 Adjusts the table size to fit within specified page dimensions.
-}
-\examples{
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data, column_names = c("Col A", "Col B"))
-tbl <- table.fit_to_page(tbl, page_width = 6, page_height = 8)
-
 }

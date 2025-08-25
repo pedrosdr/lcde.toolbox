@@ -53,6 +53,3 @@ The updated geogg object with points added.
 \description{
 This function adds points to a geographical ggplot object, with options for grouping and color mapping.
 }
-\examples{
-geogg_obj <- geogg() \%>\% geogg.add_points(latitude = c(10, 20), longitude = c(10, 20), groups = c("A", "B"), color_map = c("A" = "red", "B" = "blue"))
-}

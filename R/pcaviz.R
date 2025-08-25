@@ -16,10 +16,6 @@
 #' and ensures that `ggplot_obj` is indeed a ggplot object. The resulting
 #' object can be used for further customization and visualization.
 #'
-#' @examples
-#' # Assuming 'ggplot_plot' is an existing ggplot object and 'pca_result' is a pca object
-#' pca_viz <- pcaviz.from_ggplot(ggplot_plot, pca_result)
-#'
 #' @export
 pcaviz.from_ggplot = function(
   ggplot_obj, #: ggplot
@@ -285,12 +281,6 @@ pcaviz.scatter = function(
 #' - `theme_light()` for a clean background theme.
 #' - `scale_y_continuous()` to format y-axis labels as percentages.
 #'
-#' @examples
-#' # Assuming pca_obj is a valid PCA object created using prcomp or similar
-#' library(ggplot2)
-#' my_plot <- pcaviz.explained_variance(pca_obj)
-#' print(my_plot)
-#'
 #' @export
 pcaviz.explained_variance = function(
   pca_obj, #: pca
@@ -314,7 +304,7 @@ pcaviz.explained_variance = function(
 
     ggplot2::labs(
       x='Componente Principal',
-      y='Variância Explicada (%)'
+      y='Vari\u00e2ncia Explicada (%)'
     ) +
 
     ggplot2::geom_label(
@@ -364,12 +354,6 @@ pcaviz.explained_variance = function(
 #' - `geom_col()` to create bar plots.
 #' - `theme_light()` for a clean background theme.
 #' - `scale_fill_manual()` to customize bar colors based on loading signs.
-#'
-#' @examples
-#' # Assuming pca_obj is a valid PCA object created using prcomp or similar
-#' library(ggplot2)
-#' my_plot <- pcaviz.component_loads(pca_obj, component = 1)
-#' print(my_plot)
 #'
 #' @export
 pcaviz.component_loads = function(
@@ -437,10 +421,6 @@ pcaviz.component_loads = function(
 #' @details
 #' This function appends a specified title to an existing PCA plot, allowing for better context and understanding of the visualization. The title is typically displayed at the top of the plot.
 #'
-#' @examples
-#' pca_viz <- pcaviz(pca_obj)
-#' pca_viz <- pcaviz.add_title(pca_viz, title = "Principal Component Analysis of School Performance")
-#'
 #' @export
 pcaviz.add_title = function(
   this, #: pcaviz
@@ -468,10 +448,6 @@ pcaviz.add_title = function(
 #' @details The ID metric is calculated using the `pca.get_ID()` function.
 #' The annotation is placed near the top right corner of the plot based on
 #' the ranges of the first two principal components (CP1 and CP2).
-#'
-#' @examples
-#' # Assuming 'pca_viz' is an existing pcaviz object with a PCA analysis
-#' pca_viz <- pcaviz.add_ID(pca_viz)
 #'
 #' @export
 pcaviz.add_ID = function(
@@ -507,6 +483,7 @@ pcaviz.add_ID = function(
 #' This function adds points representing a single group to the PCA scatter plot.
 #'
 #' @param this A PCA visualization object of class 'pcaviz'.
+#' @param color Single color (name or hex) for all points when no groups are used.
 #'
 #' @return The modified PCA visualization object with added points.
 #'
@@ -724,10 +701,6 @@ pcaviz.set_theme_scatter = function(
 #' @details
 #' This function is designed to streamline the appearance of PCA column plots, setting specific sizes for axis titles, text, plot title, subtitle, and caption. It also adjusts margins for axis labels and removes unnecessary elements like minor grid lines and legends, providing a cleaner, more focused visualization.
 #'
-#' @examples
-#' pca_viz <- pcaviz(pca_obj)
-#' pca_viz <- pcaviz.set_theme_column(pca_viz)
-#'
 #' @export
 pcaviz.set_theme_column = function(
   this #: pcaviz
@@ -770,10 +743,6 @@ pcaviz.set_theme_column = function(
 #' levels of the provided factor. The number of colors used corresponds to the number of
 #' unique groups in the `groups` parameter.
 #'
-#' @examples
-#' # Assuming 'pca_viz' is an existing pcaviz object and 'group_factor' is a factor
-#' pca_viz <- pcaviz.set_scale_scatter(pca_viz, group_factor)
-#'
 #' @export
 pcaviz.set_scale_scatter = function(
   this, #: pcaviz
@@ -813,16 +782,6 @@ pcaviz.set_scale_scatter = function(
 #' The results are printed and subsequently visualized by adding segments and labels
 #' to the PCA plot. The segments are colored based on whether they represent positive
 #' or negative variations.
-#'
-#' @examples
-#' # Assuming pca_viz is a valid PCA visualization object
-#' pca_viz <- pcaviz.add_largest_variations(
-#'   pca_viz,
-#'   number = 5,
-#'   keys = c("Variable1", "Variable2"),
-#'   years = c(2020, 2021, 2022),
-#'   variation = 'positive'
-#' )
 #'
 #' @export
 pcaviz.add_largest_variations = function(
@@ -897,16 +856,6 @@ pcaviz.add_largest_variations = function(
 #' The function checks that all input vectors are numeric and have the same length.
 #' It creates segments using `geom_segment` from ggplot2, with arrows indicating
 #' direction. The linewidth and arrow size are adjustable via the `this` object.
-#'
-#' @examples
-#' # Assuming pca_viz is a valid PCA visualization object
-#' pca_viz <- pcaviz.add_segments(
-#'   pca_viz,
-#'   from.x = c(1, 2),
-#'   to.x = c(3, 4),
-#'   from.y = c(1, 2),
-#'   to.y = c(3, 4)
-#' )
 #'
 #' @export
 pcaviz.add_segments = function(

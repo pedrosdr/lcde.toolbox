@@ -7,18 +7,13 @@
 geogg.add_title(this, title)
 }
 \arguments{
-\item{this}{A `geogg` object.}
+\item{this}{A \code{geogg} object.}
 
 \item{title}{A character string specifying the title to be added to the plot.}
 }
 \value{
-The modified `geogg` object with the specified title added.
+The modified \code{geogg} object with the specified title added.
 }
 \description{
-This function adds a title to a `geogg` plot.
-}
-\examples{
-my_plot <- geogg() \%>\%
-  geogg.add_title("Sample Plot Title")
-
+This function adds a title to a \code{geogg} plot.
 }

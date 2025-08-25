@@ -16,7 +16,7 @@ from the specified principal component.}
 }
 \value{
 A factor with levels 'A', 'B', 'C', and 'D', indicating the category for each observation based on
-        the quartile thresholds.
+the quartile thresholds.
 }
 \description{
 This function assigns letter categories ('A', 'B', 'C', 'D') to values based on the quartile
@@ -26,10 +26,10 @@ principal component (CP1), but a different component can be specified using the 
 \details{
 The categorization is determined as follows:
 \itemize{
-  \item \strong{'D'}: Values below the 25th percentile of the selected principal component.
-  \item \strong{'C'}: Values between the 25th and 50th percentiles.
-  \item \strong{'B'}: Values between the 50th and 75th percentiles.
-  \item \strong{'A'}: Values above the 75th percentile.
+\item \strong{'D'}: Values below the 25th percentile of the selected principal component.
+\item \strong{'C'}: Values between the 25th and 50th percentiles.
+\item \strong{'B'}: Values between the 50th and 75th percentiles.
+\item \strong{'A'}: Values above the 75th percentile.
 }
 
 If an alternative set of \code{values} is provided, the function categorizes these values using the quartile

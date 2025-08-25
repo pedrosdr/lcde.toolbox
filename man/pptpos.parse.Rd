@@ -7,12 +7,12 @@
 pptpos.parse(obj)
 }
 \arguments{
-\item{obj}{A `pptpos` object or character identifier specifying a position preset.}
+\item{obj}{A \code{pptpos} object or character identifier specifying a position preset.}
 }
 \value{
-A `pptpos` object corresponding to the specified position.
+A \code{pptpos} object corresponding to the specified position.
 }
 \description{
-Converts a `pptpos` object or character identifier into a `pptpos` position. Supported identifiers include
+Converts a \code{pptpos} object or character identifier into a \code{pptpos} position. Supported identifiers include
 'center', 'center-large', 'left-half', 'right-half', 'wide-left', 'wide-right', 'title', and 'document-title'.
 }

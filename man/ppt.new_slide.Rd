@@ -7,13 +7,13 @@
 ppt.new_slide(this, title = NULL)
 }
 \arguments{
-\item{this}{A `ppt` object.}
+\item{this}{A \code{ppt} object.}
 
 \item{title}{An optional character string specifying the title of the new slide.}
 }
 \value{
-The modified `ppt` object.
+The modified \code{ppt} object.
 }
 \description{
-Adds a new slide to the `ppt` object and sets it as the current slide.
+Adds a new slide to the \code{ppt} object and sets it as the current slide.
 }

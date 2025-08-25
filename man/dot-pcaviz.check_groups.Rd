@@ -18,9 +18,8 @@ NULL if all checks pass; otherwise, an error is raised with a descriptive messag
 Validates the grouping variable for PCA visualization.
 }
 \details{
-This function checks that the `groups` parameter is a factor, has the same length as
+This function checks that the \code{groups} parameter is a factor, has the same length as
 the principal components data, and contains no more than 7 unique levels.
-
 
 This internal function ensures that the grouping variable is appropriate for PCA analysis,
 helping to prevent errors from incompatible group definitions.

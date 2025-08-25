@@ -4,7 +4,12 @@
 \alias{geogg.add_boundary}
 \title{Add Boundary Layer to Geographical Plot}
 \usage{
-geogg.add_boundary(this, georef_obj, boundary_width = 1)
+geogg.add_boundary(
+  this,
+  georef_obj,
+  boundary_width = 1,
+  boundary_color = colors.grayscale()[5]
+)
 }
 \arguments{
 \item{this}{An object of class 'geogg'.}
@@ -12,13 +17,12 @@ geogg.add_boundary(this, georef_obj, boundary_width = 1)
 \item{georef_obj}{A georef object containing the boundary data in an sf format.}
 
 \item{boundary_width}{A numeric describing the width of the boundaries.}
+
+\item{boundary_color}{A string describing the color of the boundaries.}
 }
 \value{
 The updated geogg object with the boundary added.
 }
 \description{
 Adds boundary lines to a geographical ggplot based on the input georef object.
-}
-\examples{
-geogg_obj <- geogg() \%>\% geogg.add_boundary(georef_obj)
 }

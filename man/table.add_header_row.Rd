@@ -7,21 +7,15 @@
 table.add_header_row(this, column_names, column_widths)
 }
 \arguments{
-\item{this}{A `table` object.}
+\item{this}{A \code{table} object.}
 
 \item{column_names}{A vector of column names for the header row.}
 
 \item{column_widths}{A vector of column widths, corresponding to each column name.}
 }
 \value{
-The modified `table` object with the new header row.
+The modified \code{table} object with the new header row.
 }
 \description{
-Adds a header row with specified column names and widths to a `table` object.
-}
-\examples{
-data <- data.frame(A = 1:3, B = 4:6)
-tbl <- table(data, column_names = c("Col A", "Col B"))
-tbl <- table.add_header_row(tbl, column_names = c("Header 1"), column_widths = c(2))
-
+Adds a header row with specified column names and widths to a \code{table} object.
 }

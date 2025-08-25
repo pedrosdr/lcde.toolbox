@@ -7,7 +7,7 @@
 pptpos.title()
 }
 \value{
-A `pptpos` object with coordinates for positioning a title.
+A \code{pptpos} object with coordinates for positioning a title.
 }
 \description{
 Defines the position for a title element in a slide, taking up the top section.

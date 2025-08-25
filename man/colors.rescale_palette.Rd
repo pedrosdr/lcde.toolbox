@@ -18,8 +18,8 @@ colors.rescale_palette(palette, min_old, max_old, min_new, max_new)
 \item{max_new}{Numeric scalar. Upper bound of the target value range.}
 }
 \value{
-A character vector of hex color codes, same length as `palette`,
-  with colors interpolated according to the new numeric range.
+A character vector of hex color codes, same length as \code{palette},
+with colors interpolated according to the new numeric range.
 }
 \description{
 Takes an existing color palette and remaps its colors from one numeric interval to another,

@@ -8,6 +8,8 @@ pcaviz.add_single_group_points(this, color = colors.mixes()[1])
 }
 \arguments{
 \item{this}{A PCA visualization object of class 'pcaviz'.}
+
+\item{color}{Single color (name or hex) for all points when no groups are used.}
 }
 \value{
 The modified PCA visualization object with added points.

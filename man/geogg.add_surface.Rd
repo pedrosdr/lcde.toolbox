@@ -47,6 +47,3 @@ The updated geogg object with the surface layer added.
 \description{
 Adds a surface layer (such as a heatmap or raster) to the geographical ggplot for additional data visualization.
 }
-\examples{
-geogg_obj <- geogg() \%>\% geogg.add_surface(georef_obj, data = c(1, 2), latitude = c(0, 1), longitude = c(0, 1))
-}
