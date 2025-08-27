@@ -72,7 +72,7 @@ If the package is not on CRAN, you can install it from GitHub, for example:
 
 # install.packages("devtools")
 
-devtools::install_github("lcde-catedra-shf/lcde.toolbox")
+devtools::install_github("pedrosdr/lcde.toolbox")
 
 ```
 Or:
@@ -81,7 +81,7 @@ Or:
 
 # install.packages("remotes")
 
-remotes::install_github("lcde-catedra-shf/lcde.toolbox")
+remotes::install_github("pedrosdr/lcde.toolbox")
 
 ```
 
