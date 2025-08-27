@@ -133,7 +133,7 @@ utils.abbreviate_school_names = function(
         )
     )]
 
-    abbreviated_school_name = paste(head(meaningful_words, size), collapse = " ")
+    abbreviated_school_name = paste(utils::head(meaningful_words, size), collapse = " ")
     abbreviated = c(abbreviated, abbreviated_school_name)
   }
 

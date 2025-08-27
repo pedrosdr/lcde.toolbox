@@ -122,7 +122,7 @@ table.linear_model = function(
 ) {
   smodel = summary(model)
 
-  ci = confint(model)
+  ci = stats::confint(model)
 
   smodel$coefficients[2, 2]
   dfreg = as.data.frame(smodel$coefficients)
@@ -151,7 +151,7 @@ table.linear_model = function(
   )
   dfreg = dfreg[,c(ncol(dfreg), (1:ncol(dfreg)-1))]
 
-  pf_value = pf(
+  pf_value = stats::pf(
     smodel$fstatistic[1],
     smodel$fstatistic[2],
     smodel$fstatistic[3],

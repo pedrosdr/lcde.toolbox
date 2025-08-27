@@ -51,5 +51,5 @@ Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 LazyData: false
-Collate: 'utils-pipe.R' 'type.R' 'colors.R' 'utils.R' 'vizsize.R' 'ggradar.R' 'pca.R' 'table.R' 'ggviz.R' 'pcaviz.R' 'georef.R' 'geoleaf.R' 'geogg.R' 'pptpos.R' 'ppt.R'
+Collate: 'globals.R' 'utils-pipe.R' 'type.R' 'colors.R' 'utils.R' 'vizsize.R' 'ggradar.R' 'pca.R' 'table.R' 'ggviz.R' 'pcaviz.R' 'georef.R' 'geoleaf.R' 'geogg.R' 'pptpos.R' 'ppt.R'
 RoxygenNote: 7.3.2

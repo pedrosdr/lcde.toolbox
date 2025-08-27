@@ -21,7 +21,7 @@ pcaviz.from_ggplot = function(
   ggplot_obj, #: ggplot
   pca_obj = NULL #: pca
 ) {
-  if(!('ggplot' %in% class(ggplot_obj))) {
+  if(!inherits(ggplot_obj, 'ggplot')) {
     stop("'ggplot_obj' must be of type 'ggplot'")
   }
 
@@ -111,7 +111,7 @@ pcaviz.set_pca_obj = function(
     groups #: factor
 ) {
   .pcaviz.check_class(this)
-  if(class(groups) != 'factor') {
+  if(!is.factor(groups)) {
     stop("'groups' must be of type 'factor'")
   }
 
@@ -155,7 +155,7 @@ pcaviz.scatter = function(
   max.overlaps = 20
 ) {
   .pca.check_class(pca_obj)
-  if(class(include_ID) != 'logical') {
+  if(!is.logical(include_ID)) {
     stop("'include_ID' must be of type 'logical'")
   }
 
@@ -490,7 +490,7 @@ pcaviz.add_ID = function(
 #' @export
 pcaviz.add_single_group_points = function(
   this, #: pcaviz
-  color = colors.mixes()[1]
+  color = colors.mixed()[1]
 ) {
   .pcaviz.check_class(this)
 
@@ -867,10 +867,11 @@ pcaviz.add_segments = function(
   color = colors.mixed()[1]
 ) {
   .pcaviz.check_class(this)
-  if(class(from.x) != 'numeric') {
+  if(!is.numeric(from.x)) {
     stop("'from' must be of type 'numeric'")
   }
-  if(class(to.x) != 'numeric') {
+
+  if(!is.numeric(to.x)) {
     stop("'to' must be of type 'numeric'")
   }
   if(length(from.x) != length(to.x) ||

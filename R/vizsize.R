@@ -1,5 +1,3 @@
-library(dplyr)
-
 # class vizsize
 
 # constructors
@@ -76,7 +74,7 @@ vizsize.parse = function(
 ) {
   this = NULL
 
-  if(class(size) == 'vizsize') {
+  if(inherits(size, 'vizsize')){
     this = size
   } else if(size == 'small' || size == 1) {
     this = vizsize('small', 'small', 'small')

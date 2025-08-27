@@ -28,13 +28,13 @@ pca.from_data_frame = function(
     center = TRUE, #: logical
     scale = FALSE #: logical
 ) {
-  if(class(data) != 'data.frame') {
+  if(!inherits(data, 'data.frame')) {
     stop("'data' must be of type 'data.frame'")
   }
-  if(class(center) != 'logical') {
+  if(!is.logical(center)) {
     stop("'center' must be of type 'logical'")
   }
-  if(class(scale) != 'logical') {
+  if(!is.logical(scale)) {
     stop("'scale' must be of type 'logical'")
   }
 
@@ -230,7 +230,7 @@ pca.get_largest_variations = function(
   if(length(years) != nrow(this$principal_components)) {
     stop("'keys' must be a vector of the same length as the data")
   }
-  if(!(class(years) %in% c('numeric', 'integer'))) {
+  if(!is.numeric(years)) {
     stop("'years' must be of type 'numeric'")
   }
   if(length(years) != nrow(this$principal_components)) {
@@ -260,8 +260,8 @@ pca.get_largest_variations = function(
 
   df = cbind(df, this$data, this$principal_components)
 
-  df_min_year = df %>% filter(years == min(unique_years))
-  df_max_year = df %>% filter(years == max(unique_years))
+  df_min_year = df %>% dplyr::filter(years == min(unique_years))
+  df_max_year = df %>% dplyr::filter(years == max(unique_years))
 
   df_intersection = merge(
     df_min_year, df_max_year,
@@ -367,9 +367,9 @@ pca.get_categories = function(
   }
 
   categories = ifelse(
-    values < quantile(cp, 0.25), 'D', ifelse(
-      values < quantile(cp, 0.5), 'C', ifelse(
-        values < quantile(cp, 0.75), 'B', 'A'
+    values < stats::quantile(cp, 0.25), 'D', ifelse(
+      values < stats::quantile(cp, 0.5), 'C', ifelse(
+        values < stats::quantile(cp, 0.75), 'B', 'A'
       )
     )
   )
