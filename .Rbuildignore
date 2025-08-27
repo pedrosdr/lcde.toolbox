@@ -3,3 +3,6 @@
 ^rosm\.cache$
 ^\.DS_Store$
 ^LICENSE$
+^cran-comments\.md$
+^\.github$
+^CRAN-SUBMISSION$
