@@ -3766,7 +3766,7 @@ Constructor for a formatted flextable, extended as a `table` class.
 
 -  **dataframe** (*data.frame*): Source data.
 
--  **column_names** (*character vector*): Custom column headers. Default uses dataframe’s colnames.
+-  **column_names** (*character vector*): Custom column headers. Default uses dataframes colnames.
 
   
 
