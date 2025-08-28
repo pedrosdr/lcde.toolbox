@@ -1,6 +1,6 @@
 Package: lcde.toolbox
 Type: Package
-Title: LCDE Toolbox: Tools for Analyzing and Visualizing Educational Data
+Title: Tools for Analyzing and Visualizing Educational Data
 Version: 1.0.0
 Authors@R: 
     c(
@@ -21,9 +21,9 @@ Authors@R:
              comment = "IEA-RP/USP")
     )
 Description: Provides tools for analyzing and visualizing educational data,
-    including the creation of charts, georeferenced maps, principal component
-    analyses (PCA), and automatic generation of presentations. Features a
-    comprehensive set of functions for conducting detailed analyses,
+    including the creation of charts, support for geospatially referenced data, 
+    principal component analyses (PCA), and automatic generation of presentations. 
+    Features a comprehensive set of functions for conducting detailed analyses,
     generating standardized reports, and creating interactive visualizations
     to support evidence-based decision-making in the education sector.
 License: GPL-3

@@ -76,7 +76,7 @@ pcaviz.set_pca_obj = function(
 #'
 #' This function checks if the provided object is of class 'pcaviz'.
 #'
-#' @param this An object to be checked.
+#' @param obj An object to be checked.
 #'
 #' @return NULL if the object is of class 'pcaviz'; otherwise, an error is raised.
 #'

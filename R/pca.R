@@ -88,7 +88,7 @@ pca.get_ID = function(
 #'
 #' This function checks if the provided object is of class 'pca'.
 #'
-#' @param this An object to be checked.
+#' @param obj An object to be checked.
 #'
 #' @return NULL if the object is of class 'pca'; otherwise, an error is raised.
 #'
