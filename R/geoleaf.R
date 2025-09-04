@@ -460,7 +460,26 @@ geoleaf.add_boundary = function(
   return(this)
 }
 
-
+#' Add a surface layer to a geoleaf map
+#'
+#' This function creates and adds a raster surface layer to a `geoleaf` map using spatial interpolation.
+#' It's useful for visualizing continuous data, like socio-economic indicators, across a geographic area.
+#'
+#' @param this A `geoleaf` object to which the surface will be added.
+#' @param georef_obj A `georef` object containing the geographic boundary that will be used for the raster.
+#' @param data A numeric vector of values to be interpolated into the surface.
+#' @param latitude A numeric vector of latitude coordinates corresponding to the `data` points.
+#' @param longitude A numeric vector of longitude coordinates corresponding to the `data` points.
+#' @param palette A character vector of colors to be used for the surface. Defaults to `colors.purples()`.
+#' @param width The width of the raster in pixels. Defaults to 100.
+#' @param height The height of the raster in pixels. Defaults to 100.
+#' @param add_legend Logical, indicating whether to add a continuous legend for the surface. Defaults to `FALSE`.
+#' @param legend_title A character string for the title of the legend. Defaults to 'Legend Title'.
+#' @param legend_position A character string for the legend's position, e.g., 'bottomleft' or 'topright'. Defaults to 'bottomleft'.
+#'
+#' @return The modified `geoleaf` map object with the surface layer and an optional legend.
+#'
+#' @export
 geoleaf.add_surface = function(
   this, #: geoleaf
   georef_obj, #: georef
