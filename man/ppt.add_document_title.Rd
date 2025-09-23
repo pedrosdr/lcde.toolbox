@@ -4,12 +4,14 @@
 \alias{ppt.add_document_title}
 \title{Add Document Title}
 \usage{
-ppt.add_document_title(this, title)
+ppt.add_document_title(this, title, size = 40)
 }
 \arguments{
 \item{this}{A \code{ppt} object.}
 
 \item{title}{A character string for the document title.}
+
+\item{size}{A numerical value for the size of the title.}
 }
 \value{
 The modified \code{ppt} object.

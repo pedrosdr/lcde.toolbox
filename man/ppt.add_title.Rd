@@ -4,12 +4,14 @@
 \alias{ppt.add_title}
 \title{Add Title to Slide}
 \usage{
-ppt.add_title(this, title)
+ppt.add_title(this, title, size = 23)
 }
 \arguments{
 \item{this}{A \code{ppt} object.}
 
 \item{title}{A character string for the slide title.}
+
+\item{size}{A numeric value for the size of the title}
 }
 \value{
 The modified \code{ppt} object.

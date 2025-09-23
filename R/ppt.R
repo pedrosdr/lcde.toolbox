@@ -70,13 +70,15 @@ ppt.on_slide = function(
 #'
 #' @param this A `ppt` object.
 #' @param title An optional character string specifying the title of the new slide.
+#' @param title_size A numerical value for the size of the title.
 #'
 #' @return The modified `ppt` object.
 #'
 #' @export
 ppt.new_slide = function(
   this, #: ppt
-  title = NULL #: character
+  title = NULL, #: character
+  title_size = 23 #: numeric
 ) {
   .ppt.check_class(this)
   if(!is.null(title)) {
@@ -95,7 +97,7 @@ ppt.new_slide = function(
 
   if(!is.null(title)){
     this = this %>%
-      ppt.add_title(title)
+      ppt.add_title(title, size = title_size)
   }
 
   return(this)
@@ -343,13 +345,15 @@ ppt.get_horizontal_dimension = function(
 #'
 #' @param this A `ppt` object.
 #' @param title A character string for the document title.
+#' @param size A numerical value for the size of the title.
 #'
 #' @return The modified `ppt` object.
 #'
 #' @export
 ppt.add_document_title = function(
     this, #: ppt
-    title #: character
+    title, #: character
+    size=40 #: numeric
 ) {
   .ppt.check_class(this)
   type.check_character(title, 'title')
@@ -358,7 +362,7 @@ ppt.add_document_title = function(
     ppt.add_text(
       text = title,
       position = pptpos.document_title(),
-      size = 44,
+      size = size,
       bold = TRUE
     )
 
@@ -371,13 +375,15 @@ ppt.add_document_title = function(
 #'
 #' @param this A `ppt` object.
 #' @param title A character string for the slide title.
+#' @param size A numeric value for the size of the title
 #'
 #' @return The modified `ppt` object.
 #'
 #' @export
 ppt.add_title = function(
     this, #: ppt
-    title #: character
+    title, #: character
+    size=23 #: numeric
 ) {
   .ppt.check_class(this)
   type.check_character(title, 'title')
@@ -386,7 +392,7 @@ ppt.add_title = function(
     ppt.add_text(
       text = title,
       position = pptpos.title(),
-      size = 28,
+      size = size,
       bold = TRUE
     )
 

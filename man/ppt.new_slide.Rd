@@ -4,12 +4,14 @@
 \alias{ppt.new_slide}
 \title{Add a New Slide}
 \usage{
-ppt.new_slide(this, title = NULL)
+ppt.new_slide(this, title = NULL, title_size = 23)
 }
 \arguments{
 \item{this}{A \code{ppt} object.}
 
 \item{title}{An optional character string specifying the title of the new slide.}
+
+\item{title_size}{A numerical value for the size of the title.}
 }
 \value{
 The modified \code{ppt} object.

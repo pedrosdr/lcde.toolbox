@@ -2,6 +2,7 @@ Package: lcde.toolbox
 Type: Package
 Title: Tools for Analyzing and Visualizing Educational Data
 Version: 1.0.0
+Author: Pedro Sartori Dias dos Reis [aut, cre] (<https://orcid.org/0009-0005-5819-7103>, Cátedra Sérgio Henrique Ferreira - IEA-RP/USP), Rafael Naime Ruggiero [aut] (<https://orcid.org/0000-0002-4712-6853>, UNIFESP; Cátedra Sérgio Henrique Ferreira - IEA-RP/USP), Mozart Neves Ramos [aut] (<https://orcid.org/0000-0002-6062-3897>, Cátedra Sérgio Henrique Ferreira - IEA-RP/USP), Laboratório de Ciência de Dados em Educação (LCDE) [cph] (IEA-RP/USP)
 Authors@R: 
     c(
       person(given = "Pedro", family = "Sartori Dias dos Reis",
@@ -21,7 +22,7 @@ Authors@R:
              comment = "IEA-RP/USP")
     )
 Description: Provides tools for analyzing and visualizing educational data,
-    including the creation of charts, support for geospatially referenced data, 
+    including the creation of charts, support for geospatial data, 
     principal component analyses (PCA), and automatic generation of presentations. 
     Features a comprehensive set of functions for conducting detailed analyses,
     generating standardized reports, and creating interactive visualizations
