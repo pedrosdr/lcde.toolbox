@@ -22,6 +22,7 @@ geoleaf.percentage_of_proficiency_map(
   surface_palette = colors.purples(),
   surface_width = 100,
   surface_height = 100,
+  surface_opacity = 0.5,
   point_size = 1
 )
 }
@@ -59,6 +60,8 @@ geoleaf.percentage_of_proficiency_map(
 \item{surface_width}{Numeric value for the surface layer width.}
 
 \item{surface_height}{Numeric value for the surface layer height.}
+
+\item{surface_opacity}{A numeric value between 0 and 1 for the surface opacity.}
 
 \item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
 }

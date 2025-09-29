@@ -15,7 +15,8 @@ geoleaf.add_surface(
   height = 100,
   add_legend = FALSE,
   legend_title = "Legend Title",
-  legend_position = "bottomleft"
+  legend_position = "bottomleft",
+  opacity = 0.5
 )
 }
 \arguments{
@@ -40,6 +41,8 @@ geoleaf.add_surface(
 \item{legend_title}{A character string for the title of the legend. Defaults to 'Legend Title'.}
 
 \item{legend_position}{A character string for the legend's position, e.g., 'bottomleft' or 'topright'. Defaults to 'bottomleft'.}
+
+\item{opacity}{A numeric value between 0 and 1 for the surface opacity.}
 }
 \value{
 The modified \code{geoleaf} map object with the surface layer and an optional legend.

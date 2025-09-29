@@ -205,6 +205,7 @@ geogg.pca_map = function(
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #' @param add_tiles A logical value to include the map tiles, default is TRUE.
 #' @param boundary_width A numeric describing the width of the boundaries.
+#' @param surface_opacity A character specifying the opacity of the surface in hexadecimal (00-FF), default is 'BB'.
 #'
 #' @return A geogg object with the proficiency map added.
 #'
@@ -226,6 +227,7 @@ geogg.percentage_of_proficiency_map = function(
     surface_palette=colors.purples(), #: character vector
     surface_width=100, #: numeric
     surface_height=100, #: numeric
+    surface_opacity="BB", #: character
     size = vizsize.parse('large'),
     point_size = 1, #: numeric
     boundary_width = 1,
@@ -268,7 +270,8 @@ geogg.percentage_of_proficiency_map = function(
         width = surface_width,
         height = surface_height,
         legend_title = surface_legend_title,
-        palette = surface_palette
+        palette = surface_palette,
+        opacity = surface_opacity
       )
   }
 
