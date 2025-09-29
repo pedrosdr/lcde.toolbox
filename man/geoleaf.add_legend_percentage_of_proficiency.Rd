@@ -6,13 +6,16 @@
 \usage{
 geoleaf.add_legend_percentage_of_proficiency(
   this,
-  subject = c("mathematics", "portuguese language")
+  subject = c("mathematics", "portuguese language"),
+  palette = colors.red_to_green()
 )
 }
 \arguments{
 \item{this}{A \code{geoleaf} map object.}
 
 \item{subject}{A character string indicating the subject for which the legend should be displayed. Must be either 'mathematics' or 'portuguese language'. Defaults to 'mathematics'.}
+
+\item{palette}{A character vector of colors to use for the points.}
 }
 \value{
 The modified \code{geoleaf} map object with the added legend.

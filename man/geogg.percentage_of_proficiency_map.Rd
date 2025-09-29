@@ -9,6 +9,7 @@ geogg.percentage_of_proficiency_map(
   subject = c("mathematics", "portuguese language"),
   latitude,
   longitude,
+  palette = colors.red_to_green(),
   labels = NULL,
   add_boundary = FALSE,
   add_surface = FALSE,
@@ -35,6 +36,8 @@ geogg.percentage_of_proficiency_map(
 \item{latitude}{A numeric vector of latitudes for the proficiency points.}
 
 \item{longitude}{A numeric vector of longitudes for the proficiency points.}
+
+\item{palette}{A character vector of colors for the points, default is a red to green color palette.}
 
 \item{labels}{An optional vector of labels for each point, default is NULL.}
 

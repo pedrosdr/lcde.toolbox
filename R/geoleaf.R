@@ -28,6 +28,7 @@ geoleaf = function() {
 #' @param subject A character vector indicating the subject, either 'mathematics' or 'portuguese language'.
 #' @param latitude A numeric vector of latitude coordinates.
 #' @param longitude A numeric vector of longitude coordinates.
+#' @param palette A character vector of colors to use for the points.
 #' @param labels An optional vector of labels for the points. Defaults to NULL.
 #' @param popups An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.
 #' @param add_boundary Logical, indicating whether to add a geographic boundary from a georef object.
@@ -51,6 +52,7 @@ geoleaf.percentage_of_proficiency_map = function(
     latitude, #: numeric vector
     longitude, #: numeric vector,
     labels=NULL, #: vector
+    palette=colors.red_to_green(), # character vector
     popups=NULL, #: vector
     add_boundary=FALSE, #: logical
     add_surface=FALSE, #: logical
@@ -105,13 +107,17 @@ geoleaf.percentage_of_proficiency_map = function(
   obj = obj %>% geoleaf.add_points(
       latitude = latitude,
       longitude = longitude,
-      colors = utils.get_percentage_of_proficiency_category_colors(data),
+      colors = utils.get_percentage_of_proficiency_category_colors(
+        data,
+        palette = palette
+      ),
       labels = labels,
       popups = popups,
       point_size = point_size
   ) %>%
   geoleaf.add_legend_percentage_of_proficiency(
-      subject = subject
+      subject = subject,
+      palette = palette
   )
 
   return(obj)
@@ -691,6 +697,7 @@ geoleaf.add_legend_pca = function(
 #'
 #' @param this A `geoleaf` map object.
 #' @param subject A character string indicating the subject for which the legend should be displayed. Must be either 'mathematics' or 'portuguese language'. Defaults to 'mathematics'.
+#' @param palette A character vector of colors to use for the points.
 #'
 #' @return The modified `geoleaf` map object with the added legend.
 #'
@@ -708,7 +715,8 @@ geoleaf.add_legend_pca = function(
 #' @export
 geoleaf.add_legend_percentage_of_proficiency = function(
   this, #: geoleaf
-  subject = c('mathematics', 'portuguese language') #: character
+  subject = c('mathematics', 'portuguese language'), #: character
+  palette = colors.red_to_green() #: character
 ) {
   .geoleaf.check_class(this)
 
@@ -725,7 +733,7 @@ geoleaf.add_legend_percentage_of_proficiency = function(
 
   this = this %>% geoleaf.add_legend_discrete(
     title = title,
-    colors = colors.red_to_green(),
+    colors = palette,
     labels = c(
       '0% |- 25%',
       '25% |- 50%',

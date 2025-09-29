@@ -188,6 +188,7 @@ geogg.pca_map = function(
 #' @param subject A character string indicating the subject, either 'mathematics' or 'portuguese language'. Default is 'mathematics'.
 #' @param latitude A numeric vector of latitudes for the proficiency points.
 #' @param longitude A numeric vector of longitudes for the proficiency points.
+#' @param palette A character vector of colors for the points, default is a red to green color palette.
 #' @param labels An optional vector of labels for each point, default is NULL.
 #' @param add_boundary A logical value to include a boundary overlay, default is FALSE.
 #' @param add_surface A logical value to include a surface overlay, default is FALSE.
@@ -213,6 +214,7 @@ geogg.percentage_of_proficiency_map = function(
     subject = c('mathematics', 'portuguese language'), #: character
     latitude, #: numeric vector
     longitude, #: numeric vector,
+    palette=colors.red_to_green(), #: character vector
     labels=NULL, #: vector
     add_boundary=FALSE, #: logical
     add_surface=FALSE, #: logical
@@ -291,10 +293,10 @@ geogg.percentage_of_proficiency_map = function(
       )
     ),
     color_map = c(
-      '0% |- 25%' = colors.red_to_green()[1],
-      '25% |- 50%' = colors.red_to_green()[2],
-      '50% |- 70%' = colors.red_to_green()[3],
-      '70% |-| 100%' = colors.red_to_green()[4]
+      '0% |- 25%' = palette[1],
+      '25% |- 50%' = palette[2],
+      '50% |- 70%' = palette[3],
+      '70% |-| 100%' = palette[4]
     ),
     legend_title = legend_title,
     add_new_scale = if(add_surface) TRUE else FALSE,
