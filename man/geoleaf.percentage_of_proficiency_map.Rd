@@ -10,6 +10,7 @@ geoleaf.percentage_of_proficiency_map(
   latitude,
   longitude,
   labels = NULL,
+  palette = colors.red_to_green(),
   popups = NULL,
   add_boundary = FALSE,
   add_surface = FALSE,
@@ -21,6 +22,7 @@ geoleaf.percentage_of_proficiency_map(
   surface_palette = colors.purples(),
   surface_width = 100,
   surface_height = 100,
+  surface_opacity = 0.5,
   point_size = 1
 )
 }
@@ -34,6 +36,8 @@ geoleaf.percentage_of_proficiency_map(
 \item{longitude}{A numeric vector of longitude coordinates.}
 
 \item{labels}{An optional vector of labels for the points. Defaults to NULL.}
+
+\item{palette}{A character vector of colors to use for the points.}
 
 \item{popups}{An optional vector of popups corresponding to each marker. If not provided, no popups are displayed.}
 
@@ -56,6 +60,8 @@ geoleaf.percentage_of_proficiency_map(
 \item{surface_width}{Numeric value for the surface layer width.}
 
 \item{surface_height}{Numeric value for the surface layer height.}
+
+\item{surface_opacity}{A numeric value between 0 and 1 for the surface opacity.}
 
 \item{point_size}{A numeric value indicating the size of the points on the map. Defaults to 1.}
 }

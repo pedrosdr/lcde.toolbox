@@ -9,6 +9,7 @@ geogg.percentage_of_proficiency_map(
   subject = c("mathematics", "portuguese language"),
   latitude,
   longitude,
+  palette = colors.red_to_green(),
   labels = NULL,
   add_boundary = FALSE,
   add_surface = FALSE,
@@ -20,6 +21,7 @@ geogg.percentage_of_proficiency_map(
   surface_palette = colors.purples(),
   surface_width = 100,
   surface_height = 100,
+  surface_opacity = "BB",
   size = vizsize.parse("large"),
   point_size = 1,
   boundary_width = 1,
@@ -35,6 +37,8 @@ geogg.percentage_of_proficiency_map(
 \item{latitude}{A numeric vector of latitudes for the proficiency points.}
 
 \item{longitude}{A numeric vector of longitudes for the proficiency points.}
+
+\item{palette}{A character vector of colors for the points, default is a red to green color palette.}
 
 \item{labels}{An optional vector of labels for each point, default is NULL.}
 
@@ -57,6 +61,8 @@ geogg.percentage_of_proficiency_map(
 \item{surface_width}{A numeric value specifying the width of the surface grid, default is 100.}
 
 \item{surface_height}{A numeric value specifying the height of the surface grid, default is 100.}
+
+\item{surface_opacity}{A character specifying the opacity of the surface in hexadecimal (00-FF), default is 'BB'.}
 
 \item{size}{An object defining size specifications, default is 'large'.}
 

@@ -188,6 +188,7 @@ geogg.pca_map = function(
 #' @param subject A character string indicating the subject, either 'mathematics' or 'portuguese language'. Default is 'mathematics'.
 #' @param latitude A numeric vector of latitudes for the proficiency points.
 #' @param longitude A numeric vector of longitudes for the proficiency points.
+#' @param palette A character vector of colors for the points, default is a red to green color palette.
 #' @param labels An optional vector of labels for each point, default is NULL.
 #' @param add_boundary A logical value to include a boundary overlay, default is FALSE.
 #' @param add_surface A logical value to include a surface overlay, default is FALSE.
@@ -204,6 +205,7 @@ geogg.pca_map = function(
 #' @param zoom An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.
 #' @param add_tiles A logical value to include the map tiles, default is TRUE.
 #' @param boundary_width A numeric describing the width of the boundaries.
+#' @param surface_opacity A character specifying the opacity of the surface in hexadecimal (00-FF), default is 'BB'.
 #'
 #' @return A geogg object with the proficiency map added.
 #'
@@ -213,6 +215,7 @@ geogg.percentage_of_proficiency_map = function(
     subject = c('mathematics', 'portuguese language'), #: character
     latitude, #: numeric vector
     longitude, #: numeric vector,
+    palette=colors.red_to_green(), #: character vector
     labels=NULL, #: vector
     add_boundary=FALSE, #: logical
     add_surface=FALSE, #: logical
@@ -224,6 +227,7 @@ geogg.percentage_of_proficiency_map = function(
     surface_palette=colors.purples(), #: character vector
     surface_width=100, #: numeric
     surface_height=100, #: numeric
+    surface_opacity="BB", #: character
     size = vizsize.parse('large'),
     point_size = 1, #: numeric
     boundary_width = 1,
@@ -266,7 +270,8 @@ geogg.percentage_of_proficiency_map = function(
         width = surface_width,
         height = surface_height,
         legend_title = surface_legend_title,
-        palette = surface_palette
+        palette = surface_palette,
+        opacity = surface_opacity
       )
   }
 
@@ -291,10 +296,10 @@ geogg.percentage_of_proficiency_map = function(
       )
     ),
     color_map = c(
-      '0% |- 25%' = colors.red_to_green()[1],
-      '25% |- 50%' = colors.red_to_green()[2],
-      '50% |- 70%' = colors.red_to_green()[3],
-      '70% |-| 100%' = colors.red_to_green()[4]
+      '0% |- 25%' = palette[1],
+      '25% |- 50%' = palette[2],
+      '50% |- 70%' = palette[3],
+      '70% |-| 100%' = palette[4]
     ),
     legend_title = legend_title,
     add_new_scale = if(add_surface) TRUE else FALSE,
