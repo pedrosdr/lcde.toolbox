@@ -26,7 +26,8 @@ geogg.percentage_of_proficiency_map(
   point_size = 1,
   boundary_width = 1,
   zoom = NULL,
-  add_tiles = TRUE
+  add_tiles = TRUE,
+  label_size = 3
 )
 }
 \arguments{
@@ -73,6 +74,8 @@ geogg.percentage_of_proficiency_map(
 \item{zoom}{An integer indicating the zoom level for the map. Higher values indicate closer zoom, while lower values show a broader area.}
 
 \item{add_tiles}{A logical value to include the map tiles, default is TRUE.}
+
+\item{label_size}{A numeric value specifying the size of the point labels.}
 }
 \value{
 A geogg object with the proficiency map added.

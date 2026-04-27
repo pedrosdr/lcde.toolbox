@@ -25,7 +25,8 @@ geogg.pca_map(
   zoom = NULL,
   groups = NULL,
   color_map = NULL,
-  add_tiles = TRUE
+  add_tiles = TRUE,
+  label_size = label_size
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ geogg.pca_map(
 \item{color_map}{A named character vector for color mapping groups, default is NULL.}
 
 \item{add_tiles}{A logical value to include the map tiles, default is TRUE.}
+
+\item{label_size}{A numeric value specifying the size of the point labels.}
 }
 \value{
 A geogg object with the PCA map added.

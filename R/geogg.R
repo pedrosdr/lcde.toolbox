@@ -51,6 +51,7 @@ geogg = function(
 #' @param groups An optional vector for grouping the points, default is NULL.
 #' @param color_map A named character vector for color mapping groups, default is NULL.
 #' @param add_tiles A logical value to include the map tiles, default is TRUE.
+#' @param label_size A numeric value specifying the size of the point labels.
 #'
 #' @return A geogg object with the PCA map added.
 #'
@@ -76,7 +77,8 @@ geogg.pca_map = function(
     zoom = NULL, #: integer
     groups = NULL, #: vector
     color_map = NULL,
-    add_tiles = TRUE
+    add_tiles = TRUE,
+    label_size=label_size
 ) {
   .pca.check_class(pca_obj)
 
@@ -171,9 +173,10 @@ geogg.pca_map = function(
 
   if(!is.null(labels)) {
     obj = obj %>% geogg.add_labels(
-      labels,
-      latitude,
-      longitude
+      labels = labels,
+      latitude = latitude,
+      longitude = longitude,
+      label_size = label_size
     )
   }
 
@@ -206,33 +209,35 @@ geogg.pca_map = function(
 #' @param add_tiles A logical value to include the map tiles, default is TRUE.
 #' @param boundary_width A numeric describing the width of the boundaries.
 #' @param surface_opacity A character specifying the opacity of the surface in hexadecimal (00-FF), default is 'BB'.
+#' @param label_size A numeric value specifying the size of the point labels.
 #'
 #' @return A geogg object with the proficiency map added.
 #'
 #' @export
 geogg.percentage_of_proficiency_map = function(
-    data, #: numeric vector
-    subject = c('mathematics', 'portuguese language'), #: character
-    latitude, #: numeric vector
-    longitude, #: numeric vector,
-    palette=colors.red_to_green(), #: character vector
-    labels=NULL, #: vector
-    add_boundary=FALSE, #: logical
-    add_surface=FALSE, #: logical
-    georef_obj=NULL, #: georef
-    surface_data=NULL, #: numeric vector
-    surface_latitude=NULL, #: numeric vector
-    surface_longitude=NULL, #: numeric vector
-    surface_legend_title='Legend Title', #: character
-    surface_palette=colors.purples(), #: character vector
-    surface_width=100, #: numeric
-    surface_height=100, #: numeric
-    surface_opacity="BB", #: character
+    data,
+    subject = c('mathematics', 'portuguese language'),
+    latitude,
+    longitude,
+    palette = colors.red_to_green(),
+    labels = NULL,
+    add_boundary = FALSE,
+    add_surface = FALSE,
+    georef_obj = NULL,
+    surface_data = NULL,
+    surface_latitude = NULL,
+    surface_longitude = NULL,
+    surface_legend_title = 'Legend Title',
+    surface_palette = colors.purples(),
+    surface_width = 100,
+    surface_height = 100,
+    surface_opacity = "BB",
     size = vizsize.parse('large'),
-    point_size = 1, #: numeric
+    point_size = 1,
     boundary_width = 1,
-    zoom = NULL, #: integer
-    add_tiles = TRUE
+    zoom = NULL,
+    add_tiles = TRUE,
+    label_size = 3
 ) {
   if(!(subject[1]) %in% c('mathematics', 'portuguese language')){
     stop("'subject' must be one of 'mathematics', 'portuguese language')")
@@ -308,9 +313,10 @@ geogg.percentage_of_proficiency_map = function(
 
   if(!is.null(labels)) {
     obj = obj %>% geogg.add_labels(
-      labels,
-      latitude,
-      longitude
+      labels = labels,
+      latitude = latitude,
+      longitude = longitude,
+      label_size = label_size
     )
   }
 
@@ -601,17 +607,20 @@ geogg.add_points = function(
 #' @param labels A vector of labels for each point.
 #' @param latitude A numeric vector for the latitudes of each point.
 #' @param longitude A numeric vector for the longitudes of each point.
+#' @param label_size A numeric value specifying the size of the text labels.
 #' @return The updated geogg object with labels added.
 #' @export
 geogg.add_labels = function(
     this, #: geogg
     labels, #: vector
     latitude, #: numeric
-    longitude #: numeric
+    longitude, #: numeric
+    label_size = 3 #: numeric
 ) {
   .geogg.check_class(this)
   type.check_numeric(latitude, 'latitude')
-  type.check_numeric(latitude, 'longitude')
+  type.check_numeric(longitude, 'longitude')
+  type.check_numeric(label_size, 'label_size')
 
   if(length(labels) != length(latitude)) {
     stop("'labels' and 'latitude' must be vectors of the same length")
@@ -656,9 +665,9 @@ geogg.add_labels = function(
         geometry = geometry
       ),
       stat = "sf_coordinates",
-      box.padding = this$size$point_size/4,
-      point.padding = this$size$point_size/6,
-      size = this$size$text / 5,
+      box.padding = this$size$point_size / 4,
+      point.padding = this$size$point_size / 6,
+      size = label_size,
       min.segment.length = 0,
       max.overlaps = 50
     )

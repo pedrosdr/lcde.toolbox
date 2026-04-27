@@ -86,46 +86,103 @@ utils.relative_magnitude = function(
 
 #' Abbreviate School Names
 #'
-#' This function abbreviates school names by retaining only the most meaningful words, based on a specified size limit. Commonly ignored words are filtered out to produce a concise representation of each school name.
+#' Abbreviates school names by retaining only the most meaningful words,
+#' based on a specified size limit. Commonly ignored words can be supplied
+#' by the package defaults and extended or overridden by the user.
 #'
-#' @param school_names A character vector containing the names of the schools to be abbreviated.
-#' @param size An integer specifying the maximum number of words to retain in the abbreviated name. Defaults to 2.
+#' @param school_names A character vector containing the names of the schools
+#'   to be abbreviated.
+#' @param size An integer specifying the maximum number of words to retain in
+#'   the abbreviated name. Defaults to 2.
+#' @param ignored_words An optional character vector of words to ignore. If
+#'   `NULL`, the function uses the package default ignored words.
+#' @param extra_ignored_words An optional character vector of additional words
+#'   to ignore, appended to `ignored_words` or to the package defaults.
+#' @param ignored_regex An optional character vector of regular expressions used
+#'   to ignore matching terms. If `NULL`, the function uses the package default
+#'   regex rules.
+#' @param extra_ignored_regex An optional character vector of additional regular
+#'   expressions to ignore, appended to `ignored_regex` or to the package defaults.
 #'
-#' @return A character vector of abbreviated school names with the first letter of each word capitalized.
+#' @return A character vector of abbreviated school names with the first letter
+#'   of each word capitalized.
 #'
 #' @details
-#' The function converts all input school names to lowercase, splits them into individual words, and filters out predefined ignored words and numeric values. The remaining words are then concatenated based on the specified size limit.
+#' The function converts all input school names to lowercase, splits them into
+#' individual words, and filters out ignored words and terms matching ignored
+#' regular expressions, such as numeric values. The remaining words are then
+#' concatenated according to the specified `size` limit.
+#'
+#' If `ignored_words` or `ignored_regex` are not provided, the function uses
+#' internal defaults from the package. The arguments `extra_ignored_words` and
+#' `extra_ignored_regex` make it possible to extend those defaults without
+#' replacing them entirely.
 #'
 #' @examples
-#' school_names <- c("Escola Municipal de Ensino Fundamental", "Colégio Dr. João da Silva")
-#' abbreviated_names <- utils.abbreviate_school_names(school_names, size = 2)
+#' school_names <- c(
+#'   "Escola Municipal de Ensino Fundamental",
+#'   "Colégio Dr. João da Silva"
+#' )
+#'
+#' abbreviated_names <- utils.abbreviate_school_names(
+#'   school_names,
+#'   size = 2
+#' )
+#'
+#' abbreviated_names2 <- utils.abbreviate_school_names(
+#'   school_names,
+#'   size = 2,
+#'   extra_ignored_words = c("joao", "silva")
+#' )
 #'
 #' @export
 utils.abbreviate_school_names = function(
-  school_names, #: character vector
-  size = 2 #: integer
+    school_names,
+    size = 2,
+    extra_ignored_words = NULL,
+    extra_ignored_regex = NULL
 ) {
   type.check_character(school_names, 'school_names')
   type.check_integer(size, 'size')
 
-  ignored_words = c(
+  ignored_words_default = c(
     "escola", "municipal", "educacao", "basica", "fundamental", "ensino", "emef",
-    "em", "da", "de", "do", "dos", "a", "o", "dr", "frei", 'vereador', "professora",
-    "e", "m", "mul", "educ", "emeif", "prof\u00ba", "prof\u00aa", "profa", "emefi", 'emeb', 'di',
-    '-', 'colegio', 'doutor', "1\u00ba", "grau", "dep", "deputado", "unidade",
+    "em", "da", "de", "do", "dos", "a", "o", "dr", "frei", "vereador", "professora",
+    "e", "m", "mul", "educ", "emeif", "prof\u00ba", "prof\u00aa", "profa", "emefi", "emeb", "di",
+    "-", "colegio", "doutor", "1\u00ba", "grau", "dep", "deputado", "unidade",
     "desembargador", "creche", "prefeito", "fund", "governador", "senador",
     "b", "sra", "alm", "emefm", "professor", "estadual", "federal", "privada",
-    "prof", "r", "esc", "indigena", "ind\u00edgena")
+    "prof", "r", "esc", "indigena", "ind\u00edgena"
+  )
 
-  ignored_regex = c(
+  ignored_regex_default = c(
     "\\d+"
   )
 
-  abbreviated = c()
-  for(school_name in school_names) {
-    school_name_full <- stringr::str_split(tolower(school_name), " ")[[1]]
+  if (!is.null(extra_ignored_words)) {
+    type.check_character(extra_ignored_words, "extra_ignored_words")
+  }
 
-    meaningful_words <- school_name_full[!(
+  if (!is.null(extra_ignored_regex)) {
+    type.check_character(extra_ignored_regex, "extra_ignored_regex")
+  }
+
+  ignored_words = unique(c(
+    ignored_words_default,
+    tolower(extra_ignored_words)
+  ))
+
+  ignored_regex = unique(c(
+    ignored_regex_default,
+    extra_ignored_regex
+  ))
+
+  abbreviated = c()
+
+  for (school_name in school_names) {
+    school_name_full = stringr::str_split(tolower(school_name), " ")[[1]]
+
+    meaningful_words = school_name_full[!(
       school_name_full %in% ignored_words |
         sapply(
           school_name_full,

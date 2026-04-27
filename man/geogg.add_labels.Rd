@@ -4,7 +4,7 @@
 \alias{geogg.add_labels}
 \title{Add Labels to Geographical Plot}
 \usage{
-geogg.add_labels(this, labels, latitude, longitude)
+geogg.add_labels(this, labels, latitude, longitude, label_size = 3)
 }
 \arguments{
 \item{this}{An object of class 'geogg'.}
@@ -14,6 +14,8 @@ geogg.add_labels(this, labels, latitude, longitude)
 \item{latitude}{A numeric vector for the latitudes of each point.}
 
 \item{longitude}{A numeric vector for the longitudes of each point.}
+
+\item{label_size}{A numeric value specifying the size of the text labels.}
 }
 \value{
 The updated geogg object with labels added.

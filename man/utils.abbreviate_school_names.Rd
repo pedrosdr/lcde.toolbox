@@ -4,24 +4,68 @@
 \alias{utils.abbreviate_school_names}
 \title{Abbreviate School Names}
 \usage{
-utils.abbreviate_school_names(school_names, size = 2)
+utils.abbreviate_school_names(
+  school_names,
+  size = 2,
+  extra_ignored_words = NULL,
+  extra_ignored_regex = NULL
+)
 }
 \arguments{
-\item{school_names}{A character vector containing the names of the schools to be abbreviated.}
+\item{school_names}{A character vector containing the names of the schools
+to be abbreviated.}
 
-\item{size}{An integer specifying the maximum number of words to retain in the abbreviated name. Defaults to 2.}
+\item{size}{An integer specifying the maximum number of words to retain in
+the abbreviated name. Defaults to 2.}
+
+\item{extra_ignored_words}{An optional character vector of additional words
+to ignore, appended to \code{ignored_words} or to the package defaults.}
+
+\item{extra_ignored_regex}{An optional character vector of additional regular
+expressions to ignore, appended to \code{ignored_regex} or to the package defaults.}
+
+\item{ignored_words}{An optional character vector of words to ignore. If
+\code{NULL}, the function uses the package default ignored words.}
+
+\item{ignored_regex}{An optional character vector of regular expressions used
+to ignore matching terms. If \code{NULL}, the function uses the package default
+regex rules.}
 }
 \value{
-A character vector of abbreviated school names with the first letter of each word capitalized.
+A character vector of abbreviated school names with the first letter
+of each word capitalized.
 }
 \description{
-This function abbreviates school names by retaining only the most meaningful words, based on a specified size limit. Commonly ignored words are filtered out to produce a concise representation of each school name.
+Abbreviates school names by retaining only the most meaningful words,
+based on a specified size limit. Commonly ignored words can be supplied
+by the package defaults and extended or overridden by the user.
 }
 \details{
-The function converts all input school names to lowercase, splits them into individual words, and filters out predefined ignored words and numeric values. The remaining words are then concatenated based on the specified size limit.
+The function converts all input school names to lowercase, splits them into
+individual words, and filters out ignored words and terms matching ignored
+regular expressions, such as numeric values. The remaining words are then
+concatenated according to the specified \code{size} limit.
+
+If \code{ignored_words} or \code{ignored_regex} are not provided, the function uses
+internal defaults from the package. The arguments \code{extra_ignored_words} and
+\code{extra_ignored_regex} make it possible to extend those defaults without
+replacing them entirely.
 }
 \examples{
-school_names <- c("Escola Municipal de Ensino Fundamental", "Colégio Dr. João da Silva")
-abbreviated_names <- utils.abbreviate_school_names(school_names, size = 2)
+school_names <- c(
+  "Escola Municipal de Ensino Fundamental",
+  "Colégio Dr. João da Silva"
+)
+
+abbreviated_names <- utils.abbreviate_school_names(
+  school_names,
+  size = 2
+)
+
+abbreviated_names2 <- utils.abbreviate_school_names(
+  school_names,
+  size = 2,
+  extra_ignored_words = c("joao", "silva")
+)
 
 }
